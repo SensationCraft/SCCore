@@ -6,7 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.sensationcraft.sccore.Main;
+import org.sensationcraft.sccore.SCCore;
 import org.sensationcraft.sccore.scplayer.SCPlayer;
 import org.sensationcraft.sccore.scplayer.SCPlayerManager;
 import org.sensationcraft.sccore.utils.fanciful.FancyMessage;
@@ -16,10 +16,10 @@ import org.sensationcraft.sccore.utils.fanciful.FancyMessage;
  */
 public class ShoutCommand implements CommandExecutor {
 
-    Main instance;
+    SCCore instance;
     SCPlayerManager scPlayerManager;
 
-    public ShoutCommand(Main instance) {
+    public ShoutCommand(SCCore instance) {
         this.instance = instance;
         scPlayerManager = instance.getSCPlayerManager();
     }

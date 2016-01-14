@@ -11,7 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.sensationcraft.sccore.Main;
+import org.sensationcraft.sccore.SCCore;
 import org.sensationcraft.sccore.duels.Arena;
 import org.sensationcraft.sccore.scplayer.SCPlayer;
 import org.sensationcraft.sccore.scplayer.SCPlayerManager;
@@ -24,11 +24,11 @@ import java.util.UUID;
  */
 public class DuelCommand implements CommandExecutor {
 
-    private Main instance;
+    private SCCore instance;
     private SCPlayerManager scPlayerManager;
     private Arena arena;
 
-    public DuelCommand(Main instance) {
+    public DuelCommand(SCCore instance) {
         this.instance = instance;
         scPlayerManager = instance.getSCPlayerManager();
         arena = instance.getArenaManager().getArena();

@@ -16,7 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.sensationcraft.sccore.Main;
+import org.sensationcraft.sccore.SCCore;
 import org.sensationcraft.sccore.lockpicks.LockpickRunnable;
 import org.sensationcraft.sccore.ranks.RankManager;
 import org.sensationcraft.sccore.stats.StatsManager;
@@ -30,7 +30,7 @@ import java.util.*;
  */
 public class SCPlayerManager implements Listener {
 
-    private Main instance;
+    private SCCore instance;
     private RankManager rankManager;
     private StatsManager statsManager;
     private Utils utils;
@@ -38,7 +38,7 @@ public class SCPlayerManager implements Listener {
     private Map<UUID, LockpickRunnable> lockpicking;
     private Map<UUID, SCPlayer> scPlayers;
 
-    public SCPlayerManager(Main instance) {
+    public SCPlayerManager(SCCore instance) {
         this.instance = instance;
         rankManager = instance.getRankManager();
         statsManager = instance.getStatsManager();

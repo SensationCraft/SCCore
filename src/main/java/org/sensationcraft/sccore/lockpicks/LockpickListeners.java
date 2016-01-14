@@ -18,7 +18,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-import org.sensationcraft.sccore.Main;
+import org.sensationcraft.sccore.SCCore;
 import org.sensationcraft.sccore.scplayer.SCPlayer;
 import org.sensationcraft.sccore.scplayer.SCPlayerManager;
 
@@ -27,10 +27,10 @@ import org.sensationcraft.sccore.scplayer.SCPlayerManager;
  */
 public class LockpickListeners implements Listener {
 
-    Main instance;
+    SCCore instance;
     SCPlayerManager scPlayerManager;
 
-    public LockpickListeners(Main instance) {
+    public LockpickListeners(SCCore instance) {
         this.instance = instance;
         scPlayerManager = instance.getSCPlayerManager();
     }

@@ -1,6 +1,6 @@
 package org.sensationcraft.sccore.ranks;
 
-import org.sensationcraft.sccore.Main;
+import org.sensationcraft.sccore.SCCore;
 import org.sensationcraft.sccore.scplayer.SCPlayerManager;
 
 /**
@@ -27,7 +27,7 @@ public enum Rank {
     String alias;
     String tag;
     int lockpickChance;
-    SCPlayerManager scPlayerManager = Main.getInstance().getSCPlayerManager();
+    SCPlayerManager scPlayerManager = SCCore.getInstance().getSCPlayerManager();
 
     Rank(int id, String name, String alias, String tag, int lockpickChance) {
         this.id = id;

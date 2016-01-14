@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
-import org.sensationcraft.sccore.Main;
+import org.sensationcraft.sccore.SCCore;
 
 import java.util.*;
 
@@ -14,11 +14,11 @@ import java.util.*;
 
 public class PermissionsManager {
 
-    private Main instance;
+    private SCCore instance;
     private RankManager rankManager;
     private Map<UUID, PermissionAttachment> attachments;
 
-    public PermissionsManager(Main instance) {
+    public PermissionsManager(SCCore instance) {
         this.instance = instance;
         rankManager = instance.getRankManager();
         attachments = new HashMap<>();

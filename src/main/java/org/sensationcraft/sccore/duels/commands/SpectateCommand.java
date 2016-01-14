@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.sensationcraft.sccore.Main;
+import org.sensationcraft.sccore.SCCore;
 import org.sensationcraft.sccore.duels.Arena;
 import org.sensationcraft.sccore.duels.ArenaLocationType;
 
@@ -14,10 +14,10 @@ import org.sensationcraft.sccore.duels.ArenaLocationType;
  */
 public class SpectateCommand implements CommandExecutor {
 
-    private Main instance;
+    private SCCore instance;
     private Arena arena;
 
-    public SpectateCommand(Main instance) {
+    public SpectateCommand(SCCore instance) {
         this.instance = instance;
         arena = instance.getArenaManager().getArena();
     }

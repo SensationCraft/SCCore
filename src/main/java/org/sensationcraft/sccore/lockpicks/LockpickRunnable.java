@@ -6,7 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.sensationcraft.sccore.Main;
+import org.sensationcraft.sccore.SCCore;
 import org.sensationcraft.sccore.scplayer.SCPlayer;
 import org.sensationcraft.sccore.scplayer.SCPlayerManager;
 
@@ -17,13 +17,13 @@ import java.util.UUID;
  */
 public class LockpickRunnable extends BukkitRunnable {
     private int counter;
-    private Main instance;
+    private SCCore instance;
     private SCPlayerManager scPlayerManager;
     private SCPlayer scPlayer;
     private Block block;
     private UUID uuid;
 
-    public LockpickRunnable(Main instance, Block block, UUID uuid, int counter) {
+    public LockpickRunnable(SCCore instance, Block block, UUID uuid, int counter) {
         this.counter = counter;
         this.instance = instance;
         scPlayerManager = instance.getSCPlayerManager();

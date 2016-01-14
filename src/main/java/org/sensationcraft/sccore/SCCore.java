@@ -29,9 +29,9 @@ import org.sensationcraft.sccore.utils.Utils;
  * Created by Anml on 12/26/15.
  */
 
-public class Main extends JavaPlugin implements Listener {
+public class SCCore extends JavaPlugin implements Listener {
 
-    public static Main instance;
+    public static SCCore instance;
     private Essentials essentials;
     private SCPlayerManager scPlayerManager;
     private ArenaManager arenaManager;
@@ -41,7 +41,7 @@ public class Main extends JavaPlugin implements Listener {
     private Utils utils;
     private MySQL mySQL;
 
-    public static Main getInstance() {
+    public static SCCore getInstance() {
         return instance;
     }
 

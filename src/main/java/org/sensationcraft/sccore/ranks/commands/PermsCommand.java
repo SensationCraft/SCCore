@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.sensationcraft.sccore.Main;
+import org.sensationcraft.sccore.SCCore;
 import org.sensationcraft.sccore.ranks.PermissionsManager;
 import org.sensationcraft.sccore.ranks.Rank;
 import org.sensationcraft.sccore.scplayer.SCPlayer;
@@ -20,11 +20,11 @@ import java.util.List;
  */
 public class PermsCommand implements CommandExecutor {
 
-    Main instance;
+    SCCore instance;
     PermissionsManager permissionsManager;
     SCPlayerManager scPlayerManager;
 
-    public PermsCommand(Main instance) {
+    public PermsCommand(SCCore instance) {
         this.instance = instance;
         permissionsManager = instance.getPermissionsManager();
         scPlayerManager = instance.getSCPlayerManager();

@@ -10,7 +10,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.sensationcraft.sccore.Main;
+import org.sensationcraft.sccore.SCCore;
 import org.sensationcraft.sccore.scplayer.SCPlayer;
 import org.sensationcraft.sccore.scplayer.SCPlayerManager;
 
@@ -19,12 +19,12 @@ import org.sensationcraft.sccore.scplayer.SCPlayerManager;
  */
 public class DuelListeners implements Listener {
 
-    private Main instance;
+    private SCCore instance;
     private SCPlayerManager scPlayerManager;
     private ArenaManager arenaManager;
     private Arena arena;
 
-    public DuelListeners(Main instance) {
+    public DuelListeners(SCCore instance) {
         this.instance = instance;
         scPlayerManager = instance.getSCPlayerManager();
         arenaManager = instance.getArenaManager();
