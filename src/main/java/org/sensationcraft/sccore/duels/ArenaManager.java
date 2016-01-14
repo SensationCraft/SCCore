@@ -3,21 +3,20 @@ package org.sensationcraft.sccore.duels;
 import org.bukkit.Location;
 import org.sensationcraft.sccore.SCCore;
 
+import lombok.Getter;
+
 /**
  * Created by Anml on 1/3/16.
  */
 public class ArenaManager {
 
 	private SCCore instance;
+	@Getter
 	private Arena arena;
 
 	public ArenaManager(SCCore instance) {
 		this.instance = instance;
 		this.arena = new Arena(instance);
-	}
-
-	public Arena getArena() {
-		return this.arena;
 	}
 
 	public boolean insideBorders(Location location) {

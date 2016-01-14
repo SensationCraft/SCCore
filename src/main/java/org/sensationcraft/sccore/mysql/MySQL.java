@@ -8,12 +8,15 @@ import java.sql.SQLException;
 
 import org.sensationcraft.sccore.SCCore;
 
+import lombok.Getter;
+
 /**
  * Created by kishanpatel on 12/6/15.
  */
 
 public class MySQL {
 
+	@Getter
 	private Connection connection;
 	private SCCore instance;
 
@@ -42,10 +45,6 @@ public class MySQL {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-	}
-
-	public Connection getConnection() {
-		return this.connection;
 	}
 
 	public ResultSet getResultSet(String qry) throws SQLException {

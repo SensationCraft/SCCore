@@ -1,12 +1,14 @@
 package org.sensationcraft.sccore.ranks;
 
-import org.sensationcraft.sccore.SCCore;
-import org.sensationcraft.sccore.scplayer.SCPlayerManager;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Created by kishanpatel on 12/6/15.
  */
 
+@Getter
+@RequiredArgsConstructor
 public enum Rank {
 
 	OWNER(9, "§6Owner", "§6%s", 100),
@@ -22,20 +24,13 @@ public enum Rank {
 
 	DEFAULT(0, "§fDefault", "§f%s", 10);
 
-	int id;
-	String name;
-	String alias;
-	String tag;
-	int lockpickChance;
-	SCPlayerManager scPlayerManager = SCCore.getInstance().getSCPlayerManager();
-
-	Rank(int id, String name, String alias, String tag, int lockpickChance) {
-		this.id = id;
-		this.name = name;
-		this.alias = alias;
-		this.tag = tag;
-		this.lockpickChance = lockpickChance;
-	}
+	private final int id;
+	private final String name;
+	private final String alias;
+	private final String tag;
+	private final int lockpickChance;
+	//Dangerous, may not be defined when this class is initialized (on first reference), taking it out since not needed elsewhere
+	//final SCPlayerManager scPlayerManager = SCCore.getInstance().getSCPlayerManager();
 
 	Rank(int id, String name, String tag, int lockpickChance) {
 		this.id = id;
@@ -44,26 +39,5 @@ public enum Rank {
 		this.tag = tag;
 		this.lockpickChance = lockpickChance;
 	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public String getAlias() {
-		return this.alias;
-	}
-
-	public String getTag() {
-		return this.tag;
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public int getLockpickChance() {
-		return this.lockpickChance;
-	}
-
 
 }

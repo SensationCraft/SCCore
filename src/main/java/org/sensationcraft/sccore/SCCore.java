@@ -25,12 +25,16 @@ import org.sensationcraft.sccore.utils.Utils;
 
 import com.earth2me.essentials.Essentials;
 
+import lombok.Getter;
+
 /**
  * Created by Anml on 12/26/15.
  */
 
+@Getter
 public class SCCore extends JavaPlugin implements Listener {
 
+	@Getter
 	public static SCCore instance;
 	private Essentials essentials;
 	private SCPlayerManager scPlayerManager;
@@ -41,37 +45,9 @@ public class SCCore extends JavaPlugin implements Listener {
 	private Utils utils;
 	private MySQL mySQL;
 
-	public static SCCore getInstance() {
-		return instance;
-	}
-
-	public MySQL getMySQL() {
-		return this.mySQL;
-	}
-
-	public RankManager getRankManager() {
-		return this.rankManager;
-	}
-
-	public PermissionsManager getPermissionsManager() {
-		return this.permissionsManager;
-	}
-	public SCPlayerManager getSCPlayerManager() {
+	//name override, Lombok doesn't capitalize C - getScPlayerManager()
+	public SCPlayerManager getSCPlayerManager(){
 		return this.scPlayerManager;
-	}
-	public ArenaManager getArenaManager() {
-		return this.arenaManager;
-	}
-
-	public StatsManager getStatsManager() {
-		return this.statsManager;
-	}
-
-	public Utils getUtils() {
-		return this.utils;
-	}
-	public Essentials getEssentials() {
-		return this.essentials;
 	}
 
 	@Override

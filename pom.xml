@@ -29,6 +29,16 @@
 
   <build>
     <finalName>${project.name}-${project.version}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+          <configuration>
+            <downloadSources>true</downloadSources>
+            <downloadJavadocs>true</downloadJavadocs>
+          </configuration>
+      </plugin>
+    </plugins>
   </build>
 
   <dependencies>
@@ -62,5 +72,11 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+	  <groupId>org.projectlombok</groupId>
+	  <artifactId>lombok</artifactId>
+	  <version>1.16.6</version>
+	  <scope>provided</scope>
+	</dependency>
   </dependencies>
 </project>
