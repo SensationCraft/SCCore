@@ -1,9 +1,5 @@
 package org.sensationcraft.sccore.stats;
 
-import org.bukkit.Bukkit;
-import org.sensationcraft.sccore.SCCore;
-import org.sensationcraft.sccore.mysql.MySQL;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -11,169 +7,173 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.sensationcraft.sccore.SCCore;
+import org.sensationcraft.sccore.mysql.MySQL;
+
 /**
  * Created by Anml on 1/12/16.
  */
 public class StatsManager {
 
-    private SCCore instance;
-    private MySQL mySQL;
-    private Map<UUID, Integer> kills;
-    private Map<UUID, Integer> deaths;
-    private Map<UUID, Integer> wins;
-    private Map<UUID, Integer> losses;
+	private SCCore instance;
+	private MySQL mySQL;
+	private Map<UUID, Integer> kills;
+	private Map<UUID, Integer> deaths;
+	private Map<UUID, Integer> wins;
+	private Map<UUID, Integer> losses;
 
-    public StatsManager(SCCore instance) {
-        this.instance = instance;
-        mySQL = instance.getMySQL();
-        kills = new HashMap<>();
-        deaths = new HashMap<>();
-        wins = new HashMap<>();
-        losses = new HashMap<>();
-    }
+	public StatsManager(SCCore instance) {
+		this.instance = instance;
+		this.mySQL = instance.getMySQL();
+		this.kills = new HashMap<>();
+		this.deaths = new HashMap<>();
+		this.wins = new HashMap<>();
+		this.losses = new HashMap<>();
+	}
 
-    public int getIntegerStat(UUID uuid, Stat stat) {
+	public int getIntegerStat(UUID uuid, Stat stat) {
 
-        if (stat.equals(Stat.KILLS)) {
-            if (kills.containsKey(uuid)) {
-                return kills.get(uuid);
-            }
-        } else if (stat.equals(Stat.DEATHS)) {
-            if (deaths.containsKey(uuid)) {
-                return deaths.get(uuid);
-            }
-        } else if (stat.equals(Stat.WINS)) {
-            if (wins.containsKey(uuid)) {
-                return wins.get(uuid);
-            }
-        } else if (stat.equals(Stat.LOSSES)) {
-            if (losses.containsKey(uuid)) {
-                return losses.get(uuid);
-            }
-        }
+		if (stat.equals(Stat.KILLS)) {
+			if (this.kills.containsKey(uuid)) {
+				return this.kills.get(uuid);
+			}
+		} else if (stat.equals(Stat.DEATHS)) {
+			if (this.deaths.containsKey(uuid)) {
+				return this.deaths.get(uuid);
+			}
+		} else if (stat.equals(Stat.WINS)) {
+			if (this.wins.containsKey(uuid)) {
+				return this.wins.get(uuid);
+			}
+		} else if (stat.equals(Stat.LOSSES)) {
+			if (this.losses.containsKey(uuid)) {
+				return this.losses.get(uuid);
+			}
+		}
 
-        try {
-            ResultSet resultSet = mySQL.getResultSet("SELECT " + stat.getName() + "FROM SCPlayerInfo WHERE UUID='" + uuid + "'");
-            if (resultSet.next()) {
-                return resultSet.getInt(stat.getName());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+		try {
+			ResultSet resultSet = this.mySQL.getResultSet("SELECT " + stat.getName() + "FROM SCPlayerInfo WHERE UUID='" + uuid + "'");
+			if (resultSet.next()) {
+				return resultSet.getInt(stat.getName());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-        return 0;
-    }
-
-
-    public void setIntegerStat(UUID uuid, Stat stat, int value) {
-
-        if (stat.equals(Stat.KILLS)) {
-            if (kills.containsKey(uuid)) {
-                kills.replace(uuid, value);
-                return;
-            }
-            if (Bukkit.getPlayer(uuid) != null) {
-                kills.put(uuid, value);
-                return;
-            }
-        } else if (stat.equals(Stat.DEATHS)) {
-            if (deaths.containsKey(uuid)) {
-                deaths.replace(uuid, value);
-                return;
-            }
-            if (Bukkit.getPlayer(uuid) != null) {
-                deaths.put(uuid, value);
-                return;
-            }
-        } else if (stat.equals(Stat.WINS)) {
-            if (wins.containsKey(uuid)) {
-                wins.replace(uuid, value);
-                return;
-            }
-            if (Bukkit.getPlayer(uuid) != null) {
-                wins.put(uuid, value);
-                return;
-            }
-        } else if (stat.equals(Stat.LOSSES)) {
-            if (losses.containsKey(uuid)) {
-                losses.replace(uuid, value);
-                return;
-            }
-            if (Bukkit.getPlayer(uuid) != null) {
-                losses.put(uuid, value);
-                return;
-            }
-        }
+		return 0;
+	}
 
 
-        setSQLIntegerStatistic(uuid, stat, value);
-    }
+	public void setIntegerStat(UUID uuid, Stat stat, int value) {
 
-    private void setSQLIntegerStatistic(UUID uuid, Stat stat, int value) {
-        try {
-            mySQL.executeUpdate("UPDATE SCPlayerInfo SET " + stat.getName() + "='" + value + "' WHERE UUID='" + uuid + "'");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+		if (stat.equals(Stat.KILLS)) {
+			if (this.kills.containsKey(uuid)) {
+				this.kills.replace(uuid, value);
+				return;
+			}
+			if (Bukkit.getPlayer(uuid) != null) {
+				this.kills.put(uuid, value);
+				return;
+			}
+		} else if (stat.equals(Stat.DEATHS)) {
+			if (this.deaths.containsKey(uuid)) {
+				this.deaths.replace(uuid, value);
+				return;
+			}
+			if (Bukkit.getPlayer(uuid) != null) {
+				this.deaths.put(uuid, value);
+				return;
+			}
+		} else if (stat.equals(Stat.WINS)) {
+			if (this.wins.containsKey(uuid)) {
+				this.wins.replace(uuid, value);
+				return;
+			}
+			if (Bukkit.getPlayer(uuid) != null) {
+				this.wins.put(uuid, value);
+				return;
+			}
+		} else if (stat.equals(Stat.LOSSES)) {
+			if (this.losses.containsKey(uuid)) {
+				this.losses.replace(uuid, value);
+				return;
+			}
+			if (Bukkit.getPlayer(uuid) != null) {
+				this.losses.put(uuid, value);
+				return;
+			}
+		}
 
-    public void loadStats(UUID uuid) {
-        if (!Bukkit.getOfflinePlayer(uuid).isOnline())
-            return;
 
-        if (kills.containsKey(uuid))
-            kills.remove(uuid);
-        if (deaths.containsKey(uuid))
-            deaths.remove(uuid);
-        if (wins.containsKey(uuid))
-            wins.remove(uuid);
-        if (losses.containsKey(uuid))
-            losses.remove(uuid);
+		this.setSQLIntegerStatistic(uuid, stat, value);
+	}
 
-        kills.put(uuid, getIntegerStat(uuid, Stat.KILLS));
-        deaths.put(uuid, getIntegerStat(uuid, Stat.DEATHS));
-        wins.put(uuid, getIntegerStat(uuid, Stat.WINS));
-        losses.put(uuid, getIntegerStat(uuid, Stat.LOSSES));
+	private void setSQLIntegerStatistic(UUID uuid, Stat stat, int value) {
+		try {
+			this.mySQL.executeUpdate("UPDATE SCPlayerInfo SET " + stat.getName() + "='" + value + "' WHERE UUID='" + uuid + "'");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-    }
+	public void loadStats(UUID uuid) {
+		if (!Bukkit.getOfflinePlayer(uuid).isOnline())
+			return;
 
-    public void unloadStats(UUID uuid) {
-        if (kills.containsKey(uuid)) {
-            setSQLIntegerStatistic(uuid, Stat.KILLS, kills.get(uuid));
-            kills.remove(uuid);
-        }
-        if (deaths.containsKey(uuid)) {
-            setSQLIntegerStatistic(uuid, Stat.DEATHS, deaths.get(uuid));
-            deaths.remove(uuid);
-        }
-        if (wins.containsKey(uuid)) {
-            setSQLIntegerStatistic(uuid, Stat.WINS, wins.get(uuid));
-            wins.remove(uuid);
-        }
-        if (losses.containsKey(uuid)) {
-            setSQLIntegerStatistic(uuid, Stat.LOSSES, losses.get(uuid));
-            losses.remove(uuid);
-        }
+		if (this.kills.containsKey(uuid))
+			this.kills.remove(uuid);
+		if (this.deaths.containsKey(uuid))
+			this.deaths.remove(uuid);
+		if (this.wins.containsKey(uuid))
+			this.wins.remove(uuid);
+		if (this.losses.containsKey(uuid))
+			this.losses.remove(uuid);
 
-    }
+		this.kills.put(uuid, this.getIntegerStat(uuid, Stat.KILLS));
+		this.deaths.put(uuid, this.getIntegerStat(uuid, Stat.DEATHS));
+		this.wins.put(uuid, this.getIntegerStat(uuid, Stat.WINS));
+		this.losses.put(uuid, this.getIntegerStat(uuid, Stat.LOSSES));
 
-    public double getKD(UUID uuid) {
-        if (getIntegerStat(uuid, Stat.DEATHS) == 0) {
-            return getIntegerStat(uuid, Stat.KILLS);
-        }
+	}
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        double ratio = ((double) getIntegerStat(uuid, Stat.KILLS)) / ((double) getIntegerStat(uuid, Stat.DEATHS));
-        return Double.valueOf(df.format(ratio));
-    }
+	public void unloadStats(UUID uuid) {
+		if (this.kills.containsKey(uuid)) {
+			this.setSQLIntegerStatistic(uuid, Stat.KILLS, this.kills.get(uuid));
+			this.kills.remove(uuid);
+		}
+		if (this.deaths.containsKey(uuid)) {
+			this.setSQLIntegerStatistic(uuid, Stat.DEATHS, this.deaths.get(uuid));
+			this.deaths.remove(uuid);
+		}
+		if (this.wins.containsKey(uuid)) {
+			this.setSQLIntegerStatistic(uuid, Stat.WINS, this.wins.get(uuid));
+			this.wins.remove(uuid);
+		}
+		if (this.losses.containsKey(uuid)) {
+			this.setSQLIntegerStatistic(uuid, Stat.LOSSES, this.losses.get(uuid));
+			this.losses.remove(uuid);
+		}
 
-    public double getWL(UUID uuid) {
-        if (getIntegerStat(uuid, Stat.LOSSES) == 0) {
-            return getIntegerStat(uuid, Stat.WINS);
-        }
+	}
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        double ratio = ((double) getIntegerStat(uuid, Stat.WINS)) / ((double) getIntegerStat(uuid, Stat.LOSSES));
-        return Double.valueOf(df.format(ratio));
-    }
+	public double getKD(UUID uuid) {
+		if (this.getIntegerStat(uuid, Stat.DEATHS) == 0) {
+			return this.getIntegerStat(uuid, Stat.KILLS);
+		}
+
+		DecimalFormat df = new DecimalFormat("#.##");
+		double ratio = ((double) this.getIntegerStat(uuid, Stat.KILLS)) / ((double) this.getIntegerStat(uuid, Stat.DEATHS));
+		return Double.valueOf(df.format(ratio));
+	}
+
+	public double getWL(UUID uuid) {
+		if (this.getIntegerStat(uuid, Stat.LOSSES) == 0) {
+			return this.getIntegerStat(uuid, Stat.WINS);
+		}
+
+		DecimalFormat df = new DecimalFormat("#.##");
+		double ratio = ((double) this.getIntegerStat(uuid, Stat.WINS)) / ((double) this.getIntegerStat(uuid, Stat.LOSSES));
+		return Double.valueOf(df.format(ratio));
+	}
 }

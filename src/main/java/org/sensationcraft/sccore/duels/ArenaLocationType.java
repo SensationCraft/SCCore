@@ -5,10 +5,10 @@ package org.sensationcraft.sccore.duels;
  */
 public enum ArenaLocationType {
 
-    PrimarySpawn,
-    SecondarySpawn,
-    Spectate,
-    PrimaryCorner,
-    SecondaryCorner
+	PrimarySpawn,
+	SecondarySpawn,
+	Spectate,
+	PrimaryCorner,
+	SecondaryCorner
 
 }

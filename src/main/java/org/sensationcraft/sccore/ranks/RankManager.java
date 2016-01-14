@@ -1,14 +1,14 @@
 package org.sensationcraft.sccore.ranks;
 
-import org.bukkit.Bukkit;
-import org.sensationcraft.sccore.SCCore;
-import org.sensationcraft.sccore.mysql.MySQL;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.sensationcraft.sccore.SCCore;
+import org.sensationcraft.sccore.mysql.MySQL;
 
 /**
  * Created by Anml on 1/12/16.
@@ -16,86 +16,86 @@ import java.util.UUID;
 
 public class RankManager {
 
-    private SCCore instance;
-    private MySQL mySQL;
-    private Map<UUID, Rank> players;
+	private SCCore instance;
+	private MySQL mySQL;
+	private Map<UUID, Rank> players;
 
-    public RankManager(SCCore instance) {
-        this.instance = instance;
-        mySQL = instance.getMySQL();
-        players = new HashMap<>();
-    }
+	public RankManager(SCCore instance) {
+		this.instance = instance;
+		this.mySQL = instance.getMySQL();
+		this.players = new HashMap<>();
+	}
 
-    public Map<UUID, Rank> getPlayers() {
-        return players;
-    }
+	public Map<UUID, Rank> getPlayers() {
+		return this.players;
+	}
 
-    public Rank getRankById(int id) {
-        for (Rank rank : Rank.values()) {
-            if (rank.getId() == id)
-                return rank;
-        }
-        return Rank.DEFAULT;
-    }
+	public Rank getRankById(int id) {
+		for (Rank rank : Rank.values()) {
+			if (rank.getId() == id)
+				return rank;
+		}
+		return Rank.DEFAULT;
+	}
 
-    public Rank getRank(UUID uuid) {
-        if (players.containsKey(uuid))
-            return players.get(uuid);
+	public Rank getRank(UUID uuid) {
+		if (this.players.containsKey(uuid))
+			return this.players.get(uuid);
 
-        try {
-            ResultSet resultSet = mySQL.getResultSet("SELECT Rank FROM SCPlayerInfo WHERE UUID='" + uuid + "'");
-            if (resultSet.next()) {
-                return Rank.valueOf(resultSet.getString("Rank"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+		try {
+			ResultSet resultSet = this.mySQL.getResultSet("SELECT Rank FROM SCPlayerInfo WHERE UUID='" + uuid + "'");
+			if (resultSet.next()) {
+				return Rank.valueOf(resultSet.getString("Rank"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-        return Rank.DEFAULT;
-    }
+		return Rank.DEFAULT;
+	}
 
 
-    public void setRank(UUID uuid, Rank rank) {
-        if (players.containsKey(uuid)) {
-            players.replace(uuid, rank);
-            return;
-        }
+	public void setRank(UUID uuid, Rank rank) {
+		if (this.players.containsKey(uuid)) {
+			this.players.replace(uuid, rank);
+			return;
+		}
 
-        if (Bukkit.getPlayer(uuid) != null) {
-            players.put(uuid, rank);
-            return;
-        }
+		if (Bukkit.getPlayer(uuid) != null) {
+			this.players.put(uuid, rank);
+			return;
+		}
 
-        setSQLRank(uuid, rank);
-    }
+		this.setSQLRank(uuid, rank);
+	}
 
-    public void setSQLRank(UUID uuid, Rank rank) {
+	public void setSQLRank(UUID uuid, Rank rank) {
 
-        if (!hasRank(uuid)) {
-            try {
+		if (!this.hasRank(uuid)) {
+			try {
 
-                mySQL.executeUpdate("INSERT INTO `SCPlayerInfo`(`UUID`, `Rank`) VALUES ('" + uuid + "','" + rank.name() + "')");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                mySQL.executeUpdate("UPDATE SCPlayerInfo SET Rank='" + rank.name() + "' WHERE UUID='" + uuid + "'");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+				this.mySQL.executeUpdate("INSERT INTO `SCPlayerInfo`(`UUID`, `Rank`) VALUES ('" + uuid + "','" + rank.name() + "')");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				this.mySQL.executeUpdate("UPDATE SCPlayerInfo SET Rank='" + rank.name() + "' WHERE UUID='" + uuid + "'");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-    public boolean hasRank(UUID uuid) {
-        try {
-            ResultSet rs = mySQL.getResultSet("SELECT Rank FROM SCPlayerInfo WHERE UUID='" + uuid + "'");
-            return rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+	public boolean hasRank(UUID uuid) {
+		try {
+			ResultSet rs = this.mySQL.getResultSet("SELECT Rank FROM SCPlayerInfo WHERE UUID='" + uuid + "'");
+			return rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 }

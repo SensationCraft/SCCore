@@ -1,7 +1,5 @@
 package org.sensationcraft.sccore;
 
-import com.earth2me.essentials.Essentials;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,117 +23,119 @@ import org.sensationcraft.sccore.stats.StatListeners;
 import org.sensationcraft.sccore.stats.StatsManager;
 import org.sensationcraft.sccore.utils.Utils;
 
+import com.earth2me.essentials.Essentials;
+
 /**
  * Created by Anml on 12/26/15.
  */
 
 public class SCCore extends JavaPlugin implements Listener {
 
-    public static SCCore instance;
-    private Essentials essentials;
-    private SCPlayerManager scPlayerManager;
-    private ArenaManager arenaManager;
-    private RankManager rankManager;
-    private StatsManager statsManager;
-    private PermissionsManager permissionsManager;
-    private Utils utils;
-    private MySQL mySQL;
+	public static SCCore instance;
+	private Essentials essentials;
+	private SCPlayerManager scPlayerManager;
+	private ArenaManager arenaManager;
+	private RankManager rankManager;
+	private StatsManager statsManager;
+	private PermissionsManager permissionsManager;
+	private Utils utils;
+	private MySQL mySQL;
 
-    public static SCCore getInstance() {
-        return instance;
-    }
+	public static SCCore getInstance() {
+		return instance;
+	}
 
-    public MySQL getMySQL() {
-        return mySQL;
-    }
+	public MySQL getMySQL() {
+		return this.mySQL;
+	}
 
-    public RankManager getRankManager() {
-        return rankManager;
-    }
+	public RankManager getRankManager() {
+		return this.rankManager;
+	}
 
-    public PermissionsManager getPermissionsManager() {
-        return permissionsManager;
-    }
-    public SCPlayerManager getSCPlayerManager() {
-        return scPlayerManager;
-    }
-    public ArenaManager getArenaManager() {
-        return arenaManager;
-    }
+	public PermissionsManager getPermissionsManager() {
+		return this.permissionsManager;
+	}
+	public SCPlayerManager getSCPlayerManager() {
+		return this.scPlayerManager;
+	}
+	public ArenaManager getArenaManager() {
+		return this.arenaManager;
+	}
 
-    public StatsManager getStatsManager() {
-        return statsManager;
-    }
+	public StatsManager getStatsManager() {
+		return this.statsManager;
+	}
 
-    public Utils getUtils() {
-        return utils;
-    }
-    public Essentials getEssentials() {
-        return essentials;
-    }
+	public Utils getUtils() {
+		return this.utils;
+	}
+	public Essentials getEssentials() {
+		return this.essentials;
+	}
 
-    @Override
-    public void onEnable() {
+	@Override
+	public void onEnable() {
 
-        instance = this;
-        saveDefaultConfig();
+		instance = this;
+		this.saveDefaultConfig();
 
-        essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
-        if (essentials == null || !essentials.isEnabled()) {
-            this.getLogger().info("Essentials was not found on the server, resulting in the server shutting down.");
-            this.getServer().shutdown();
-        }
+		this.essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+		if (this.essentials == null || !this.essentials.isEnabled()) {
+			this.getLogger().info("Essentials was not found on the server, resulting in the server shutting down.");
+			this.getServer().shutdown();
+		}
 
-        registerManagers();
-        registerEvents();
-        registerCommands();
+		this.registerManagers();
+		this.registerEvents();
+		this.registerCommands();
 
-        scPlayerManager.loadSCPlayers();
+		this.scPlayerManager.loadSCPlayers();
 
-        this.getLogger().info("[SCCore] Plugin has been enabled.");
-    }
+		this.getLogger().info("[SCCore] Plugin has been enabled.");
+	}
 
-    @Override
-    public void onDisable() {
+	@Override
+	public void onDisable() {
 
-        instance = null;
+		instance = null;
 
-        this.getLogger().info("[SCCore] Plugin has been disabled.");
+		this.getLogger().info("[SCCore] Plugin has been disabled.");
 
-    }
+	}
 
-    public void registerEvents() {
-        PluginManager pm = Bukkit.getServer().getPluginManager();
+	public void registerEvents() {
+		PluginManager pm = Bukkit.getServer().getPluginManager();
 
-        pm.registerEvents(scPlayerManager, this);
-        pm.registerEvents(this, this);
-        pm.registerEvents(new LockpickListeners(this), this);
-        pm.registerEvents(new DuelListeners(this), this);
-        pm.registerEvents(new StatListeners(this), this);
-    }
+		pm.registerEvents(this.scPlayerManager, this);
+		pm.registerEvents(this, this);
+		pm.registerEvents(new LockpickListeners(this), this);
+		pm.registerEvents(new DuelListeners(this), this);
+		pm.registerEvents(new StatListeners(this), this);
+	}
 
-    public void registerCommands() {
-        getCommand("rank").setExecutor(new RankCommand(this));
-        getCommand("shout").setExecutor(new ShoutCommand(this));
-        getCommand("perms").setExecutor(new PermsCommand(this));
-        getCommand("arena").setExecutor(new ArenaCommand(this));
-        getCommand("duel").setExecutor(new DuelCommand(this));
-        getCommand("spectate").setExecutor(new SpectateCommand(this));
+	public void registerCommands() {
+		this.getCommand("rank").setExecutor(new RankCommand(this));
+		this.getCommand("shout").setExecutor(new ShoutCommand(this));
+		this.getCommand("perms").setExecutor(new PermsCommand(this));
+		this.getCommand("arena").setExecutor(new ArenaCommand(this));
+		this.getCommand("duel").setExecutor(new DuelCommand(this));
+		this.getCommand("spectate").setExecutor(new SpectateCommand(this));
 
-    }
+	}
 
-    public void registerManagers() {
-        mySQL = new MySQL(this);
-        scPlayerManager = new SCPlayerManager(this);
-        arenaManager = new ArenaManager(this);
-        rankManager = new RankManager(this);
-        permissionsManager = new PermissionsManager(this);
-        statsManager = new StatsManager(this);
-        utils = new Utils();
-    }
+	public void registerManagers() {
+		this.mySQL = new MySQL(this);
+		this.scPlayerManager = new SCPlayerManager(this);
+		this.arenaManager = new ArenaManager(this);
+		this.rankManager = new RankManager(this);
+		this.permissionsManager = new PermissionsManager(this);
+		this.statsManager = new StatsManager(this);
+		this.utils = new Utils();
+	}
 
-    @EventHandler
-    public void onServerListPing(ServerListPingEvent event) {
-        event.setMotd("                §c§lSensation§4§lCraft");
-    }
+	@EventHandler
+	public void onServerListPing(ServerListPingEvent event) {
+		event.setMotd("                §c§lSensation§4§lCraft");
+	}
 }

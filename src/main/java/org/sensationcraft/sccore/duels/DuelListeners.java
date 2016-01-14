@@ -19,71 +19,71 @@ import org.sensationcraft.sccore.scplayer.SCPlayerManager;
  */
 public class DuelListeners implements Listener {
 
-    private SCCore instance;
-    private SCPlayerManager scPlayerManager;
-    private ArenaManager arenaManager;
-    private Arena arena;
+	private SCCore instance;
+	private SCPlayerManager scPlayerManager;
+	private ArenaManager arenaManager;
+	private Arena arena;
 
-    public DuelListeners(SCCore instance) {
-        this.instance = instance;
-        scPlayerManager = instance.getSCPlayerManager();
-        arenaManager = instance.getArenaManager();
-        arena = arenaManager.getArena();
-    }
+	public DuelListeners(SCCore instance) {
+		this.instance = instance;
+		this.scPlayerManager = instance.getSCPlayerManager();
+		this.arenaManager = instance.getArenaManager();
+		this.arena = this.arenaManager.getArena();
+	}
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerTeleport(final PlayerTeleportEvent e) {
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerTeleport(final PlayerTeleportEvent e) {
 
-        if (e.getPlayer().hasPermission("sccore.arena"))
-            return;
+		if (e.getPlayer().hasPermission("sccore.arena"))
+			return;
 
-        if (arenaManager.insideBorders(e.getTo()) && !arena.getArenaPlayers().contains(e.getPlayer())) {
-            e.getPlayer().sendMessage("§cYou are not permitted to teleport into the duel arena.");
-            e.setCancelled(true);
-        }
+		if (this.arenaManager.insideBorders(e.getTo()) && !this.arena.getArenaPlayers().contains(e.getPlayer())) {
+			e.getPlayer().sendMessage("§cYou are not permitted to teleport into the duel arena.");
+			e.setCancelled(true);
+		}
 
-        if (arenaManager.insideBorders(e.getFrom()) && arena.getArenaPlayers().contains(e.getPlayer())) {
-            e.getPlayer().sendMessage("§cYou are not permitted to teleport out of the duel arena.");
-            e.setCancelled(true);
-        }
-    }
+		if (this.arenaManager.insideBorders(e.getFrom()) && this.arena.getArenaPlayers().contains(e.getPlayer())) {
+			e.getPlayer().sendMessage("§cYou are not permitted to teleport out of the duel arena.");
+			e.setCancelled(true);
+		}
+	}
 
-    @EventHandler
-    public void onPlayerQuit(final PlayerQuitEvent e) {
-        if (arena.isRunning() && arena.getArenaPlayers().contains(e.getPlayer())) {
-            arena.forceEnd();
-        }
+	@EventHandler
+	public void onPlayerQuit(final PlayerQuitEvent e) {
+		if (this.arena.isRunning() && this.arena.getArenaPlayers().contains(e.getPlayer())) {
+			this.arena.forceEnd();
+		}
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            SCPlayer scPlayer = scPlayerManager.getSCPlayer(player.getUniqueId());
-            if (scPlayer.getDuelRequests().containsKey(e.getPlayer())) {
-                scPlayer.removeDuelRequest(e.getPlayer().getUniqueId());
-            }
-        }
-    }
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			SCPlayer scPlayer = this.scPlayerManager.getSCPlayer(player.getUniqueId());
+			if (scPlayer.getDuelRequests().containsKey(e.getPlayer())) {
+				scPlayer.removeDuelRequest(e.getPlayer().getUniqueId());
+			}
+		}
+	}
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerDamageByPlayer(final EntityDamageByEntityEvent e) {
-        if (e.getEntity() instanceof Player == false || e.getDamager() instanceof Player == false) return;
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerDamageByPlayer(final EntityDamageByEntityEvent e) {
+		if (e.getEntity() instanceof Player == false || e.getDamager() instanceof Player == false) return;
 
-        if (arena.getArenaPlayers().contains(e.getEntity()) && !arena.getArenaPlayers().contains(e.getDamager()))
-            e.setCancelled(true);
-    }
+		if (this.arena.getArenaPlayers().contains(e.getEntity()) && !this.arena.getArenaPlayers().contains(e.getDamager()))
+			e.setCancelled(true);
+	}
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerDeath(final PlayerDeathEvent e) {
-        if (arena.getArenaPlayers().contains(e.getEntity())) {
-            arena.endMatch(e.getEntity());
-        }
-    }
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerDeath(final PlayerDeathEvent e) {
+		if (this.arena.getArenaPlayers().contains(e.getEntity())) {
+			this.arena.endMatch(e.getEntity());
+		}
+	}
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerCommandPre(final PlayerCommandPreprocessEvent e) {
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerCommandPre(final PlayerCommandPreprocessEvent e) {
 
-        if (arena.getArenaPlayers().contains(e.getPlayer())) {
-            e.setCancelled(true);
-            e.getPlayer().sendMessage("§cYou are not permitted to execute commands while dueling.");
-        }
-    }
+		if (this.arena.getArenaPlayers().contains(e.getPlayer())) {
+			e.setCancelled(true);
+			e.getPlayer().sendMessage("§cYou are not permitted to execute commands while dueling.");
+		}
+	}
 
 }

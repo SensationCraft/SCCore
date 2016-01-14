@@ -14,37 +14,37 @@ import org.sensationcraft.sccore.duels.ArenaLocationType;
  */
 public class SpectateCommand implements CommandExecutor {
 
-    private SCCore instance;
-    private Arena arena;
+	private SCCore instance;
+	private Arena arena;
 
-    public SpectateCommand(SCCore instance) {
-        this.instance = instance;
-        arena = instance.getArenaManager().getArena();
-    }
+	public SpectateCommand(SCCore instance) {
+		this.instance = instance;
+		this.arena = instance.getArenaManager().getArena();
+	}
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String command, String[] args) {
+	@Override
+	public boolean onCommand(CommandSender sender, Command cmd, String command, String[] args) {
 
 
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("§cYou must be a player to execute this command.");
-            return false;
-        }
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("§cYou must be a player to execute this command.");
+			return false;
+		}
 
-        Player player = (Player) sender;
+		Player player = (Player) sender;
 
-        if (!sender.hasPermission("sccore.spectate")) {
-            sender.sendMessage("§cYou do not have permission to execute this command.");
-            return false;
-        }
+		if (!sender.hasPermission("sccore.spectate")) {
+			sender.sendMessage("§cYou do not have permission to execute this command.");
+			return false;
+		}
 
-        if (!arena.isValidLocation(ArenaLocationType.Spectate)) {
-            sender.sendMessage("§cThere is no location set for the type §eSpectate§c.");
-            return false;
-        }
+		if (!this.arena.isValidLocation(ArenaLocationType.Spectate)) {
+			sender.sendMessage("§cThere is no location set for the type §eSpectate§c.");
+			return false;
+		}
 
-        player.teleport(arena.getLocation(ArenaLocationType.Spectate), PlayerTeleportEvent.TeleportCause.PLUGIN);
-        sender.sendMessage("§aYou have been teleported to the spectate location of the duel arena.");
-        return true;
-    }
+		player.teleport(this.arena.getLocation(ArenaLocationType.Spectate), PlayerTeleportEvent.TeleportCause.PLUGIN);
+		sender.sendMessage("§aYou have been teleported to the spectate location of the duel arena.");
+		return true;
+	}
 }
