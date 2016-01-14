@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import org.sensationcraft.sccore.SCCore;
 
+import lombok.Cleanup;
 import lombok.Getter;
 
 /**
@@ -55,13 +56,16 @@ public class MySQL {
 
 	public void executeUpdate(String qry) throws SQLException {
 
+		@Cleanup
 		PreparedStatement statement = this.connection.prepareStatement(qry);
 		statement.executeUpdate();
-		statement.close();
 	}
 
 	public void executeUpdate(PreparedStatement qry) throws SQLException {
-		qry.execute();
-		qry.close();
+		try {
+			qry.execute();
+		}finally{
+			qry.close();
+		}
 	}
 }
