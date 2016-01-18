@@ -9,7 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.punishments.Punishment;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.punishments.PunishmentType;
@@ -22,11 +22,11 @@ import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
  */
 public class ShoutCommand implements CommandExecutor {
 
-	Main instance;
+	SCCore instance;
 	SCPlayerManager scPlayerManager;
 	PunishmentManager punishmentManager;
 
-	public ShoutCommand(Main instance) {
+	public ShoutCommand(SCCore instance) {
 		this.instance = instance;
 		this.punishmentManager = instance.getPunishmentManager();
 		this.scPlayerManager = instance.getSCPlayerManager();

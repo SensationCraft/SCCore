@@ -9,17 +9,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 
 /**
  * Created by Anml on 1/8/16.
  */
 public class PunishmentListeners implements Listener {
 
-	Main instance;
+	SCCore instance;
 	PunishmentManager punishmentManager;
 
-	public PunishmentListeners(Main instance) {
+	public PunishmentListeners(SCCore instance) {
 		this.instance = instance;
 		this.punishmentManager = instance.getPunishmentManager();
 	}

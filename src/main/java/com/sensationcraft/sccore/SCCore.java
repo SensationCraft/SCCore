@@ -47,9 +47,9 @@ import com.sensationcraft.sccore.utils.Utils;
  * Created by Anml on 12/26/15.
  */
 
-public class Main extends JavaPlugin implements Listener {
+public class SCCore extends JavaPlugin implements Listener {
 
-	public static Main instance;
+	public static SCCore instance;
 	private Essentials essentials;
 	private SCPlayerManager scPlayerManager;
 	private ArenaManager arenaManager;
@@ -61,8 +61,8 @@ public class Main extends JavaPlugin implements Listener {
 	private MySQL mySQL;
 	private PunishmentManager punishmentManager;
 
-	public static Main getInstance() {
-		return Main.instance;
+	public static SCCore getInstance() {
+		return SCCore.instance;
 	}
 
 	public MySQL getMySQL() {
@@ -107,7 +107,7 @@ public class Main extends JavaPlugin implements Listener {
 	@Override
 	public void onEnable() {
 
-		Main.instance = this;
+		SCCore.instance = this;
 		this.saveDefaultConfig();
 
 		this.essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
@@ -130,7 +130,7 @@ public class Main extends JavaPlugin implements Listener {
 		for (Player player : Bukkit.getOnlinePlayers())
 			player.kickPlayer("§cSensationCraft §7is restarting. Please wait 30 seconds before re-logging.");
 
-		Main.instance = null;
+		SCCore.instance = null;
 
 		this.getLogger().info("[SCCore] Plugin has been disabled.");
 

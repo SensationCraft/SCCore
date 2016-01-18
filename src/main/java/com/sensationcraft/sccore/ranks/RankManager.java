@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.mysql.MySQL;
 
 /**
@@ -17,11 +17,11 @@ import com.sensationcraft.sccore.mysql.MySQL;
 
 public class RankManager {
 
-	private Main instance;
+	private SCCore instance;
 	private MySQL mySQL;
 	private Map<UUID, Rank> players;
 
-	public RankManager(Main instance) {
+	public RankManager(SCCore instance) {
 		this.instance = instance;
 		this.mySQL = instance.getMySQL();
 		this.players = new HashMap<>();

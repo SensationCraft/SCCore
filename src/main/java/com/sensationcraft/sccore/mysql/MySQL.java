@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 
 /**
  * Created by kishanpatel on 12/6/15.
@@ -15,7 +15,7 @@ import com.sensationcraft.sccore.Main;
 public class MySQL {
 
 	private Connection connection;
-	private Main instance;
+	private SCCore instance;
 
 	private String host;
 	private String port;
@@ -23,7 +23,7 @@ public class MySQL {
 	private String username;
 	private String password;
 
-	public MySQL(Main instance) {
+	public MySQL(SCCore instance) {
 		this.instance = instance;
 
 		this.host = instance.getConfig().getString("MySQL.Host");

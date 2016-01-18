@@ -13,7 +13,7 @@ import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MFlag;
 import com.massivecraft.factions.entity.MPlayerColl;
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.duels.Arena;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
@@ -24,11 +24,11 @@ import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
  */
 public class DuelCommand implements CommandExecutor {
 
-	private Main instance;
+	private SCCore instance;
 	private SCPlayerManager scPlayerManager;
 	private Arena arena;
 
-	public DuelCommand(Main instance) {
+	public DuelCommand(SCCore instance) {
 		this.instance = instance;
 		this.scPlayerManager = instance.getSCPlayerManager();
 		this.arena = instance.getArenaManager().getArena();

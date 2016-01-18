@@ -12,7 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.mysql.MySQL;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 
@@ -21,12 +21,12 @@ import com.sensationcraft.sccore.scplayer.SCPlayerManager;
  */
 public class PunishmentManager {
 
-	private Main instance;
+	private SCCore instance;
 	private MySQL mySQL;
 	private SCPlayerManager scPlayerManager;
 	private Map<UUID, List<Punishment>> cachedPunishments;
 
-	public PunishmentManager(Main instance) {
+	public PunishmentManager(SCCore instance) {
 		this.instance = instance;
 		this.mySQL = instance.getMySQL();
 		this.scPlayerManager = instance.getSCPlayerManager();

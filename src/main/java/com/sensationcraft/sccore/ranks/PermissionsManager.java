@@ -11,7 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 
 /**
  * Created by Anml on 1/12/16.
@@ -19,11 +19,11 @@ import com.sensationcraft.sccore.Main;
 
 public class PermissionsManager {
 
-	private Main instance;
+	private SCCore instance;
 	private RankManager rankManager;
 	private Map<UUID, PermissionAttachment> attachments;
 
-	public PermissionsManager(Main instance) {
+	public PermissionsManager(SCCore instance) {
 		this.instance = instance;
 		this.rankManager = instance.getRankManager();
 		this.attachments = new HashMap<>();

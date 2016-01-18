@@ -22,7 +22,7 @@ import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.massivecore.ps.PS;
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.duels.ArenaManager;
 import com.sensationcraft.sccore.lockpicks.LockpickRunnable;
 import com.sensationcraft.sccore.punishments.Punishment;
@@ -40,7 +40,7 @@ import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
  */
 public class SCPlayerManager implements Listener {
 
-	private Main instance;
+	private SCCore instance;
 	private RankManager rankManager;
 	private PermissionsManager permissionsManager;
 	private PunishmentManager punishmentManager;
@@ -51,7 +51,7 @@ public class SCPlayerManager implements Listener {
 	private Map<UUID, LockpickRunnable> lockpicking;
 	private Map<UUID, SCPlayer> scPlayers;
 
-	public SCPlayerManager(Main instance) {
+	public SCPlayerManager(SCCore instance) {
 		this.instance = instance;
 		this.rankManager = instance.getRankManager();
 		this.permissionsManager = instance.getPermissionsManager();

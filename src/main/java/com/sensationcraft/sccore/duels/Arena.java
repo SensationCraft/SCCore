@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.stats.Stat;
@@ -24,7 +24,7 @@ import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
  */
 public class Arena {
 
-	private Main instance;
+	private SCCore instance;
 	private FileConfiguration config;
 	private SCPlayerManager scPlayerManager;
 	private StatsManager statsManager;
@@ -34,7 +34,7 @@ public class Arena {
 	private BukkitTask task;
 
 
-	public Arena(Main instance) {
+	public Arena(SCCore instance) {
 		this.instance = instance;
 		this.config = instance.getConfig();
 		this.scPlayerManager = instance.getSCPlayerManager();

@@ -9,7 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.punishments.Punishment;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.punishments.PunishmentType;
@@ -21,11 +21,11 @@ import com.sensationcraft.sccore.scplayer.SCPlayerManager;
  */
 public class UnbanCommand implements CommandExecutor {
 
-	private Main instance;
+	private SCCore instance;
 	private SCPlayerManager scPlayerManager;
 	private PunishmentManager punishmentManager;
 
-	public UnbanCommand(Main instance) {
+	public UnbanCommand(SCCore instance) {
 		this.instance = instance;
 		this.scPlayerManager = instance.getSCPlayerManager();
 		this.punishmentManager = instance.getPunishmentManager();

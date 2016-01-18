@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
@@ -16,11 +16,11 @@ import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
  */
 public class StaffCommand implements CommandExecutor {
 
-	private Main instance;
+	private SCCore instance;
 	private SCPlayerManager scPlayerManager;
 	private PunishmentManager punishmentManager;
 
-	public StaffCommand(Main instance) {
+	public StaffCommand(SCCore instance) {
 		this.instance = instance;
 		this.scPlayerManager = instance.getSCPlayerManager();
 		this.punishmentManager = instance.getPunishmentManager();

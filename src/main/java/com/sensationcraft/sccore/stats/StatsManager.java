@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.mysql.MySQL;
 
 /**
@@ -17,14 +17,14 @@ import com.sensationcraft.sccore.mysql.MySQL;
  */
 public class StatsManager {
 
-	private Main instance;
+	private SCCore instance;
 	private MySQL mySQL;
 	private Map<UUID, Integer> kills;
 	private Map<UUID, Integer> deaths;
 	private Map<UUID, Integer> wins;
 	private Map<UUID, Integer> losses;
 
-	public StatsManager(Main instance) {
+	public StatsManager(SCCore instance) {
 		this.instance = instance;
 		this.mySQL = instance.getMySQL();
 		this.kills = new HashMap<>();

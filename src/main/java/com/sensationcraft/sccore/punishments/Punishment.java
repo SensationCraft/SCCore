@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.mysql.MySQL;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 
@@ -15,7 +15,7 @@ import com.sensationcraft.sccore.scplayer.SCPlayerManager;
  */
 public class Punishment {
 
-	Main instance;
+	SCCore instance;
 	PunishmentManager punishmentManager;
 	SCPlayerManager scPlayerManager;
 	MySQL mySQL;
@@ -36,7 +36,7 @@ public class Punishment {
 		this.expires = expires;
 		this.reason = reason;
 
-		this.instance = Main.getInstance();
+		this.instance = SCCore.getInstance();
 		this.punishmentManager = this.instance.getPunishmentManager();
 		this.scPlayerManager = this.instance.getSCPlayerManager();
 		this.mySQL = this.instance.getMySQL();

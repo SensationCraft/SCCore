@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.ranks.PermissionsManager;
 import com.sensationcraft.sccore.ranks.Rank;
 import com.sensationcraft.sccore.ranks.RankManager;
@@ -19,12 +19,12 @@ import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
  */
 public class RankCommand implements CommandExecutor {
 
-	Main instance;
+	SCCore instance;
 	SCPlayerManager scPlayerManager;
 	RankManager rankManager;
 	PermissionsManager permissionsManager;
 
-	public RankCommand(Main instance) {
+	public RankCommand(SCCore instance) {
 		this.instance = instance;
 		this.scPlayerManager = instance.getSCPlayerManager();
 		this.rankManager = instance.getRankManager();

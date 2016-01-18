@@ -2,17 +2,17 @@ package com.sensationcraft.sccore.duels;
 
 import org.bukkit.Location;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 
 /**
  * Created by Anml on 1/3/16.
  */
 public class ArenaManager {
 
-	private Main instance;
+	private SCCore instance;
 	private Arena arena;
 
-	public ArenaManager(Main instance) {
+	public ArenaManager(SCCore instance) {
 		this.instance = instance;
 		this.arena = new Arena(instance);
 	}

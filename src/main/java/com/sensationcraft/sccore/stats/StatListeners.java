@@ -12,7 +12,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
@@ -22,11 +22,11 @@ import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
  */
 public class StatListeners implements Listener {
 
-	private Main instance;
+	private SCCore instance;
 	private SCPlayerManager scPlayerManager;
 	private StatsManager statsManager;
 
-	public StatListeners(Main instance) {
+	public StatListeners(SCCore instance) {
 		this.instance = instance;
 		this.scPlayerManager = instance.getSCPlayerManager();
 		this.statsManager = instance.getStatsManager();

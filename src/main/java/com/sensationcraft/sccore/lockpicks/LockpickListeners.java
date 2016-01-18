@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.ps.PS;
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 
@@ -27,10 +27,10 @@ import com.sensationcraft.sccore.scplayer.SCPlayerManager;
  */
 public class LockpickListeners implements Listener {
 
-	Main instance;
+	SCCore instance;
 	SCPlayerManager scPlayerManager;
 
-	public LockpickListeners(Main instance) {
+	public LockpickListeners(SCCore instance) {
 		this.instance = instance;
 		this.scPlayerManager = instance.getSCPlayerManager();
 	}

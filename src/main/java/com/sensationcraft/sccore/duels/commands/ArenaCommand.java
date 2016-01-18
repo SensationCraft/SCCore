@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.duels.Arena;
 import com.sensationcraft.sccore.duels.ArenaLocationType;
 import com.sensationcraft.sccore.duels.ArenaManager;
@@ -16,11 +16,11 @@ import com.sensationcraft.sccore.duels.ArenaManager;
  */
 public class ArenaCommand implements CommandExecutor {
 
-	private Main instance;
+	private SCCore instance;
 	private ArenaManager arenaManager;
 	private Arena arena;
 
-	public ArenaCommand(Main instance) {
+	public ArenaCommand(SCCore instance) {
 		this.instance = instance;
 		this.arenaManager = instance.getArenaManager();
 		this.arena = this.arenaManager.getArena();

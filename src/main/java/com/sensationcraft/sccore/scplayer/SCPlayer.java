@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.sensationcraft.sccore.Main;
+import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.stats.Stat;
 import com.sensationcraft.sccore.stats.StatsManager;
@@ -22,7 +22,7 @@ import com.sensationcraft.sccore.stats.StatsManager;
 
 public class SCPlayer {
 
-	private Main instance;
+	private SCCore instance;
 	private UUID uuid;
 	private SCPlayerManager scPlayerManager;
 	private RankManager rankManager;
@@ -31,7 +31,7 @@ public class SCPlayer {
 	private boolean combatTagged;
 	private BukkitTask combatTask;
 
-	public SCPlayer(Main instance, UUID uuid) {
+	public SCPlayer(SCCore instance, UUID uuid) {
 		this.instance = instance;
 		this.uuid = uuid;
 		this.scPlayerManager = instance.getSCPlayerManager();
