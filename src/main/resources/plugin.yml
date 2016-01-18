@@ -1,7 +1,7 @@
 name: SCCore
 authors: [Anml]
 version: 1.0
-main: net.anmlmc.SCCore.Main
+main: com.sensationcraft.sccore.SCCore
 depend: [Essentials]
 commands:
   shout:

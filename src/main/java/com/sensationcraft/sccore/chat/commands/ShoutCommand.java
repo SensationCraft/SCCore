@@ -16,7 +16,6 @@ import com.sensationcraft.sccore.punishments.PunishmentType;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
-import com.sensationcraft.sccore.utils.fanciful.JSONUtil;
 
 /**
  * Created by Anml on 12/28/15.
@@ -81,8 +80,8 @@ public class ShoutCommand implements CommandExecutor {
 			}
 
 			FancyMessage message = new FancyMessage("§c[S] ").then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()
-					).then("§f: "+JSONUtil.toJSON("§l" + msg));
-
+					).then("§f: §l" + msg, true);
+			//this.instance.getLogger().info(message.toJSONString());
 			this.scPlayerManager.broadcast(message);
 			return true;
 		} else {

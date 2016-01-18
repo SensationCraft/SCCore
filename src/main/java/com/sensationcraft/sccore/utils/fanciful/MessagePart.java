@@ -13,6 +13,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
+import com.google.gson.JsonElement;
 import com.google.gson.stream.JsonWriter;
 
 /**
@@ -59,6 +60,7 @@ final class MessagePart implements JsonRepresentedObject, ConfigurationSerializa
 	TextualComponent text = null;
 	String insertionData = null;
 	ArrayList<JsonRepresentedObject> translationReplacements = new ArrayList<JsonRepresentedObject>();
+	JsonElement[] extra = null;
 
 	MessagePart(final TextualComponent text) {
 		this.text = text;

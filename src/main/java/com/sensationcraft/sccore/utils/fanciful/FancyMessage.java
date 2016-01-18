@@ -28,6 +28,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -647,7 +648,19 @@ ConfigurationSerializable {
 	 * @return This builder instance.
 	 */
 	public FancyMessage then(final String text) {
-		return this.then(TextualComponent.rawText(text));
+		return this.then(text, false);
+	}
+
+	public FancyMessage then(final String text, boolean split) {
+		if(split){
+			JsonArray array = ((JsonObject)new JsonParser().parse(JSONUtil.toJSON(text))).get("extra").getAsJsonArray();
+			JsonElement[] parts = new JsonObject[array.size()];
+			for(int i = 0; i < array.size(); i++){
+				parts[i] = array.get(i);
+			}
+			return this.then(TextualComponent.rawText("")).extra(parts);
+		}else
+			return this.then(TextualComponent.rawText(text));
 	}
 
 	/**
@@ -681,14 +694,28 @@ ConfigurationSerializable {
 		return this;
 	}
 
+	public FancyMessage extra(JsonElement ... parts){
+		if (!this.latest().hasText()) {
+			throw new IllegalStateException("previous message part has no text");
+		}
+		this.latest().extra = parts;
+		this.dirty = true;
+		return this;
+	}
+
 	@Override
 	public void writeJson(JsonWriter writer) throws IOException {
 		if (this.messageParts.size() == 1) {
 			this.latest().writeJson(writer);
 		} else {
 			writer.beginObject().name("text").value("").name("extra").beginArray();
+			Gson gson = new Gson();
 			for (final MessagePart part : this) {
-				part.writeJson(writer);
+				if(part.extra != null){
+					for(JsonElement obj:part.extra)
+						gson.toJson(obj, writer);
+				}else
+					part.writeJson(writer);
 			}
 			writer.endArray().endObject();
 		}
