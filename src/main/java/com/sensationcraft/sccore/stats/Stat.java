@@ -5,18 +5,18 @@ package com.sensationcraft.sccore.stats;
  */
 public enum Stat {
 
-    KILLS("Kills"),
-    DEATHS("Deaths"),
-    WINS("Wins"),
-    LOSSES("Losses");
+	KILLS("Kills"),
+	DEATHS("Deaths"),
+	WINS("Wins"),
+	LOSSES("Losses");
 
-    private String name;
+	private String name;
 
-    Stat(String name) {
-        this.name = name;
-    }
+	Stat(String name) {
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return this.name;
+	}
 }

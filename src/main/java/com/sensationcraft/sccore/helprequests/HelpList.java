@@ -11,26 +11,26 @@ import org.bukkit.command.CommandSender;
 
 public class HelpList implements CommandExecutor {
 
-    private final HelpRequest helpRequest;
+	private final HelpRequest helpRequest;
 
-    public HelpList(final HelpRequest helpRequest) {
-        this.helpRequest = helpRequest;
-    }
+	public HelpList(final HelpRequest helpRequest) {
+		this.helpRequest = helpRequest;
+	}
 
-    @Override
-    public boolean onCommand(final CommandSender sender, final Command cmd, final String command, final String[] args) {
+	@Override
+	public boolean onCommand(final CommandSender sender, final Command cmd, final String command, final String[] args) {
 
-        if (!sender.hasPermission("helprequest.list")) {
-            sender.sendMessage(ChatColor.RED + "You do not have permission to execute this command.");
-            return false;
-        }
+		if (!sender.hasPermission("helprequest.list")) {
+			sender.sendMessage(ChatColor.RED + "You do not have permission to execute this command.");
+			return false;
+		}
 
-        final StringBuilder sb = new StringBuilder().append("\n").append(ChatColor.GRAY).append("Current Help requests:\n");
-        for (final Integer i : this.helpRequest.getRequests().keySet())
-            sb.append(ChatColor.GREEN).append(i).append(". ").append(ChatColor.RESET).append(this.helpRequest.getRequests().get(i)).append("\n");
+		final StringBuilder sb = new StringBuilder().append("\n").append(ChatColor.GRAY).append("Current Help requests:\n");
+		for (final Integer i : this.helpRequest.getRequests().keySet())
+			sb.append(ChatColor.GREEN).append(i).append(". ").append(ChatColor.RESET).append(this.helpRequest.getRequests().get(i)).append("\n");
 
-        sender.sendMessage(sb.toString());
-        return false;
-    }
+		sender.sendMessage(sb.toString());
+		return false;
+	}
 
 }

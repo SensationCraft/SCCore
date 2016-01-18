@@ -13,31 +13,31 @@ import org.bukkit.entity.Player;
 
 public class HelpCancel implements CommandExecutor {
 
-    private final HelpRequest helpRequest;
+	private final HelpRequest helpRequest;
 
-    public HelpCancel(final HelpRequest helpRequest) {
-        this.helpRequest = helpRequest;
-    }
+	public HelpCancel(final HelpRequest helpRequest) {
+		this.helpRequest = helpRequest;
+	}
 
-    @Override
-    public boolean onCommand(final CommandSender sender, final Command cmd, final String command, final String[] args) {
+	@Override
+	public boolean onCommand(final CommandSender sender, final Command cmd, final String command, final String[] args) {
 
-        if (!sender.hasPermission("helprequest.cancel")) {
-            sender.sendMessage(ChatColor.RED + "You do not have permission to execute this command.");
-            return false;
-        }
+		if (!sender.hasPermission("helprequest.cancel")) {
+			sender.sendMessage(ChatColor.RED + "You do not have permission to execute this command.");
+			return false;
+		}
 
-        final String helpRequest = this.helpRequest.removeRequest(sender.getName());
+		final String helpRequest = this.helpRequest.removeRequest(sender.getName());
 
-        if (helpRequest != null)
-            sender.sendMessage(ChatColor.GREEN + "Your help request has been removed.");
-        else
-            sender.sendMessage(ChatColor.RED + "You currently do not have a submitted help request.");
+		if (helpRequest != null)
+			sender.sendMessage(ChatColor.GREEN + "Your help request has been removed.");
+		else
+			sender.sendMessage(ChatColor.RED + "You currently do not have a submitted help request.");
 
-        for (final Player player : Bukkit.getOnlinePlayers())
-            if (player.hasPermission("essentials.getnotified"))
-                player.sendMessage(ChatColor.BLUE + "[STAFF] " + ChatColor.AQUA + sender.getName() + ChatColor.GRAY + " has cancelled their help request.");
-        return true;
-    }
+		for (final Player player : Bukkit.getOnlinePlayers())
+			if (player.hasPermission("essentials.getnotified"))
+				player.sendMessage(ChatColor.BLUE + "[STAFF] " + ChatColor.AQUA + sender.getName() + ChatColor.GRAY + " has cancelled their help request.");
+		return true;
+	}
 
 }

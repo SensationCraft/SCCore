@@ -19,100 +19,100 @@ import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
  */
 public class RankCommand implements CommandExecutor {
 
-    Main instance;
-    SCPlayerManager scPlayerManager;
-    RankManager rankManager;
-    PermissionsManager permissionsManager;
+	Main instance;
+	SCPlayerManager scPlayerManager;
+	RankManager rankManager;
+	PermissionsManager permissionsManager;
 
-    public RankCommand(Main instance) {
-        this.instance = instance;
-        scPlayerManager = instance.getSCPlayerManager();
-        rankManager = instance.getRankManager();
-        permissionsManager = instance.getPermissionsManager();
-    }
+	public RankCommand(Main instance) {
+		this.instance = instance;
+		this.scPlayerManager = instance.getSCPlayerManager();
+		this.rankManager = instance.getRankManager();
+		this.permissionsManager = instance.getPermissionsManager();
+	}
 
-    @Override
-    public boolean onCommand(final CommandSender sender, final Command cmd, final String command, final String[] args) {
+	@Override
+	public boolean onCommand(final CommandSender sender, final Command cmd, final String command, final String[] args) {
 
-        if (!sender.hasPermission("sccore.rank")) {
-            sender.sendMessage("§cYou do not have permission to execute this command.");
-            return false;
-        }
+		if (!sender.hasPermission("sccore.rank")) {
+			sender.sendMessage("§cYou do not have permission to execute this command.");
+			return false;
+		}
 
-        String usage = "§4Usage: §c/rank set <player> <rank>\n         /rank get <player>";
+		String usage = "§4Usage: §c/rank set <player> <rank>\n         /rank get <player>";
 
-        if (args.length == 0 || args.length < getMinArgs(args[0])) {
-            sender.sendMessage(usage);
-            return false;
-        }
+		if (args.length == 0 || args.length < this.getMinArgs(args[0])) {
+			sender.sendMessage(usage);
+			return false;
+		}
 
-        OfflinePlayer player = instance.getServer().getOfflinePlayer(args[1]);
+		OfflinePlayer player = this.instance.getServer().getOfflinePlayer(args[1]);
 
-        if (player != null) {
+		if (player != null) {
 
-            SCPlayer scPlayer = scPlayerManager.getSCPlayer(player.getUniqueId());
+			SCPlayer scPlayer = this.scPlayerManager.getSCPlayer(player.getUniqueId());
 
-            if (args[0].equalsIgnoreCase("set")) {
+			if (args[0].equalsIgnoreCase("set")) {
 
-                Rank rank = translateRank(args[2]);
+				Rank rank = this.translateRank(args[2]);
 
-                if (rank == null) {
-                    sender.sendMessage("§cNo rank with the given name found.");
-                    return false;
-                }
+				if (rank == null) {
+					sender.sendMessage("§cNo rank with the given name found.");
+					return false;
+				}
 
-                boolean hover = sender instanceof Player ? true : false;
-                FancyMessage message = new FancyMessage("§9[STAFF] ");
+				boolean hover = sender instanceof Player ? true : false;
+				FancyMessage message = new FancyMessage("§9[STAFF] ");
 
-                if (hover) {
-                    SCPlayer senderSCPlayer = scPlayerManager.getSCPlayer(((Player) sender).getUniqueId());
-                    message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" §7has " +
-                            "set ").then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("§7's rank to " + rank
-                            .getName() + "§7.");
-                } else {
-                    message = message.then("§6Console §7has set ").then(scPlayer.getTag()).tooltip(scPlayer
-                            .getHoverText()).then("§7's rank to " + rank
-                            .getName() + "§7.");
-                }
+				if (hover) {
+					SCPlayer senderSCPlayer = this.scPlayerManager.getSCPlayer(((Player) sender).getUniqueId());
+					message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" §7has " +
+							"set ").then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("§7's rank to " + rank
+									.getName() + "§7.");
+				} else {
+					message = message.then("§6Console §7has set ").then(scPlayer.getTag()).tooltip(scPlayer
+							.getHoverText()).then("§7's rank to " + rank
+									.getName() + "§7.");
+				}
 
-                scPlayerManager.staff(message);
-                rankManager.setRank(player.getUniqueId(), rank);
-                instance.getLogger().info(sender.getName() + " has set " + player.getName() + "'s rank to " + rank.name());
-                permissionsManager.updateAttachment(player.getUniqueId());
-                return true;
-            } else if (args[0].equalsIgnoreCase("get")) {
-                FancyMessage message = new FancyMessage("§aThe player ").then("§a" + player.getName()).tooltip(scPlayer
-                        .getHoverText()).then("§a's rank is " + rankManager.getRank(player.getUniqueId()).getName() + "§a.");
-                message.send(sender);
-                return true;
-            } else {
-                sender.sendMessage(usage);
-                return false;
-            }
-        } else {
-            sender.sendMessage("§cNo player with the given name found.");
-            return false;
-        }
-    }
+				this.scPlayerManager.staff(message);
+				this.rankManager.setRank(player.getUniqueId(), rank);
+				this.instance.getLogger().info(sender.getName() + " has set " + player.getName() + "'s rank to " + rank.name());
+				this.permissionsManager.updateAttachment(player.getUniqueId());
+				return true;
+			} else if (args[0].equalsIgnoreCase("get")) {
+				FancyMessage message = new FancyMessage("§aThe player ").then("§a" + player.getName()).tooltip(scPlayer
+						.getHoverText()).then("§a's rank is " + this.rankManager.getRank(player.getUniqueId()).getName() + "§a.");
+				message.send(sender);
+				return true;
+			} else {
+				sender.sendMessage(usage);
+				return false;
+			}
+		} else {
+			sender.sendMessage("§cNo player with the given name found.");
+			return false;
+		}
+	}
 
-    public Rank translateRank(String name) {
-        for (Rank rank : Rank.values()) {
-            if (rank.name().equalsIgnoreCase(name) || rank.getAlias().equalsIgnoreCase(name)) {
-                return rank;
-            }
-        }
+	public Rank translateRank(String name) {
+		for (Rank rank : Rank.values()) {
+			if (rank.name().equalsIgnoreCase(name) || rank.getAlias().equalsIgnoreCase(name)) {
+				return rank;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public int getMinArgs(String subcommand) {
-        switch (subcommand.toLowerCase()) {
-            case "set":
-                return 3;
-            case "get":
-                return 2;
-            default:
-                return 100;
-        }
-    }
+	public int getMinArgs(String subcommand) {
+		switch (subcommand.toLowerCase()) {
+		case "set":
+			return 3;
+		case "get":
+			return 2;
+		default:
+			return 100;
+		}
+	}
 }
