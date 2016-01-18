@@ -35,7 +35,7 @@ public class LockpickRunnable extends BukkitRunnable {
 
 	@Override
 	public void run() {
-		if (this.counter == 5) {
+		if (this.counter++ == 5) {
 			Player player = Bukkit.getPlayer(this.uuid);
 			if (this.scPlayer.lockpickAttempt()) {
 				this.block.breakNaturally();
@@ -47,7 +47,6 @@ public class LockpickRunnable extends BukkitRunnable {
 				task.cancel();
 			}
 		} else {
-			this.counter++;
 			Location smoke = this.block.getLocation();
 			smoke.setY(smoke.getY() + 1);
 			smoke.getWorld().playEffect(smoke, Effect.SMOKE, 80);

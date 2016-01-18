@@ -107,7 +107,7 @@ public class LockpickListeners implements Listener {
 
 		LockpickRunnable runnable = new LockpickRunnable(this.instance, block, player.getUniqueId(), 1);
 		this.scPlayerManager.getLockpicking().put(player.getUniqueId(), runnable);
-		runnable.runTaskTimer(this.instance, 10L, 50L);
+		runnable.runTaskTimer(this.instance, 20L, 20L);
 
 
 	}
