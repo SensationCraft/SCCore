@@ -43,10 +43,13 @@ import com.sensationcraft.sccore.stats.StatListeners;
 import com.sensationcraft.sccore.stats.StatsManager;
 import com.sensationcraft.sccore.utils.Utils;
 
+import lombok.Getter;
+
 /**
  * Created by Anml on 12/26/15.
  */
 
+@Getter
 public class SCCore extends JavaPlugin implements Listener {
 
 	public static SCCore instance;

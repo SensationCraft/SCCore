@@ -11,6 +11,8 @@ import org.bukkit.Bukkit;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.mysql.MySQL;
 
+import lombok.Getter;
+
 /**
  * Created by Anml on 1/12/16.
  */
@@ -19,16 +21,13 @@ public class RankManager {
 
 	private SCCore instance;
 	private MySQL mySQL;
+	@Getter
 	private Map<UUID, Rank> players;
 
 	public RankManager(SCCore instance) {
 		this.instance = instance;
 		this.mySQL = instance.getMySQL();
 		this.players = new HashMap<>();
-	}
-
-	public Map<UUID, Rank> getPlayers() {
-		return this.players;
 	}
 
 	public Rank getRankById(int id) {

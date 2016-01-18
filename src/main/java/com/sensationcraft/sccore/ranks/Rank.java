@@ -1,12 +1,14 @@
 package com.sensationcraft.sccore.ranks;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * Created by kishanpatel on 12/6/15.
  */
 
+@Getter
+@AllArgsConstructor
 public enum Rank {
 
 	OWNER(9, "§6Owner", "§6%s", 100),
@@ -22,20 +24,11 @@ public enum Rank {
 
 	DEFAULT(0, "§fDefault", "§f%s", 10);
 
-	int id;
-	String name;
-	String alias;
-	String tag;
-	int lockpickChance;
-	SCPlayerManager scPlayerManager = SCCore.getInstance().getSCPlayerManager();
-
-	Rank(int id, String name, String alias, String tag, int lockpickChance) {
-		this.id = id;
-		this.name = name;
-		this.alias = alias;
-		this.tag = tag;
-		this.lockpickChance = lockpickChance;
-	}
+	private final int id;
+	private final String name;
+	private final String alias;
+	private final String tag;
+	private final int lockpickChance;
 
 	Rank(int id, String name, String tag, int lockpickChance) {
 		this.id = id;
@@ -44,26 +37,5 @@ public enum Rank {
 		this.tag = tag;
 		this.lockpickChance = lockpickChance;
 	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public String getAlias() {
-		return this.alias;
-	}
-
-	public String getTag() {
-		return this.tag;
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public int getLockpickChance() {
-		return this.lockpickChance;
-	}
-
 
 }

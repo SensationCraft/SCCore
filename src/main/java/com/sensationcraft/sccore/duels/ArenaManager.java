@@ -4,21 +4,20 @@ import org.bukkit.Location;
 
 import com.sensationcraft.sccore.SCCore;
 
+import lombok.Getter;
+
 /**
  * Created by Anml on 1/3/16.
  */
 public class ArenaManager {
 
 	private SCCore instance;
+	@Getter
 	private Arena arena;
 
 	public ArenaManager(SCCore instance) {
 		this.instance = instance;
 		this.arena = new Arena(instance);
-	}
-
-	public Arena getArena() {
-		return this.arena;
 	}
 
 	public boolean insideBorders(Location location) {

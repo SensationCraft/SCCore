@@ -8,12 +8,16 @@ import java.sql.SQLException;
 
 import com.sensationcraft.sccore.SCCore;
 
+import lombok.Cleanup;
+import lombok.Getter;
+
 /**
  * Created by kishanpatel on 12/6/15.
  */
 
 public class MySQL {
 
+	@Getter
 	private Connection connection;
 	private SCCore instance;
 
@@ -44,10 +48,6 @@ public class MySQL {
 		}
 	}
 
-	public Connection getConnection() {
-		return this.connection;
-	}
-
 	public ResultSet getResultSet(String qry) throws SQLException {
 
 		PreparedStatement statement = this.connection.prepareStatement(qry);
@@ -56,13 +56,17 @@ public class MySQL {
 
 	public void executeUpdate(String qry) throws SQLException {
 
+		@Cleanup
 		PreparedStatement statement = this.connection.prepareStatement(qry);
 		statement.executeUpdate();
 		statement.close();
 	}
 
 	public void executeUpdate(PreparedStatement qry) throws SQLException {
-		qry.execute();
-		qry.close();
+		try {
+			qry.execute();
+		} finally {
+			qry.close();
+		}
 	}
 }

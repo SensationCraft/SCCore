@@ -705,10 +705,8 @@ ConfigurationSerializable {
 			return this.jsonString;
 		}
 		StringWriter string = new StringWriter();
-		JsonWriter json = new JsonWriter(string);
-		try {
+		try(JsonWriter json = new JsonWriter(string)) {
 			this.writeJson(json);
-			json.close();
 		} catch (IOException e) {
 			throw new RuntimeException("invalid message");
 		}

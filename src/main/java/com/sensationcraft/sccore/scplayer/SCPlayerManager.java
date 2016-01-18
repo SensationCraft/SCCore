@@ -35,6 +35,8 @@ import com.sensationcraft.sccore.stats.StatsManager;
 import com.sensationcraft.sccore.utils.Utils;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 
+import lombok.Getter;
+
 /**
  * Created by Kishan on 12/2/15.
  */
@@ -47,7 +49,9 @@ public class SCPlayerManager implements Listener {
 	private ArenaManager arenaManager;
 	private StatsManager statsManager;
 	private Utils utils;
+	@Getter
 	private List<UUID> shoutCooldowns;
+	@Getter
 	private Map<UUID, LockpickRunnable> lockpicking;
 	private Map<UUID, SCPlayer> scPlayers;
 
@@ -62,14 +66,6 @@ public class SCPlayerManager implements Listener {
 		this.shoutCooldowns = new ArrayList<>();
 		this.scPlayers = new HashMap<>();
 		this.lockpicking = new HashMap<>();
-	}
-
-	public List<UUID> getShoutCooldowns() {
-		return this.shoutCooldowns;
-	}
-
-	public Map<UUID, LockpickRunnable> getLockpicking() {
-		return this.lockpicking;
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
