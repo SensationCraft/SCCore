@@ -7,8 +7,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -194,6 +197,23 @@ public class Arena {
 			players.add(this.secondaryPlayer);
 
 		return players;
+	}
+
+	public boolean isDuel(Entity ... entities){
+		List<Player> arenaPlayers = this.getArenaPlayers();
+		for(Entity entity:entities){
+			Player player = null;
+			if(entity instanceof Player)
+				player = (Player) entity;
+			else if(entity instanceof Projectile){
+				ProjectileSource source = ((Projectile)entity).getShooter();
+				if(source instanceof Player)
+					player = (Player) source;
+			}
+			if(player != null && arenaPlayers.contains(player))
+				return false;
+		}
+		return true;
 	}
 
 	public void reset() {
