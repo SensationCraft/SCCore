@@ -12,9 +12,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.chat.ChatChannel;
 import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.stats.Stat;
 import com.sensationcraft.sccore.stats.StatsManager;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by kishanpatel on 12/6/15.
@@ -27,9 +31,14 @@ public class SCPlayer {
 	private SCPlayerManager scPlayerManager;
 	private RankManager rankManager;
 	private StatsManager statsManager;
+	@Getter
 	private Map<UUID, BukkitRunnable> duelRequests;
+	@Getter
 	private boolean combatTagged;
 	private BukkitTask combatTask;
+	@Getter
+	@Setter
+	private ChatChannel channel;
 
 	public SCPlayer(SCCore instance, UUID uuid) {
 		this.instance = instance;
@@ -39,6 +48,7 @@ public class SCPlayer {
 		this.statsManager = instance.getStatsManager();
 		this.duelRequests = new HashMap<>();
 		this.combatTagged = false;
+		this.channel = ChatChannel.PUBLIC;
 	}
 
 	public boolean isShoutCooldowned() {
@@ -86,10 +96,6 @@ public class SCPlayer {
 		return random <= this.rankManager.getRank(this.uuid).getLockpickChance();
 	}
 
-	public Map<UUID, BukkitRunnable> getDuelRequests() {
-		return this.duelRequests;
-	}
-
 	public void addDuelRequest(UUID target) {
 
 		BukkitRunnable request = new BukkitRunnable() {
@@ -112,10 +118,6 @@ public class SCPlayer {
 			task.cancel();
 
 		this.duelRequests.remove(target);
-	}
-
-	public boolean isCombatTagged() {
-		return this.combatTagged;
 	}
 
 	public void combatTag() {

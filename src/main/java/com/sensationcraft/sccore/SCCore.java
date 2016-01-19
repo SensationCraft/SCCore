@@ -9,7 +9,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.earth2me.essentials.Essentials;
-import com.sensationcraft.sccore.chat.commands.ShoutCommand;
+import com.sensationcraft.sccore.chat.ChatListener;
+import com.sensationcraft.sccore.chat.commands.ChannelCommand;
 import com.sensationcraft.sccore.chat.commands.StaffCommand;
 import com.sensationcraft.sccore.duels.ArenaManager;
 import com.sensationcraft.sccore.duels.DuelListeners;
@@ -148,10 +149,11 @@ public class SCCore extends JavaPlugin implements Listener {
 		pm.registerEvents(new DuelListeners(this), this);
 		pm.registerEvents(new StatListeners(this), this);
 		pm.registerEvents(new PunishmentListeners(this), this);
+		pm.registerEvents(new ChatListener(this), this);
 	}
 
 	public void registerCommands() {
-		this.getCommand("shout").setExecutor(new ShoutCommand(this));
+		this.getCommand("channel").setExecutor(new ChannelCommand(this));
 		this.getCommand("staff").setExecutor(new StaffCommand(this));
 		this.getCommand("rank").setExecutor(new RankCommand(this));
 		this.getCommand("perms").setExecutor(new PermsCommand(this));

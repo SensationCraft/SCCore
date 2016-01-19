@@ -7,13 +7,11 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -23,16 +21,11 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.massivecore.ps.PS;
 import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.duels.ArenaManager;
 import com.sensationcraft.sccore.lockpicks.LockpickRunnable;
-import com.sensationcraft.sccore.punishments.Punishment;
-import com.sensationcraft.sccore.punishments.PunishmentManager;
-import com.sensationcraft.sccore.punishments.PunishmentType;
 import com.sensationcraft.sccore.ranks.PermissionsManager;
 import com.sensationcraft.sccore.ranks.Rank;
 import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.stats.StatsManager;
-import com.sensationcraft.sccore.utils.Utils;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 
 import lombok.Getter;
@@ -45,10 +38,7 @@ public class SCPlayerManager implements Listener {
 	private SCCore instance;
 	private RankManager rankManager;
 	private PermissionsManager permissionsManager;
-	private PunishmentManager punishmentManager;
-	private ArenaManager arenaManager;
 	private StatsManager statsManager;
-	private Utils utils;
 	@Getter
 	private List<UUID> shoutCooldowns;
 	@Getter
@@ -60,9 +50,6 @@ public class SCPlayerManager implements Listener {
 		this.rankManager = instance.getRankManager();
 		this.permissionsManager = instance.getPermissionsManager();
 		this.statsManager = instance.getStatsManager();
-		this.punishmentManager = instance.getPunishmentManager();
-		this.arenaManager = instance.getArenaManager();
-		this.utils = instance.getUtils();
 		this.shoutCooldowns = new ArrayList<>();
 		this.scPlayers = new HashMap<>();
 		this.lockpicking = new HashMap<>();
@@ -128,48 +115,6 @@ public class SCPlayerManager implements Listener {
 		scp.combatTag();
 		sct.combatTag();
 
-	}
-
-	@EventHandler(priority = EventPriority.LOW)
-	public void onPlayerChat(final AsyncPlayerChatEvent e) {
-		List<Punishment> punishments = this.punishmentManager.getPunishments(e.getPlayer().getUniqueId());
-
-		synchronized (punishments) {
-			for (Punishment punishment : punishments) {
-				if (punishment.getType().equals(PunishmentType.MUTE)) {
-					if (!punishment.hasExpired()) {
-						e.getPlayer().sendMessage("§cYou are permanently muted.");
-						e.setCancelled(true);
-						return;
-					}
-				}
-
-				if (punishment.getType().equals(PunishmentType.TEMPMUTE)) {
-					if (!punishment.hasExpired()) {
-						e.getPlayer().sendMessage(
-								"§cYou are temporarily muted until §3" + punishment.getEndTimestamp() + " §c.");
-						e.setCancelled(true);
-						return;
-					}
-				}
-			}
-		}
-		e.setCancelled(true);
-
-		Player player = e.getPlayer();
-		SCPlayer scPlayer = this.getSCPlayer(player.getUniqueId());
-
-		if (player.isOp()) e.setMessage(e.getMessage().replace('&', ChatColor.COLOR_CHAR));
-
-		FancyMessage message = new FancyMessage(" §7- ").then(scPlayer.getTag()).tooltip(scPlayer.getHoverText())
-				.then("§8: §7" + e.getMessage());
-
-		for (final Player other : e.getRecipients()) {
-			if (other.getWorld() != player.getWorld())
-				continue;
-			if (other.getLocation().distanceSquared(player.getLocation()) <= 900)
-				message.send(other);
-		}
 	}
 
 	public SCPlayer getSCPlayer(UUID uuid) {

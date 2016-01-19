@@ -1,11 +1,11 @@
 name: SCCore
-authors: [Anml]
+authors: [Anml, superckl]
 version: 1.0
 main: com.sensationcraft.sccore.SCCore
-depend: [Essentials]
+depend: [Essentials, Factions, ProtocolLib]
 commands:
-  shout:
-    aliases: [s]
+  channel:
+    aliases: [c]
   staff:
     aliases: [st]
   rank:
