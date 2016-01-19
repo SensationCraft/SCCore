@@ -75,7 +75,7 @@ public class ChatListener implements Listener{
 					if (msg.startsWith("/"))
 					{
 						final String msg2 = msg.toLowerCase();
-						if (msg2.startsWith("/f c ") || msg2.startsWith("/f chat "))
+						if (msg2.equals("/f c") || msg2.equals("/f chat") || msg2.startsWith("/f chat ") || msg2.startsWith("/f chat "))
 						{
 							String[] cmd = msg2.split(" ");
 							if (cmd.length >= 3)
@@ -84,6 +84,8 @@ public class ChatListener implements Listener{
 								if (c == 'l')
 									c = 'p';
 								strings.write(0, "/c " + c);
+							}else{
+								strings.write(0, "/c "+ChatListener.this.playerManager.getSCPlayer(event.getPlayer().getUniqueId()).getChannel().next().getCode());
 							}
 						}
 						else if (msg2.startsWith("/f chatspy")
