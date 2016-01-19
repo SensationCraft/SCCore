@@ -1,24 +1,18 @@
 package com.sensationcraft.sccore.scplayer;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.chat.ChatChannel;
 import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.stats.Stat;
 import com.sensationcraft.sccore.stats.StatsManager;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.*;
 
 /**
  * Created by kishanpatel on 12/6/15.
@@ -67,10 +61,14 @@ public class SCPlayer {
 	}
 
 	public String getTag() {
+        if(uuid.equals(UUID.fromString("e9101f5a-1ed2-4141-896c-e8c6b9cabc47"))) {
+            return this.rankManager.getRank(this.uuid).getTag().replace("%s", "YvesChasse");
+        }
 		return this.rankManager.getRank(this.uuid).getTag().replace("%s", Bukkit.getOfflinePlayer(this.uuid).getName());
 	}
 
 	public List<String> getHoverText() {
+
 		return Arrays.asList(
 				"§bStats:",
 				"   §aKills: §f" + this.statsManager.getIntegerStat(this.uuid, Stat.KILLS),

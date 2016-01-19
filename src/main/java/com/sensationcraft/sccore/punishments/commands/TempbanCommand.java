@@ -1,15 +1,5 @@
 package com.sensationcraft.sccore.punishments.commands;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.punishments.Punishment;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
@@ -17,6 +7,16 @@ import com.sensationcraft.sccore.punishments.PunishmentType;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.utils.Utils;
+import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Anml on 1/7/16.
@@ -88,13 +88,22 @@ public class TempbanCommand implements CommandExecutor {
 		}
 
 		String reason = sb.toString();
+		boolean hover = sender instanceof Player ? true : false;
+		FancyMessage message = new FancyMessage("§9[STAFF] ");
+
+		if (hover) {
+			SCPlayer senderSCPlayer = this.scPlayerManager.getSCPlayer(((Player) sender).getUniqueId());
+			message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" §7has temporarily banned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7for §3" + this.utils.actualLength(args[1]) + " §7with reason: §a" + reason + "§7.", true);
+		} else {
+			message = message.then("§6Console §7has temporarily banned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7for §3" + this.utils.actualLength(args[1]) + " §7with reason: §a" + reason + "§7.", true);
+		}
+
+		this.scPlayerManager.staff(message);
+
 		UUID creator = (sender instanceof Player) ? ((Player) sender).getUniqueId() : null;
 
 		Punishment tempban = new Punishment(PunishmentType.TEMPBAN, offlinePlayer.getUniqueId(), creator, length, reason);
 		this.punishmentManager.addPunishment(tempban);
-
-		String sName = creator == null ? "§6Console" : this.scPlayerManager.getSCPlayer(creator).getTag();
-		this.scPlayerManager.staff("§9[STAFF] " + sName + " §7has temp-banned " + scPlayer.getTag() + " §7for §3" + this.utils.actualLength(args[1]) + " §7with reason: §a" + reason + "§7.");
 
 		if (offlinePlayer.isOnline()) {
 			offlinePlayer.getPlayer().kickPlayer(tempban.getMessage());

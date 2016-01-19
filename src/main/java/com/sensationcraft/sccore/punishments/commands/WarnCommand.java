@@ -1,19 +1,19 @@
 package com.sensationcraft.sccore.punishments.commands;
 
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.punishments.Punishment;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.punishments.PunishmentType;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 /**
  * Created by Anml on 1/7/16.
@@ -68,8 +68,17 @@ public class WarnCommand implements CommandExecutor {
 		Punishment warning = new Punishment(PunishmentType.WARNING, player.getUniqueId(), creator, 0, reason);
 		this.punishmentManager.addPunishment(warning);
 
-		String sName = creator == null ? "§6Console" : this.scPlayerManager.getSCPlayer(creator).getTag();
-		this.scPlayerManager.staff("§9[STAFF] " + sName + " §7has warned " + scPlayer.getTag() + " §7with reason: §a" + reason + "§7.");
+		boolean hover = sender instanceof Player ? true : false;
+		FancyMessage message = new FancyMessage("§9[STAFF] ");
+
+		if (hover) {
+			SCPlayer senderSCPlayer = this.scPlayerManager.getSCPlayer(((Player) sender).getUniqueId());
+			message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" §7has warned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7with reason: §a" + reason + "§7.", true);
+		} else {
+			message = message.then("§6Console §7has warned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7with reason: §a" + reason + "§7.", true);
+		}
+
+		this.scPlayerManager.staff(message);
 
 		player.sendMessage(warning.getMessage());
 

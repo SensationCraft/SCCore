@@ -1,7 +1,12 @@
 package com.sensationcraft.sccore.punishments.commands;
 
-import java.util.List;
-
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.punishments.Punishment;
+import com.sensationcraft.sccore.punishments.PunishmentManager;
+import com.sensationcraft.sccore.punishments.PunishmentType;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -9,12 +14,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.punishments.Punishment;
-import com.sensationcraft.sccore.punishments.PunishmentManager;
-import com.sensationcraft.sccore.punishments.PunishmentType;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import java.util.List;
 
 /**
  * Created by Anml on 1/7/16.
@@ -22,12 +22,12 @@ import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 public class UnmuteCommand implements CommandExecutor {
 
 	private SCCore instance;
-	private SCPlayerManager iPlayerManager;
+	private SCPlayerManager scPlayerManager;
 	private PunishmentManager punishmentManager;
 
 	public UnmuteCommand(SCCore instance) {
 		this.instance = instance;
-		this.iPlayerManager = instance.getSCPlayerManager();
+		this.scPlayerManager = instance.getSCPlayerManager();
 		this.punishmentManager = instance.getPunishmentManager();
 	}
 
@@ -53,7 +53,7 @@ public class UnmuteCommand implements CommandExecutor {
 			return false;
 		}
 
-		SCPlayer scPlayer = this.iPlayerManager.getSCPlayer(offlinePlayer.getUniqueId());
+		SCPlayer scPlayer = this.scPlayerManager.getSCPlayer(offlinePlayer.getUniqueId());
 
 		List<Punishment> punishments = this.punishmentManager.getPunishments(offlinePlayer.getUniqueId());
 
@@ -65,9 +65,17 @@ public class UnmuteCommand implements CommandExecutor {
 						punishment.setExpires(0L);
 						punishment.execute();
 
-						String sName = !(sender instanceof Player) ? "§6Console"
-								: this.iPlayerManager.getSCPlayer(((Player) sender).getUniqueId()).getTag();
-						this.iPlayerManager.staff("§9[STAFF] " + sName + " §7has unmuted " + scPlayer.getTag() + "§7.");
+						boolean hover = sender instanceof Player ? true : false;
+						FancyMessage message = new FancyMessage("§9[STAFF] ");
+
+						if (hover) {
+							SCPlayer senderSCPlayer = this.scPlayerManager.getSCPlayer(((Player) sender).getUniqueId());
+							message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" §7has unmuted ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("§7.", true);
+						} else {
+							message = message.then("§6Console §7has unmuted ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("§7.", true);
+						}
+
+						this.scPlayerManager.staff(message);
 						return true;
 					}
 				}

@@ -1,6 +1,5 @@
 package com.sensationcraft.sccore.ranks;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -8,7 +7,6 @@ import lombok.Getter;
  */
 
 @Getter
-@AllArgsConstructor
 public enum Rank {
 
 	OWNER(9, "§6Owner", "§6%s", 100),
@@ -34,6 +32,14 @@ public enum Rank {
 		this.id = id;
 		this.name = name;
 		this.alias = this.name();
+		this.tag = tag;
+		this.lockpickChance = lockpickChance;
+}
+
+	Rank(int id, String name, String alias, String tag, int lockpickChance) {
+		this.id = id;
+		this.name = name;
+		this.alias = alias;
 		this.tag = tag;
 		this.lockpickChance = lockpickChance;
 	}

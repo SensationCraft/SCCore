@@ -1,12 +1,9 @@
 package com.sensationcraft.sccore.chat;
 
 import com.google.common.base.Predicate;
-
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
 public enum ChatChannel {
 
 	SHOUT('s'),
@@ -20,6 +17,10 @@ public enum ChatChannel {
 	public ChatChannel next(){
 		ChatChannel[] values = ChatChannel.values();
 		return values[(this.ordinal()+1) % (values.length)];
+	}
+
+	ChatChannel(char code) {
+		this.code = code;
 	}
 
 	public ChatChannel next(Predicate<ChatChannel> when){

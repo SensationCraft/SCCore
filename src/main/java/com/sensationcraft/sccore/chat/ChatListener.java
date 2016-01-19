@@ -1,24 +1,5 @@
 package com.sensationcraft.sccore.chat;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChatTabCompleteEvent;
-
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
@@ -36,6 +17,17 @@ import com.sensationcraft.sccore.punishments.PunishmentType;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatTabCompleteEvent;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatListener implements Listener{
 
@@ -45,7 +37,7 @@ public class ChatListener implements Listener{
 			ChatColor.COLOR_CHAR);
 	private final String from = "&6[%s&6 -> me]&r %s".replace('&',
 			ChatColor.COLOR_CHAR);
-	private final String ss = "[Socialspy: %s -> %s] %s";
+	private final String ss = "&6[SPY] [&b%s -> &c%s] &e%s";
 	private final String me = "&5* %s %s".replace('&', ChatColor.COLOR_CHAR);
 	private final String at = "@%s";
 

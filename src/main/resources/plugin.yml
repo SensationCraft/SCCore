@@ -32,9 +32,4 @@ commands:
     default: false
   warn:
     default: false
-  helpaccept:
-  helpcancel:
-  helpdeny:
-  helplist:
-  helpread:
   helprequest:
