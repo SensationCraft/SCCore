@@ -134,24 +134,26 @@ public class SCPlayerManager implements Listener {
 	public void onPlayerChat(final AsyncPlayerChatEvent e) {
 		List<Punishment> punishments = this.punishmentManager.getPunishments(e.getPlayer().getUniqueId());
 
-		for (Punishment punishment : punishments) {
-			if (punishment.getType().equals(PunishmentType.MUTE)) {
-				if (!punishment.hasExpired()) {
-					e.getPlayer().sendMessage("§cYou are permanently muted.");
-					e.setCancelled(true);
-					return;
+		synchronized (punishments) {
+			for (Punishment punishment : punishments) {
+				if (punishment.getType().equals(PunishmentType.MUTE)) {
+					if (!punishment.hasExpired()) {
+						e.getPlayer().sendMessage("§cYou are permanently muted.");
+						e.setCancelled(true);
+						return;
+					}
 				}
-			}
 
-			if (punishment.getType().equals(PunishmentType.TEMPMUTE)) {
-				if (!punishment.hasExpired()) {
-					e.getPlayer().sendMessage("§cYou are temporarily muted until §3" + punishment.getEndTimestamp() + " §c.");
-					e.setCancelled(true);
-					return;
+				if (punishment.getType().equals(PunishmentType.TEMPMUTE)) {
+					if (!punishment.hasExpired()) {
+						e.getPlayer().sendMessage(
+								"§cYou are temporarily muted until §3" + punishment.getEndTimestamp() + " §c.");
+						e.setCancelled(true);
+						return;
+					}
 				}
 			}
 		}
-
 		e.setCancelled(true);
 
 		Player player = e.getPlayer();

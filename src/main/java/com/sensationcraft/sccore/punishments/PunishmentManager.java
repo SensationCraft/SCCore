@@ -3,10 +3,11 @@ package com.sensationcraft.sccore.punishments;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -30,7 +31,7 @@ public class PunishmentManager {
 		this.instance = instance;
 		this.mySQL = instance.getMySQL();
 		this.scPlayerManager = instance.getSCPlayerManager();
-		this.cachedPunishments = new HashMap<UUID, List<Punishment>>();
+		this.cachedPunishments = new ConcurrentHashMap<UUID, List<Punishment>>();
 	}
 
 	public Map<UUID, List<Punishment>> getCachedPunishments() {
@@ -56,7 +57,7 @@ public class PunishmentManager {
 			}
 		}
 
-		List<Punishment> list = new ArrayList<Punishment>();
+		List<Punishment> list = Collections.synchronizedList(new ArrayList<Punishment>());
 
 		try {
 			ResultSet resultSet = this.mySQL.getResultSet("SELECT * FROM SCPunishments WHERE Target='" + offlinePlayer.getUniqueId() + "'");

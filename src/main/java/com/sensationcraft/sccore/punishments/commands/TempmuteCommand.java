@@ -61,15 +61,17 @@ public class TempmuteCommand implements CommandExecutor {
 
 		List<Punishment> punishments = this.punishmentManager.getPunishments(offlinePlayer.getUniqueId());
 
-		for (Punishment punishment : punishments) {
-			if (punishment.getType().equals(PunishmentType.MUTE) || punishment.getType().equals(PunishmentType.TEMPMUTE)) {
-				if (!punishment.hasExpired()) {
-					sender.sendMessage("§cThe target player is already muted.");
-					return false;
+		synchronized (punishments) {
+			for (Punishment punishment : punishments) {
+				if (punishment.getType().equals(PunishmentType.MUTE)
+						|| punishment.getType().equals(PunishmentType.TEMPMUTE)) {
+					if (!punishment.hasExpired()) {
+						sender.sendMessage("§cThe target player is already muted.");
+						return false;
+					}
 				}
 			}
 		}
-
 		long length = this.utils.longLength(args[1]);
 
 		if (length == 0) {

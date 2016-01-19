@@ -57,19 +57,23 @@ public class UnbanCommand implements CommandExecutor {
 
 		List<Punishment> punishments = this.punishmentManager.getPunishments(offlinePlayer.getUniqueId());
 
-		for (Punishment punishment : punishments) {
-			if (punishment.getType().equals(PunishmentType.BAN) || punishment.getType().equals(PunishmentType.TEMPBAN)) {
-				if (!punishment.hasExpired()) {
-					punishment.setExpires(0L);
-					punishment.execute();
+		synchronized (punishments) {
+			for (Punishment punishment : punishments) {
+				if (punishment.getType().equals(PunishmentType.BAN)
+						|| punishment.getType().equals(PunishmentType.TEMPBAN)) {
+					if (!punishment.hasExpired()) {
+						punishment.setExpires(0L);
+						punishment.execute();
 
-					String sName = !(sender instanceof Player) ? "§6Console" : this.scPlayerManager.getSCPlayer(((Player) sender).getUniqueId()).getTag();
-					this.scPlayerManager.staff("§9[STAFF] " + sName + " §7has unbanned " + scPlayer.getTag() + "§7.");
-					return true;
+						String sName = !(sender instanceof Player) ? "§6Console"
+								: this.scPlayerManager.getSCPlayer(((Player) sender).getUniqueId()).getTag();
+						this.scPlayerManager
+						.staff("§9[STAFF] " + sName + " §7has unbanned " + scPlayer.getTag() + "§7.");
+						return true;
+					}
 				}
 			}
 		}
-
 		sender.sendMessage("§cThe target player is currently not banned.");
 		return false;
 	}

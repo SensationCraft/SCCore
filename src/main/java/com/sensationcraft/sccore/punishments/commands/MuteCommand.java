@@ -58,15 +58,17 @@ public class MuteCommand implements CommandExecutor {
 
 		List<Punishment> punishments = this.punishmentManager.getPunishments(offlinePlayer.getUniqueId());
 
-		for (Punishment punishment : punishments) {
-			if (punishment.getType().equals(PunishmentType.MUTE) || punishment.getType().equals(PunishmentType.TEMPMUTE)) {
-				if (!punishment.hasExpired()) {
-					sender.sendMessage("§cThe target player is already muted.");
-					return false;
+		synchronized (punishments) {
+			for (Punishment punishment : punishments) {
+				if (punishment.getType().equals(PunishmentType.MUTE)
+						|| punishment.getType().equals(PunishmentType.TEMPMUTE)) {
+					if (!punishment.hasExpired()) {
+						sender.sendMessage("§cThe target player is already muted.");
+						return false;
+					}
 				}
 			}
 		}
-
 		StringBuilder sb = new StringBuilder();
 		for (int i = 1; i < args.length; i++) {
 			if (i != args.length - 1)

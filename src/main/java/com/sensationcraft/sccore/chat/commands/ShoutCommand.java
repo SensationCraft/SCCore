@@ -54,22 +54,24 @@ public class ShoutCommand implements CommandExecutor {
 
 			List<Punishment> punishments = this.punishmentManager.getPunishments(((Player) sender).getUniqueId());
 
-			for (Punishment punishment : punishments) {
-				if (punishment.getType().equals(PunishmentType.MUTE)) {
-					if (!punishment.hasExpired()) {
-						sender.sendMessage("§cYou are permanently muted.");
-						return false;
+			synchronized (punishments) {
+				for (Punishment punishment : punishments) {
+					if (punishment.getType().equals(PunishmentType.MUTE)) {
+						if (!punishment.hasExpired()) {
+							sender.sendMessage("§cYou are permanently muted.");
+							return false;
+						}
 					}
-				}
 
-				if (punishment.getType().equals(PunishmentType.TEMPMUTE)) {
-					if (!punishment.hasExpired()) {
-						sender.sendMessage("§cYou are temporarily muted until §3" + punishment.getEndTimestamp() + " §c.");
-						return false;
+					if (punishment.getType().equals(PunishmentType.TEMPMUTE)) {
+						if (!punishment.hasExpired()) {
+							sender.sendMessage(
+									"§cYou are temporarily muted until §3" + punishment.getEndTimestamp() + " §c.");
+							return false;
+						}
 					}
 				}
 			}
-
 			if (scPlayer.isShoutCooldowned()) {
 				sender.sendMessage("§cYou must wait a minimum of 15 seconds between shouts.");
 				return false;

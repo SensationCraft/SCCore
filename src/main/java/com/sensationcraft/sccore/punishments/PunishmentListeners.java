@@ -28,15 +28,17 @@ public class PunishmentListeners implements Listener {
 	public void playerLogin(AsyncPlayerPreLoginEvent e) {
 		List<Punishment> punishments = this.punishmentManager.getPunishments(e.getUniqueId());
 
-		for (Punishment punishment : punishments) {
-			if (punishment.getType().equals(PunishmentType.BAN) || punishment.getType().equals(PunishmentType.TEMPBAN)) {
-				if (!punishment.hasExpired()) {
-					e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, punishment.getMessage());
-					return;
+		synchronized (punishments) {
+			for (Punishment punishment : punishments) {
+				if (punishment.getType().equals(PunishmentType.BAN)
+						|| punishment.getType().equals(PunishmentType.TEMPBAN)) {
+					if (!punishment.hasExpired()) {
+						e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, punishment.getMessage());
+						return;
+					}
 				}
 			}
 		}
-
 		this.punishmentManager.getCachedPunishments().put(e.getUniqueId(), punishments);
 	}
 

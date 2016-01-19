@@ -61,15 +61,17 @@ public class TempbanCommand implements CommandExecutor {
 
 		List<Punishment> punishments = this.punishmentManager.getPunishments(offlinePlayer.getUniqueId());
 
-		for (Punishment punishment : punishments) {
-			if (punishment.getType().equals(PunishmentType.BAN) || punishment.getType().equals(PunishmentType.TEMPBAN)) {
-				if (!punishment.hasExpired()) {
-					sender.sendMessage("§cThe target player is already banned.");
-					return false;
+		synchronized (punishments) {
+			for (Punishment punishment : punishments) {
+				if (punishment.getType().equals(PunishmentType.BAN)
+						|| punishment.getType().equals(PunishmentType.TEMPBAN)) {
+					if (!punishment.hasExpired()) {
+						sender.sendMessage("§cThe target player is already banned.");
+						return false;
+					}
 				}
 			}
 		}
-
 		long length = this.utils.longLength(args[1]);
 
 		if (length == 0) {
