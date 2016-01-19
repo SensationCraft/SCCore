@@ -85,7 +85,9 @@ public class ChatListener implements Listener{
 									c = 'p';
 								strings.write(0, "/c " + c);
 							}else{
-								strings.write(0, "/c "+ChatListener.this.playerManager.getSCPlayer(event.getPlayer().getUniqueId()).getChannel().next().getCode());
+								MPlayer mPlayer = MPlayerColl.get().get(event.getPlayer());
+								strings.write(0, "/c "+ChatListener.this.playerManager.getSCPlayer(event.getPlayer().getUniqueId())
+								.getChannel().next((mPlayer != null && mPlayer.hasFaction()) ? ChatChannel.NOT_NONE:ChatChannel.NOT_FACTION_NOT_NONE).getCode());
 							}
 						}
 						else if (msg2.startsWith("/f chatspy")
@@ -169,9 +171,11 @@ public class ChatListener implements Listener{
 			if (message.startsWith("@r "))
 			{
 				// fetch other;
-				UUID r = this.pm.containsKey(player.getName()) ? this.pm.get(player.getUniqueId()) : null;
-				if(r == null)
+				UUID r = this.pm.containsKey(player.getUniqueId()) ? this.pm.get(player.getUniqueId()) : null;
+				if(r == null){
 					player.sendMessage(ChatColor.DARK_RED + "You don't have anyone to reply to.");
+					return;
+				}
 				other = Bukkit.getPlayer(r);
 				if (other == null)
 					player.sendMessage(ChatColor.DARK_RED + "You don't have anyone to reply to.");

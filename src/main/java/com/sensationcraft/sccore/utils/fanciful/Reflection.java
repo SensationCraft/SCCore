@@ -213,4 +213,13 @@ public final class Reflection {
 		return null;
 	}
 
+	public static StackTraceElement findCallingClass(String method, String clazz){
+		StackTraceElement[] stacktrace = new Throwable().getStackTrace();
+		for(int i = 0; i < stacktrace.length-1; i++){
+			if(clazz.equals(stacktrace[i].getClassName()) && method.equals(stacktrace[i].getMethodName()))
+				return stacktrace[i+1];
+		}
+		return null;
+	}
+
 }

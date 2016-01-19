@@ -8,6 +8,7 @@ import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.comphenix.protocol.ProtocolLibrary;
 import com.earth2me.essentials.Essentials;
 import com.sensationcraft.sccore.chat.ChatListener;
 import com.sensationcraft.sccore.chat.commands.ChannelCommand;
@@ -24,6 +25,7 @@ import com.sensationcraft.sccore.helprequests.HelpList;
 import com.sensationcraft.sccore.helprequests.HelpRead;
 import com.sensationcraft.sccore.helprequests.HelpRequest;
 import com.sensationcraft.sccore.lockpicks.LockpickListeners;
+import com.sensationcraft.sccore.mcmmo.MessageListener;
 import com.sensationcraft.sccore.mysql.MySQL;
 import com.sensationcraft.sccore.punishments.PunishmentListeners;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
@@ -150,6 +152,8 @@ public class SCCore extends JavaPlugin implements Listener {
 		pm.registerEvents(new StatListeners(this), this);
 		pm.registerEvents(new PunishmentListeners(this), this);
 		pm.registerEvents(new ChatListener(this), this);
+
+		ProtocolLibrary.getProtocolManager().addPacketListener(new MessageListener(this));
 	}
 
 	public void registerCommands() {
