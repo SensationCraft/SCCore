@@ -653,7 +653,7 @@ ConfigurationSerializable {
 
 	public FancyMessage then(final String text, boolean split) {
 		if(split){
-			JsonArray array = ((JsonObject)new JsonParser().parse(JSONUtil.toJSON(text))).get("extra").getAsJsonArray();
+			JsonArray array = ((JsonObject)new JsonParser().parse(JSONUtil.toJSON(text.replaceAll("\"", "\\\"")))).get("extra").getAsJsonArray();
 			JsonElement[] parts = new JsonObject[array.size()];
 			for(int i = 0; i < array.size(); i++){
 				parts[i] = array.get(i);
