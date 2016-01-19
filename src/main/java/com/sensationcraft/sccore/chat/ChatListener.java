@@ -279,7 +279,8 @@ public class ChatListener implements Listener{
 			FancyMessage message = new FancyMessage("§2[").then(mPlayer.getFactionName()).then("] §f").then(user.getTag()).tooltip(user.getHoverText())
 					.then(": §7" + event.getMessage(), true);
 			for(MPlayer other:faction)
-				message.send(other.getSender());
+				if(other.getSender() != null && other.getSender() != player)
+					message.send(other.getSender());
 			for(UUID id:this.fchatspy)
 				message.send(Bukkit.getPlayer(id));
 			break;
@@ -288,7 +289,8 @@ public class ChatListener implements Listener{
 			FancyMessage message2 = new FancyMessage("§a[").then(mPlayer.getFactionName()).then("] §f").then(user.getTag()).tooltip(user.getHoverText())
 					.then(": §7" + event.getMessage(), true);
 			for(MPlayer other:ally)
-				message2.send(other.getSender());
+				if(other.getSender() != null && other.getSender() != player)
+					message2.send(other.getSender());
 			for(UUID id:this.fchatspy)
 				message2.send(Bukkit.getPlayer(id));
 			break;
