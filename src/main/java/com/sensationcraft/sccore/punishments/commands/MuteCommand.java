@@ -4,6 +4,7 @@ import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.punishments.Punishment;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.punishments.PunishmentType;
+import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
@@ -24,11 +25,13 @@ public class MuteCommand implements CommandExecutor {
 
 	private SCCore instance;
 	private SCPlayerManager scPlayerManager;
+	private RankManager rankManager;
 	private PunishmentManager punishmentManager;
 
 	public MuteCommand(SCCore instance) {
 		this.instance = instance;
 		this.scPlayerManager = instance.getSCPlayerManager();
+		this.rankManager = instance.getRankManager();
 		this.punishmentManager = instance.getPunishmentManager();
 	}
 
@@ -80,6 +83,12 @@ public class MuteCommand implements CommandExecutor {
 		String reason = sb.toString();
 		UUID creator = (sender instanceof Player) ? ((Player) sender).getUniqueId() : null;
 
+		if(creator != null) {
+			if(rankManager.getRank(creator).getId() <= rankManager.getRank(offlinePlayer.getUniqueId()).getId())
+				sender.sendMessage("§cYou are not permitted to mute a player that possesses the " + rankManager.getRank(offlinePlayer.getUniqueId()).getName() + " §crank.");
+			return false;
+		}
+
 		Punishment mute = new Punishment(PunishmentType.MUTE, offlinePlayer.getUniqueId(), creator, -1, reason);
 		this.punishmentManager.addPunishment(mute);
 
@@ -88,9 +97,9 @@ public class MuteCommand implements CommandExecutor {
 
 		if (hover) {
 			SCPlayer senderSCPlayer = this.scPlayerManager.getSCPlayer(((Player) sender).getUniqueId());
-			message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" §7has permanently muted ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7with reason: §a" + reason + "§7.", true);
+			message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" §7has muted ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7with reason: §a" + reason + "§7.", true);
 		} else {
-			message = message.then("§6Console §7has permanently muted ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7with reason: §a" + reason + "§7.", true);
+			message = message.then("§6Console §7has muted ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7with reason: §a" + reason + "§7.", true);
 		}
 
 		this.scPlayerManager.staff(message);

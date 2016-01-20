@@ -1,14 +1,14 @@
 package com.sensationcraft.sccore.punishments;
 
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.UUID;
-
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.mysql.MySQL;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.utils.Utils;
+
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Anml on 1/8/16.
@@ -18,6 +18,7 @@ public class Punishment {
 	SCCore instance;
 	PunishmentManager punishmentManager;
 	SCPlayerManager scPlayerManager;
+	Utils utils;
 	MySQL mySQL;
 
 	PunishmentType type;
@@ -39,6 +40,7 @@ public class Punishment {
 		this.instance = SCCore.getInstance();
 		this.punishmentManager = this.instance.getPunishmentManager();
 		this.scPlayerManager = this.instance.getSCPlayerManager();
+		this.utils = this.instance.getUtils();
 		this.mySQL = this.instance.getMySQL();
 	}
 
@@ -70,14 +72,21 @@ public class Punishment {
 		this.expires = value;
 	}
 
-	public boolean hasExpired() {
-		return this.expires == 0L || (this.expires != -1L && (this.created + this.expires) <= System.currentTimeMillis());
+	public List<String> getHoverText() {
+		String tag = this.punisher != null ? this.scPlayerManager.getSCPlayer(this.punisher).getTag() : "§6Console";
+		List<String> info =  Arrays.asList(
+				"§b" + type.name() + " Information:",
+				"   §aCreator: §f" + tag,
+				"   §aCreated: §f" + utils.getTimeStamp(this.created));
+
+		if(type.equals(PunishmentType.TEMPBAN) || type.equals(PunishmentType.TEMPMUTE) && !hasExpired())
+		info.add("   §aRemaining: §f" + utils.getDifference(System.currentTimeMillis(), created + expires));
+
+		return info;
 	}
 
-	public String getEndTimestamp() {
-		final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("EST"));
-		return DATE_FORMAT.format(new Date(this.created + this.expires));
+		public boolean hasExpired() {
+		return this.expires == 0L || (this.expires != -1L && (this.created + this.expires) <= System.currentTimeMillis());
 	}
 
 	public String getReason() {
@@ -95,13 +104,13 @@ public class Punishment {
 		case 4:
 			message = "§7You are temporarily banned from §cSensationCraft§7:\n\n" +
 					"§7Reason: §f" + this.reason + " §8- " + tag + "\n" +
-					"§7Unban Info: §f" + this.getEndTimestamp() + "\n\n";
+					"§7Remaining: §f" + utils.getDifference(System.currentTimeMillis(), created + expires) + "\n\n";
 			break;
 		case 3:
 			message = "§7You have been muted by " + tag + " §7for: §a" + this.reason + "§7.";
 			break;
 		case 2:
-			message = "§7You have been temporarily muted for §c" + this.getEndTimestamp() + " §7by " + tag + " §7for: §a" + this.reason + "§7.";
+			message = "§7You have been temporarily muted for §c" + utils.getDifference(System.currentTimeMillis(), created + expires) + " §7by " + tag + " §7for: §a" + this.reason + "§7.";
 			break;
 		case 1:
 			message = "§7You have been warned by " + tag + " §7with reason: §a" + this.reason + "§7.";

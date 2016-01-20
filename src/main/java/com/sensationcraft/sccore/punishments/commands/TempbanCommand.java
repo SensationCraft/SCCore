@@ -4,6 +4,7 @@ import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.punishments.Punishment;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.punishments.PunishmentType;
+import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.utils.Utils;
@@ -26,12 +27,14 @@ public class TempbanCommand implements CommandExecutor {
 	private SCCore instance;
 	private SCPlayerManager scPlayerManager;
 	private PunishmentManager punishmentManager;
+	private RankManager rankManager;
 	private Utils utils;
 
 	public TempbanCommand(SCCore instance) {
 		this.instance = instance;
 		this.scPlayerManager = instance.getSCPlayerManager();
 		this.punishmentManager = instance.getPunishmentManager();
+		this.rankManager = instance.getRankManager();
 		this.utils = instance.getUtils();
 	}
 
@@ -88,22 +91,28 @@ public class TempbanCommand implements CommandExecutor {
 		}
 
 		String reason = sb.toString();
+		UUID creator = (sender instanceof Player) ? ((Player) sender).getUniqueId() : null;
+
+		if(creator != null) {
+			if(rankManager.getRank(creator).getId() <= rankManager.getRank(offlinePlayer.getUniqueId()).getId())
+				sender.sendMessage("§cYou are not permitted to tempban a player that possesses the " + rankManager.getRank(offlinePlayer.getUniqueId()).getName() + " §crank.");
+			return false;
+		}
+
+		Punishment tempban = new Punishment(PunishmentType.TEMPBAN, offlinePlayer.getUniqueId(), creator, length, reason);
+		this.punishmentManager.addPunishment(tempban);
+
 		boolean hover = sender instanceof Player ? true : false;
 		FancyMessage message = new FancyMessage("§9[STAFF] ");
 
 		if (hover) {
 			SCPlayer senderSCPlayer = this.scPlayerManager.getSCPlayer(((Player) sender).getUniqueId());
-			message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" §7has temporarily banned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7for §3" + this.utils.actualLength(args[1]) + " §7with reason: §a" + reason + "§7.", true);
+			message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" §7has tempbanned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7for §3" + this.utils.actualLength(args[1]) + " §7with reason: §a" + reason + "§7.", true);
 		} else {
-			message = message.then("§6Console §7has temporarily banned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7for §3" + this.utils.actualLength(args[1]) + " §7with reason: §a" + reason + "§7.", true);
+			message = message.then("§6Console §7has tempbanned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7for §3" + this.utils.actualLength(args[1]) + " §7with reason: §a" + reason + "§7.", true);
 		}
 
 		this.scPlayerManager.staff(message);
-
-		UUID creator = (sender instanceof Player) ? ((Player) sender).getUniqueId() : null;
-
-		Punishment tempban = new Punishment(PunishmentType.TEMPBAN, offlinePlayer.getUniqueId(), creator, length, reason);
-		this.punishmentManager.addPunishment(tempban);
 
 		if (offlinePlayer.isOnline()) {
 			offlinePlayer.getPlayer().kickPlayer(tempban.getMessage());

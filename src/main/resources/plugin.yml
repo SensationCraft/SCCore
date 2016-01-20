@@ -32,4 +32,6 @@ commands:
     default: false
   warn:
     default: false
+  history:
+    default: false
   helprequest:

@@ -4,6 +4,7 @@ import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.punishments.Punishment;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.punishments.PunishmentType;
+import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.utils.Utils;
@@ -25,6 +26,7 @@ public class TempmuteCommand implements CommandExecutor {
 
 	private SCCore instance;
 	private SCPlayerManager scPlayerManager;
+	private RankManager rankManager;
 	private PunishmentManager punishmentManager;
 	private Utils utils;
 
@@ -32,6 +34,7 @@ public class TempmuteCommand implements CommandExecutor {
 		this.instance = instance;
 		this.scPlayerManager = instance.getSCPlayerManager();
 		this.punishmentManager = instance.getPunishmentManager();
+		this.rankManager = instance.getRankManager();
 		this.utils = instance.getUtils();
 	}
 
@@ -89,6 +92,12 @@ public class TempmuteCommand implements CommandExecutor {
 
 		String reason = sb.toString();
 		UUID creator = (sender instanceof Player) ? ((Player) sender).getUniqueId() : null;
+
+		if(creator != null) {
+			if(rankManager.getRank(creator).getId() <= rankManager.getRank(offlinePlayer.getUniqueId()).getId())
+				sender.sendMessage("§cYou are not permitted to tempmute a player that possesses the " + rankManager.getRank(offlinePlayer.getUniqueId()).getName() + " §crank.");
+			return false;
+		}
 
 		Punishment tempmute = new Punishment(PunishmentType.TEMPMUTE, offlinePlayer.getUniqueId(), creator, length, reason);
 		this.punishmentManager.addPunishment(tempmute);

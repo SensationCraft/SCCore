@@ -1,8 +1,8 @@
 package com.sensationcraft.sccore.utils;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by Anml on 1/9/16.
@@ -81,32 +81,39 @@ public class Utils {
 		return temp;
 	}
 
-	public String getDifference(Date one, Date two) {
+	public String getDifference(long start, long end) {
 
-		Date d1 = null;
-		Date d2 = null;
 
-		long diff = d2.getTime() - d1.getTime();
+		Date dateStart = new Date(start);
+		Date dateStop = new Date(end);
 
+		SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
+
+		long diff = dateStop.getTime() - dateStart.getTime();
 		long diffSeconds = diff / 1000 % 60;
 		long diffMinutes = diff / (60 * 1000) % 60;
-		long diffHours = diff / (60 * 60 * 1000) % 24;
-		long diffDays = diff / (24 * 60 * 60 * 1000);
+		long diffHours = diff / (60 * 60 * 1000);
+		int diffDays = (int) diff / (1000 * 60 * 60 * 24);
 
-		List<String> diffs = new ArrayList<String>();
-		if ((int) diffDays != 0) {
-			diffs.add((int) diffDays + ((int) diffDays != 1 ? "days" : "day"));
-		}
-		if ((int) diffHours != 0) {
-			diffs.add((int) diffHours + ((int) diffHours != 1 ? "hours" : "hour"));
-		}
-		if ((int) diffMinutes != 0) {
-			diffs.add((int) diffMinutes + ((int) diffMinutes != 1 ? "minutes" : "minute"));
-		}
-		if ((int) diffSeconds != 0) {
-			diffs.add((int) diffSeconds + ((int) diffSeconds != 1 ? "seconds" : "second"));
-		}
+		String returned = "";
 
-		return "";
+		if(diffDays != 0) returned += diffDays + "d";
+		if(diffHours != 0) returned += (int) diffHours + "h";
+		if(diffMinutes != 0) returned += (int) diffMinutes + "m";
+		if(diffSeconds != 0) returned += (int) diffSeconds + "s";
+
+		return returned;
+	}
+
+	public String getTimeStamp(long l) {
+		final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("EST"));
+		return DATE_FORMAT.format(new Date(l) + " EST");
+	}
+
+	public String getDateStamp(long l) {
+		final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("EST"));
+		return DATE_FORMAT.format(new Date(l));
 	}
 }

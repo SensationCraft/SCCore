@@ -9,7 +9,6 @@ import com.sensationcraft.sccore.duels.DuelListeners;
 import com.sensationcraft.sccore.duels.commands.ArenaCommand;
 import com.sensationcraft.sccore.duels.commands.DuelCommand;
 import com.sensationcraft.sccore.duels.commands.SpectateCommand;
-import com.sensationcraft.sccore.helprequests.HelpRequest;
 import com.sensationcraft.sccore.helprequests.HelpRequestManager;
 import com.sensationcraft.sccore.helprequests.commands.HelpRequestCommand;
 import com.sensationcraft.sccore.lockpicks.LockpickListeners;
@@ -49,7 +48,6 @@ public class SCCore extends JavaPlugin implements Listener {
 	private StatsManager statsManager;
 	private PermissionsManager permissionsManager;
 	private HelpRequestManager helpRequestManager;
-	private HelpRequest helpRequest;
 	private Utils utils;
 	private MySQL mySQL;
 	private PunishmentManager punishmentManager;
@@ -57,7 +55,6 @@ public class SCCore extends JavaPlugin implements Listener {
 	public SCPlayerManager getSCPlayerManager() {
 		return scPlayerManager;
 	}
-
 	public static SCCore getInstance() {
 		return SCCore.instance;
 	}
@@ -122,6 +119,7 @@ public class SCCore extends JavaPlugin implements Listener {
 		this.getCommand("unmute").setExecutor(new UnmuteCommand(this));
 		this.getCommand("kick").setExecutor(new KickCommand(this));
 		this.getCommand("warn").setExecutor(new WarnCommand(this));
+		this.getCommand("history").setExecutor(new HistoryCommand(this));
 		this.getCommand("helprequest").setExecutor(new HelpRequestCommand(this));
 
 	}

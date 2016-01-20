@@ -16,6 +16,7 @@ import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.punishments.PunishmentType;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.utils.Utils;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -43,6 +44,7 @@ public class ChatListener implements Listener{
 
 	private final SCCore instance;
 	private final ShoutCommand shout;
+	private final Utils utils;
 	private final SCPlayerManager playerManager;
 	private PunishmentManager punishmentManager;
 	private PacketAdapter commandFilter;
@@ -54,6 +56,7 @@ public class ChatListener implements Listener{
 		this.instance = instance;
 		this.playerManager = this.instance.getSCPlayerManager();
 		this.punishmentManager = instance.getPunishmentManager();
+		this.utils = instance.getUtils();
 		this.commandFilter = new PacketAdapter(this.instance,
 				PacketType.Play.Client.CHAT)
 		{
@@ -132,7 +135,7 @@ public class ChatListener implements Listener{
 		if (message.startsWith("@"))
 		{
 			event.setCancelled(true);
-			if (message.startsWith("@fchatspy") && player.hasPermission("chat.fspy"))
+			if (message.startsWith("@fchatspy") && player.hasPermission("sccore.factionsspy"))
 			{
 				if(this.fchatspy.contains(player.getUniqueId())){
 					this.fchatspy.remove(player.getUniqueId());
@@ -143,7 +146,7 @@ public class ChatListener implements Listener{
 				}
 				return;
 			}
-			if (message.startsWith("@lchatspy") && player.hasPermission("chat.lspy"))
+			if (message.startsWith("@lchatspy") && player.hasPermission("sccore.localspy"))
 			{
 				if(this.lchatspy.contains(player.getUniqueId())){
 					this.lchatspy.remove(player.getUniqueId());
@@ -308,7 +311,7 @@ public class ChatListener implements Listener{
 					if (punishment.getType().equals(PunishmentType.TEMPMUTE)) {
 						if (!punishment.hasExpired()) {
 							player.sendMessage(
-									"§cYou are temporarily muted until §3" + punishment.getEndTimestamp() + " §c.");
+									"§cYou are temporarily muted until §3" + utils.getDifference(System.currentTimeMillis(), punishment.getCreated() + punishment.getExpires()) + " §c.");
 							event.setCancelled(true);
 							return;
 						}

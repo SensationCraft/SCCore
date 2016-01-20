@@ -61,9 +61,6 @@ public class SCPlayer {
 	}
 
 	public String getTag() {
-        if(uuid.equals(UUID.fromString("e9101f5a-1ed2-4141-896c-e8c6b9cabc47"))) {
-            return this.rankManager.getRank(this.uuid).getTag().replace("%s", "YvesChasse");
-        }
 		return this.rankManager.getRank(this.uuid).getTag().replace("%s", Bukkit.getOfflinePlayer(this.uuid).getName());
 	}
 

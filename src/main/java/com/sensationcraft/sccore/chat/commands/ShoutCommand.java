@@ -1,7 +1,13 @@
 package com.sensationcraft.sccore.chat.commands;
 
-import java.util.List;
-
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.punishments.Punishment;
+import com.sensationcraft.sccore.punishments.PunishmentManager;
+import com.sensationcraft.sccore.punishments.PunishmentType;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.utils.Utils;
+import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,13 +15,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.punishments.Punishment;
-import com.sensationcraft.sccore.punishments.PunishmentManager;
-import com.sensationcraft.sccore.punishments.PunishmentType;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
-import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import java.util.List;
 
 /**
  * Created by Anml on 12/28/15.
@@ -25,11 +25,13 @@ public class ShoutCommand implements CommandExecutor {
 	SCCore instance;
 	SCPlayerManager scPlayerManager;
 	PunishmentManager punishmentManager;
+	Utils utils;
 
 	public ShoutCommand(SCCore instance) {
 		this.instance = instance;
 		this.punishmentManager = instance.getPunishmentManager();
 		this.scPlayerManager = instance.getSCPlayerManager();
+		this.utils = instance.getUtils();
 	}
 
 	@Override
@@ -65,8 +67,7 @@ public class ShoutCommand implements CommandExecutor {
 
 					if (punishment.getType().equals(PunishmentType.TEMPMUTE)) {
 						if (!punishment.hasExpired()) {
-							sender.sendMessage(
-									"§cYou are temporarily muted until §3" + punishment.getEndTimestamp() + " §c.");
+							sender.sendMessage("§cYou are temporarily muted until §3" + utils.getDifference(System.currentTimeMillis(), punishment.getCreated() + punishment.getExpires()) + " §c.");
 							return false;
 						}
 					}

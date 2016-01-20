@@ -4,6 +4,7 @@ import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.punishments.Punishment;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.punishments.PunishmentType;
+import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
@@ -22,11 +23,13 @@ public class WarnCommand implements CommandExecutor {
 
 	private SCCore instance;
 	private SCPlayerManager scPlayerManager;
+	private RankManager rankManager;
 	private PunishmentManager punishmentManager;
 
 	public WarnCommand(SCCore instance) {
 		this.instance = instance;
 		this.scPlayerManager = instance.getSCPlayerManager();
+		this.rankManager = instance.getRankManager();
 		this.punishmentManager = instance.getPunishmentManager();
 	}
 
@@ -64,6 +67,13 @@ public class WarnCommand implements CommandExecutor {
 
 		String reason = sb.toString();
 		UUID creator = (sender instanceof Player) ? ((Player) sender).getUniqueId() : null;
+
+		if(creator != null) {
+			if(rankManager.getRank(creator).getId() <= rankManager.getRank(player.getUniqueId()).getId())
+				sender.sendMessage("§cYou are not permitted to warn a player that possesses the " + rankManager.getRank(player.getUniqueId()).getName() + " §crank.");
+			return false;
+		}
+
 
 		Punishment warning = new Punishment(PunishmentType.WARNING, player.getUniqueId(), creator, 0, reason);
 		this.punishmentManager.addPunishment(warning);

@@ -4,6 +4,7 @@ import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.punishments.Punishment;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.punishments.PunishmentType;
+import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
@@ -24,11 +25,13 @@ public class BanCommand implements CommandExecutor {
 
 	private SCCore instance;
 	private SCPlayerManager scPlayerManager;
+	private RankManager rankManager;
 	private PunishmentManager punishmentManager;
 
 	public BanCommand(SCCore instance) {
 		this.instance = instance;
 		this.scPlayerManager = instance.getSCPlayerManager();
+		this.rankManager = instance.getRankManager();
 		this.punishmentManager = instance.getPunishmentManager();
 	}
 
@@ -69,6 +72,7 @@ public class BanCommand implements CommandExecutor {
 				}
 			}
 		}
+
 		StringBuilder sb = new StringBuilder();
 		for (int i = 1; i < args.length; i++) {
 			if (i != args.length - 1)
@@ -80,6 +84,12 @@ public class BanCommand implements CommandExecutor {
 		String reason = sb.toString();
 		UUID creator = (sender instanceof Player) ? ((Player) sender).getUniqueId() : null;
 
+		if(creator != null) {
+			if(rankManager.getRank(creator).getId() <= rankManager.getRank(offlinePlayer.getUniqueId()).getId())
+				sender.sendMessage("§cYou are not permitted to ban a player that possesses the " + rankManager.getRank(offlinePlayer.getUniqueId()).getName() + " §crank.");
+				return false;
+		}
+
 		Punishment ban = new Punishment(PunishmentType.BAN, offlinePlayer.getUniqueId(), creator, -1, reason);
 		this.punishmentManager.addPunishment(ban);
 
@@ -88,9 +98,9 @@ public class BanCommand implements CommandExecutor {
 
 		if (hover) {
 			SCPlayer senderSCPlayer = this.scPlayerManager.getSCPlayer(((Player) sender).getUniqueId());
-			message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" §7has permanently banned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7with reason: §a" + reason + "§7.", true);
+			message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" §7has banned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7with reason: §a" + reason + "§7.", true);
 		} else {
-			message = message.then("§6Console §7has permanently banned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7with reason: §a" + reason + "§7.", true);
+			message = message.then("§6Console §7has banned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7with reason: §a" + reason + "§7.", true);
 		}
 
 		this.scPlayerManager.staff(message);
