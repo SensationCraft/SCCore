@@ -117,8 +117,11 @@ public class HistoryCommand implements CommandExecutor {
                     }
                 }
             }
+        }  else {
+            sender.sendMessage("§cNo player with the given name found.");
+            return false;
         }
-        return true;
+        return false;
     }
 
     public int getMinArgs(String subcommand) {
