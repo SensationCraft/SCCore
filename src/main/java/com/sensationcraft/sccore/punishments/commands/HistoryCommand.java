@@ -29,8 +29,8 @@ public class HistoryCommand implements CommandExecutor {
 
     public HistoryCommand(SCCore instance) {
         this.instance = instance;
-        this.scPlayerManager = instance.getSCPlayerManager();
         this.punishmentManager = instance.getPunishmentManager();
+        this.scPlayerManager = instance.getSCPlayerManager();
         this.utils = instance.getUtils();
     }
 
@@ -44,7 +44,7 @@ public class HistoryCommand implements CommandExecutor {
 
         String usage = "§4Usage: §c/history full <player>\n         /history type <player> <type>";
 
-        if (args.length < this.getMinArgs(args[0])) {
+        if (args.length < this.getMinArgs(args[0]) || args.length == 0) {
             sender.sendMessage(usage);
             return false;
         }

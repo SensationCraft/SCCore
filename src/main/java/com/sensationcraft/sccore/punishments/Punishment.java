@@ -77,7 +77,7 @@ public class Punishment {
 		List<String> info =  Arrays.asList(
 				"§b" + type.name() + " Information:",
 				"   §aCreator: §f" + tag,
-				"   §aCreated: §f" + utils.getTimeStamp(this.created));
+				"   §aCreated: §f" + utils.getTimeStamp(created));
 
 		if(type.equals(PunishmentType.TEMPBAN) || type.equals(PunishmentType.TEMPMUTE) && !hasExpired())
 		info.add("   §aRemaining: §f" + utils.getDifference(System.currentTimeMillis(), created + expires));

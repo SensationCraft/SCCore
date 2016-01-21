@@ -129,10 +129,10 @@ public class SCCore extends JavaPlugin implements Listener {
 		this.rankManager = new RankManager(this);
 		this.permissionsManager = new PermissionsManager(this);
 		this.statsManager = new StatsManager(this);
-		this.punishmentManager = new PunishmentManager(this);
-		this.scPlayerManager = new SCPlayerManager(this);
-		this.arenaManager = new ArenaManager(this);
 		this.helpRequestManager = new HelpRequestManager(this);
+		this.scPlayerManager = new SCPlayerManager(this);
+		this.punishmentManager = new PunishmentManager(this);
+		this.arenaManager = new ArenaManager(this);
 		this.utils = new Utils();
 	}
 

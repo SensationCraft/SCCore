@@ -7,6 +7,7 @@ import lombok.Getter;
 public enum ChatChannel {
 
 	SHOUT('s'),
+	STAFF('t'),
 	PUBLIC('p'),
 	ALLY('a'),
 	FACTION('f'),

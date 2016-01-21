@@ -36,7 +36,7 @@ public class ChannelCommand implements CommandExecutor
 
 		if(args.length < 1)
 		{
-			sender.sendMessage("/channel shout|global(shout)|public|ally|faction");
+			sender.sendMessage("/channel shout|global|public|ally|faction");
 			return true;
 		}
 
@@ -52,6 +52,8 @@ public class ChannelCommand implements CommandExecutor
 			case 's':
 				channel = ChatChannel.SHOUT;
 				break;
+			case 't':
+				channel = ChatChannel.STAFF;
 			case 'p':
 				channel = ChatChannel.PUBLIC;
 				break;
