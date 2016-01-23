@@ -1,16 +1,15 @@
 package com.sensationcraft.sccore.chat.commands;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.MPlayerColl;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.chat.ChatChannel;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class ChannelCommand implements CommandExecutor
 {

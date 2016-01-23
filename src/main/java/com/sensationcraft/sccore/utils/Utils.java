@@ -106,7 +106,7 @@ public class Utils {
 	public String getTimeStamp(long l) {
 		final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
 		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("EST"));
-		return DATE_FORMAT.format(new Date(l) + " EST");
+		return DATE_FORMAT.format(new Date(l)) + " EST";
 	}
 
 	public String getDateStamp(long l) {

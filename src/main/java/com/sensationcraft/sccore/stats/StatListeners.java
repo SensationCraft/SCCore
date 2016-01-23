@@ -1,7 +1,9 @@
 package com.sensationcraft.sccore.stats;
 
-import java.util.Arrays;
-
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -12,10 +14,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
-import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import java.util.Arrays;
 
 /**
  * Created by Anml on 1/12/16.

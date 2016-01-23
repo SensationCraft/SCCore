@@ -42,9 +42,10 @@ public class HistoryCommand implements CommandExecutor {
             return false;
         }
 
-        String usage = "§4Usage: §c/history full <player>\n         /history type <player> <type>";
+        String usage = "§4Usage: §c/history full <player>\n         /history type <player> <type>\n" +
+                "         /history count <player>";
 
-        if (args.length < this.getMinArgs(args[0]) || args.length == 0) {
+        if (args.length == 0 || args.length < this.getMinArgs(args[0])) {
             sender.sendMessage(usage);
             return false;
         }
@@ -62,7 +63,43 @@ public class HistoryCommand implements CommandExecutor {
                 return false;
             }
 
-            if(args[0].equalsIgnoreCase("full")) {
+            if (args[0].equalsIgnoreCase("count")) {
+                int ban = 0;
+                int tempban = 0;
+                int mute = 0;
+                int tempmute = 0;
+                int kick = 0;
+                int warn = 0;
+
+                synchronized (punishments) {
+                    for (Punishment punishment : punishments) {
+                        if (punishment.getType().equals(PunishmentType.BAN))
+                            ban++;
+                        else if (punishment.getType().equals(PunishmentType.TEMPBAN))
+                            tempban++;
+                        else if (punishment.getType().equals(PunishmentType.MUTE))
+                            mute++;
+                        else if (punishment.getType().equals(PunishmentType.TEMPMUTE))
+                            tempmute++;
+                        else if (punishment.getType().equals(PunishmentType.KICK))
+                            kick++;
+                        else {
+                            warn++;
+                        }
+                    }
+                }
+
+                FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("§a's Punishment Count:", true);
+                message.send(sender);
+                sender.sendMessage("§f  - §aBan Count: §6" + ban);
+                sender.sendMessage("§f  - §aTempban Count: §6" + tempban);
+                sender.sendMessage("§f  - §aMute Count: §6" + mute);
+                sender.sendMessage("§f  - §aTempmute Count: §6" + tempmute);
+                sender.sendMessage("§f  - §aKick Count: §6" + kick);
+                sender.sendMessage("§f  - §aWarning Count: §6" + warn);
+
+                return true;
+            } else if (args[0].equalsIgnoreCase("full")) {
                 List<Long> createdTimes = new ArrayList<>();
                 synchronized (punishments) {
                     for (Punishment punishment : punishments)
@@ -71,14 +108,15 @@ public class HistoryCommand implements CommandExecutor {
                 Collections.sort(createdTimes, Collections.reverseOrder());
 
                 FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("§a's Punishments:", true);
+                message.send(sender);
                 synchronized (punishments) {
                     for (long l : createdTimes) {
                         for (Punishment punishment : punishments) {
                             if (punishment.getCreated() == l) {
-                                String info = "§3[" + utils.getDateStamp(punishment.getCreated()) + "]§7: §a" + punishment.getReason() + " §4[" + punishment.getType().name() + "]";
+                                String info = "§6[" + utils.getDateStamp(punishment.getCreated()) + "] §f" + punishment.getReason() + " §4§l[" + punishment.getType().name() + "]";
                                 if (punishment.hasExpired() && !(punishment.getType().equals(PunishmentType.WARNING) || punishment.getType().equals(PunishmentType.KICK)))
                                     info += " §8[EXPIRED]";
-                                FancyMessage msg = new FancyMessage(" §f- ").then(info).tooltip(punishment.getHoverText()).then("", true);
+                                FancyMessage msg = new FancyMessage("§f  - ").then(info).tooltip(punishment.getHoverText()).then("§7", true);
                                 msg.send(sender);
                             }
                         }
@@ -86,11 +124,13 @@ public class HistoryCommand implements CommandExecutor {
                 }
                 return true;
             } else {
-                PunishmentType type = PunishmentType.valueOf(args[2].toUpperCase());
+                PunishmentType type;
 
-                if(type == null) {
-                  sender.sendMessage("§cYou have entered an invalid punishment type.");
-                 return false;
+                try {
+                    type = PunishmentType.valueOf(args[2].toUpperCase());
+                } catch (Exception e) {
+                    sender.sendMessage("§cYou have entered an invalid punishment type.");
+                    return false;
                 }
 
                 List<Long> createdTimes = new ArrayList<>();
@@ -102,15 +142,16 @@ public class HistoryCommand implements CommandExecutor {
                 Collections.sort(createdTimes, Collections.reverseOrder());
 
                 FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("§a's " + type.name() + " Punishments: " , true);
+                message.send(sender);
                 synchronized (punishments) {
                     for (long l : createdTimes) {
                         for (Punishment punishment : punishments) {
                             if(punishment.getType().equals(type))
                             if (punishment.getCreated() == l) {
-                                String info = "§3[" + utils.getDateStamp(punishment.getCreated()) + "]§7: §a" + punishment.getReason() + " §4[" + punishment.getType().name() + "]";
+                                String info = "§6[" + utils.getDateStamp(punishment.getCreated()) + "] §f" + punishment.getReason() + " §4§l[" + punishment.getType().name() + "]";
                                 if (punishment.hasExpired() && !(punishment.getType().equals(PunishmentType.WARNING) || punishment.getType().equals(PunishmentType.KICK)))
                                     info += " §8[EXPIRED]";
-                                FancyMessage msg = new FancyMessage(" §f- ").then(info).tooltip(punishment.getHoverText()).then("", true);
+                                FancyMessage msg = new FancyMessage("§f  - ").then(info).tooltip(punishment.getHoverText()).then("§7", true);
                                 msg.send(sender);
                             }
                         }
@@ -130,6 +171,8 @@ public class HistoryCommand implements CommandExecutor {
                 return 2;
             case "type":
                 return 3;
+            case "count":
+                return 2;
             default:
                 return 100;
         }

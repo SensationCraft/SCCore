@@ -94,9 +94,10 @@ public class TempbanCommand implements CommandExecutor {
 		UUID creator = (sender instanceof Player) ? ((Player) sender).getUniqueId() : null;
 
 		if(creator != null) {
-			if(rankManager.getRank(creator).getId() <= rankManager.getRank(offlinePlayer.getUniqueId()).getId())
+			if (rankManager.getRank(creator).getId() <= rankManager.getRank(offlinePlayer.getUniqueId()).getId()) {
 				sender.sendMessage("§cYou are not permitted to tempban a player that possesses the " + rankManager.getRank(offlinePlayer.getUniqueId()).getName() + " §crank.");
-			return false;
+				return false;
+			}
 		}
 
 		Punishment tempban = new Punishment(PunishmentType.TEMPBAN, offlinePlayer.getUniqueId(), creator, length, reason);

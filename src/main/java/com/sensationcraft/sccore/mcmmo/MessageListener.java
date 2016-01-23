@@ -1,12 +1,11 @@
 package com.sensationcraft.sccore.mcmmo;
 
-import org.bukkit.plugin.Plugin;
-
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import com.sensationcraft.sccore.utils.fanciful.Reflection;
+import org.bukkit.plugin.Plugin;
 
 public class MessageListener extends PacketAdapter{
 

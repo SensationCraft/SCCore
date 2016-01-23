@@ -1,17 +1,14 @@
 package com.sensationcraft.sccore.ranks;
 
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.mysql.MySQL;
+import org.bukkit.Bukkit;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import org.bukkit.Bukkit;
-
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.mysql.MySQL;
-
-import lombok.Getter;
 
 /**
  * Created by Anml on 1/12/16.
@@ -21,7 +18,6 @@ public class RankManager {
 
 	private SCCore instance;
 	private MySQL mySQL;
-	@Getter
 	private Map<UUID, Rank> players;
 
 	public RankManager(SCCore instance) {
@@ -97,4 +93,7 @@ public class RankManager {
 		return false;
 	}
 
+	public Map<UUID, Rank> getPlayers() {
+		return this.players;
+	}
 }

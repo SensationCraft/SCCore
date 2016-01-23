@@ -84,9 +84,10 @@ public class MuteCommand implements CommandExecutor {
 		UUID creator = (sender instanceof Player) ? ((Player) sender).getUniqueId() : null;
 
 		if(creator != null) {
-			if(rankManager.getRank(creator).getId() <= rankManager.getRank(offlinePlayer.getUniqueId()).getId())
+			if (rankManager.getRank(creator).getId() <= rankManager.getRank(offlinePlayer.getUniqueId()).getId()) {
 				sender.sendMessage("§cYou are not permitted to mute a player that possesses the " + rankManager.getRank(offlinePlayer.getUniqueId()).getName() + " §crank.");
-			return false;
+				return false;
+			}
 		}
 
 		Punishment mute = new Punishment(PunishmentType.MUTE, offlinePlayer.getUniqueId(), creator, -1, reason);

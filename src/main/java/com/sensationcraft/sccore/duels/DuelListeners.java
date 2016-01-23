@@ -1,8 +1,8 @@
 package com.sensationcraft.sccore.duels;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -18,21 +18,20 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Anml on 1/3/16.
  */
 public class DuelListeners implements Listener {
 
+	private final Set<EntityDamageByEntityEvent> interceptedDamage = new HashSet<>();
+	private final Set<PotionSplashEvent> interceptedPotions = new HashSet<>();
 	private SCCore instance;
 	private SCPlayerManager scPlayerManager;
 	private ArenaManager arenaManager;
 	private Arena arena;
-	private final Set<EntityDamageByEntityEvent> interceptedDamage = new HashSet<>();
-	private final Set<PotionSplashEvent> interceptedPotions = new HashSet<>();
 
 	public DuelListeners(SCCore instance) {
 		this.instance = instance;

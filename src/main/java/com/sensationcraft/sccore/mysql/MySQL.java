@@ -1,15 +1,9 @@
 package com.sensationcraft.sccore.mysql;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import com.sensationcraft.sccore.SCCore;
-
 import lombok.Cleanup;
-import lombok.Getter;
+
+import java.sql.*;
 
 /**
  * Created by kishanpatel on 12/6/15.
@@ -17,7 +11,6 @@ import lombok.Getter;
 
 public class MySQL {
 
-	@Getter
 	private Connection connection;
 	private SCCore instance;
 
@@ -68,5 +61,9 @@ public class MySQL {
 		} finally {
 			qry.close();
 		}
+	}
+
+	public Connection getConnection() {
+		return this.connection;
 	}
 }

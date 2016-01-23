@@ -1,13 +1,11 @@
 package com.sensationcraft.sccore.stats;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 /**
  * Created by Anml on 1/12/16.
  */
 @Getter
-@RequiredArgsConstructor
 public enum Stat {
 
 	KILLS("Kills"),
@@ -15,6 +13,10 @@ public enum Stat {
 	WINS("Wins"),
 	LOSSES("Losses");
 
-	private final String name;
+	private String name;
+
+	Stat(String name) {
+		this.name = name;
+	}
 
 }

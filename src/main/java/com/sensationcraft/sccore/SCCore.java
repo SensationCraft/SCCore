@@ -21,17 +21,21 @@ import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.ranks.commands.PermsCommand;
 import com.sensationcraft.sccore.ranks.commands.RankCommand;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.shop.ItemManager;
+import com.sensationcraft.sccore.shop.SellCauldron;
+import com.sensationcraft.sccore.shop.commands.ShopCommand;
 import com.sensationcraft.sccore.stats.StatListeners;
 import com.sensationcraft.sccore.stats.StatsManager;
 import com.sensationcraft.sccore.utils.Utils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.UUID;
 
 /**
  * Created by Anml on 12/26/15.
@@ -44,19 +48,22 @@ public class SCCore extends JavaPlugin implements Listener {
 	private Essentials essentials;
 	private SCPlayerManager scPlayerManager;
 	private ArenaManager arenaManager;
+	private ItemManager itemManager;
 	private RankManager rankManager;
 	private StatsManager statsManager;
 	private PermissionsManager permissionsManager;
+	private PunishmentManager punishmentManager;
+
 	private HelpRequestManager helpRequestManager;
 	private Utils utils;
 	private MySQL mySQL;
-	private PunishmentManager punishmentManager;
+
+	public static SCCore getInstance() {
+		return SCCore.instance;
+	}
 
 	public SCPlayerManager getSCPlayerManager() {
 		return scPlayerManager;
-	}
-	public static SCCore getInstance() {
-		return SCCore.instance;
 	}
 
 	@Override
@@ -76,14 +83,17 @@ public class SCCore extends JavaPlugin implements Listener {
 		this.registerCommands();
 
 		this.scPlayerManager.loadSCPlayers();
+		this.itemManager.load();
 
 		this.getLogger().info("[SCCore] Plugin has been enabled.");
 	}
 
 	@Override
 	public void onDisable() {
-		for (Player player : Bukkit.getOnlinePlayers())
-			player.kickPlayer("§cSensationCraft §7is restarting. Please wait 30 seconds before re-logging.");
+
+		for (UUID uuid : scPlayerManager.getScPlayers().keySet()) {
+			scPlayerManager.removeSCPlayer(uuid);
+		}
 
 		SCCore.instance = null;
 
@@ -101,9 +111,11 @@ public class SCCore extends JavaPlugin implements Listener {
 		pm.registerEvents(new StatListeners(this), this);
 		pm.registerEvents(new PunishmentListeners(this), this);
 		pm.registerEvents(new ChatListener(this), this);
+		pm.registerEvents(new SellCauldron(this), this);
 	}
 
 	public void registerCommands() {
+		this.getCommand("shop").setExecutor(new ShopCommand(this));
 		this.getCommand("channel").setExecutor(new ChannelCommand(this));
 		this.getCommand("staff").setExecutor(new StaffCommand(this));
 		this.getCommand("rank").setExecutor(new RankCommand(this));
@@ -126,6 +138,7 @@ public class SCCore extends JavaPlugin implements Listener {
 
 	public void registerManagers() {
 		this.mySQL = new MySQL(this);
+		this.utils = new Utils();
 		this.rankManager = new RankManager(this);
 		this.permissionsManager = new PermissionsManager(this);
 		this.statsManager = new StatsManager(this);
@@ -133,11 +146,13 @@ public class SCCore extends JavaPlugin implements Listener {
 		this.scPlayerManager = new SCPlayerManager(this);
 		this.punishmentManager = new PunishmentManager(this);
 		this.arenaManager = new ArenaManager(this);
-		this.utils = new Utils();
+		this.itemManager = new ItemManager(this);
 	}
 
 	@EventHandler
 	public void onServerListPing(ServerListPingEvent event) {
-		event.setMotd("                §c§lSensation§4§lCraft");
+		String time = (System.currentTimeMillis() <= utils.longLength(utils.getDifference(System.currentTimeMillis(), 1453590000000L))) ? "OPEN NOW" : utils.getDifference(System.currentTimeMillis(), 1453590000000L);
+		event.setMotd("                §c§lSensation§4§lCraft\n      Remaining Time: §6§l" + time);
 	}
+
 }

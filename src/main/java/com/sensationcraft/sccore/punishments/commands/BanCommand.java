@@ -85,9 +85,10 @@ public class BanCommand implements CommandExecutor {
 		UUID creator = (sender instanceof Player) ? ((Player) sender).getUniqueId() : null;
 
 		if(creator != null) {
-			if(rankManager.getRank(creator).getId() <= rankManager.getRank(offlinePlayer.getUniqueId()).getId())
+			if (rankManager.getRank(creator).getId() <= rankManager.getRank(offlinePlayer.getUniqueId()).getId()) {
 				sender.sendMessage("§cYou are not permitted to ban a player that possesses the " + rankManager.getRank(offlinePlayer.getUniqueId()).getName() + " §crank.");
 				return false;
+			}
 		}
 
 		Punishment ban = new Punishment(PunishmentType.BAN, offlinePlayer.getUniqueId(), creator, -1, reason);

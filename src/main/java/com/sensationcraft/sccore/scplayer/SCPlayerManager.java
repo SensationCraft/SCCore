@@ -28,6 +28,8 @@ import java.util.*;
 /**
  * Created by Kishan on 12/2/15.
  */
+
+@Getter
 public class SCPlayerManager implements Listener {
 
 	private SCCore instance;

@@ -94,9 +94,10 @@ public class TempmuteCommand implements CommandExecutor {
 		UUID creator = (sender instanceof Player) ? ((Player) sender).getUniqueId() : null;
 
 		if(creator != null) {
-			if(rankManager.getRank(creator).getId() <= rankManager.getRank(offlinePlayer.getUniqueId()).getId())
+			if (rankManager.getRank(creator).getId() <= rankManager.getRank(offlinePlayer.getUniqueId()).getId()) {
 				sender.sendMessage("§cYou are not permitted to tempmute a player that possesses the " + rankManager.getRank(offlinePlayer.getUniqueId()).getName() + " §crank.");
-			return false;
+				return false;
+			}
 		}
 
 		Punishment tempmute = new Punishment(PunishmentType.TEMPMUTE, offlinePlayer.getUniqueId(), creator, length, reason);

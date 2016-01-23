@@ -16,9 +16,9 @@ import java.util.UUID;
 public class Punishment {
 
 	SCCore instance;
+	Utils utils;
 	PunishmentManager punishmentManager;
 	SCPlayerManager scPlayerManager;
-	Utils utils;
 	MySQL mySQL;
 
 	PunishmentType type;
@@ -38,9 +38,9 @@ public class Punishment {
 		this.reason = reason;
 
 		this.instance = SCCore.getInstance();
+		this.utils = this.instance.getUtils();
 		this.punishmentManager = this.instance.getPunishmentManager();
 		this.scPlayerManager = this.instance.getSCPlayerManager();
-		this.utils = this.instance.getUtils();
 		this.mySQL = this.instance.getMySQL();
 	}
 
@@ -79,8 +79,11 @@ public class Punishment {
 				"   §aCreator: §f" + tag,
 				"   §aCreated: §f" + utils.getTimeStamp(created));
 
-		if(type.equals(PunishmentType.TEMPBAN) || type.equals(PunishmentType.TEMPMUTE) && !hasExpired())
-		info.add("   §aRemaining: §f" + utils.getDifference(System.currentTimeMillis(), created + expires));
+		if ((type.equals(PunishmentType.TEMPBAN) || type.equals(PunishmentType.TEMPMUTE))) {
+			info.add("   §aLength: §f" + utils.getDifference(created, created + expires));
+			if (hasExpired())
+				info.add("   §aRemaining: §f" + utils.getDifference(System.currentTimeMillis(), created + expires));
+		}
 
 		return info;
 	}
