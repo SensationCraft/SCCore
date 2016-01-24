@@ -8,7 +8,7 @@
   <packaging>jar</packaging>
 
   <name>SCCore</name>
-  <url>http://maven.apache.org</url>
+  <url>http://sensationcraft.com</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,6 +41,18 @@
             <downloadSources>true</downloadSources>
             <downloadJavadocs>true</downloadJavadocs>
           </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Main-Class>com.sensationcraft.sccore.SCCore</Main-Class>
+            </manifestEntries>
+          </archive>
+        </configuration>
       </plugin>
     </plugins>
   </build>
