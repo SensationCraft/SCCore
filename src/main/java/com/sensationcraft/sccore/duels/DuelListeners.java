@@ -4,10 +4,7 @@ import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -66,14 +63,15 @@ public class DuelListeners implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerDamageByPlayer(final EntityDamageByEntityEvent e) {
-		if (e.getEntity() instanceof Player == false || e.getDamager() instanceof Player == false) return;
+	/*
+		@EventHandler(priority = EventPriority.HIGHEST)
+        public void onPlayerDamageByPlayer(final EntityDamageByEntityEvent e) {
+            if (e.getEntity() instanceof Player == false || e.getDamager() instanceof Player == false) return;
 
-		if (!this.arena.isDuel(e.getEntity(), e.getDamager()))
-			e.setCancelled(true);
-	}
-
+            if (!this.arena.isDuel(e.getEntity(), e.getDamager()))
+                e.setCancelled(true);
+        }
+    */
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerDeath(final PlayerDeathEvent e) {
 		if (this.arena.getArenaPlayers().contains(e.getEntity())) {
@@ -89,7 +87,7 @@ public class DuelListeners implements Listener {
 			e.getPlayer().sendMessage("§cYou are not permitted to execute commands while dueling.");
 		}
 	}
-
+/*
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onPlayerDamageByEntity(final EntityDamageByEntityEvent e)
 	{
@@ -99,8 +97,8 @@ public class DuelListeners implements Listener {
 			return;
 		}
 
-		/*if (!e.getEntity().getWorld().getName().equalsIgnoreCase("Spawn"))
-			return;*/
+		if (!e.getEntity().getWorld().getName().equalsIgnoreCase("Spawn"))
+			return;
 		if ((e.getEntity() instanceof Player) == false)
 			return;
 		if (!this.instance.getEssentials().getUser((Player) e.getEntity()).isGodModeEnabled())
@@ -182,11 +180,11 @@ public class DuelListeners implements Listener {
 
 		boolean b = true;
 		//So damage pots don't affect same team, uncomment when we have teams
-		/*if (!pot)
-			b = !this.ea.sameTeam((Player) attacker, (Player) defender);*/
+		if (!pot)
+			b = !this.ea.sameTeam((Player) attacker, (Player) defender);
 
 		return this.arena.isDuel(attacker, defender)
 				&& b;
 	}
-
+   */
 }

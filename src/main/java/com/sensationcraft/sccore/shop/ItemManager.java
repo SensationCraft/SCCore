@@ -1,8 +1,13 @@
 package com.sensationcraft.sccore.shop;
 
 import com.sensationcraft.sccore.SCCore;
+import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +16,7 @@ import java.util.List;
  * Created by Anml on 1/20/16.
  */
 
+@Getter
 public class ItemManager {
 
     private SCCore instance;
@@ -36,6 +42,8 @@ public class ItemManager {
         ItemType type = null;
         int amount = 0;
         double price = 0;
+        ItemCategory category = null;
+        boolean bulk = false;
 
         if (!config.contains(path))
             return;
@@ -70,25 +78,31 @@ public class ItemManager {
                     amount = Integer.parseInt(parts[1]);
                     type = ItemType.valueOf(parts[2].toUpperCase());
                     price = Double.parseDouble(parts[3]);
+                    if (parts.length >= 6) {
+                        category = ItemCategory.valueOf(parts[4].toUpperCase());
+                        bulk = Boolean.parseBoolean(parts[6]);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 if (material != null && type != null && amount != 0 && price != 0) {
                     if (type.equals(ItemType.BUY)) {
-                        boolean put = true;
-                        for (Item i : sell) {
-                            if (material.equals(i.getMaterial())) put = false;
+                        if (category != null) {
+                            boolean put = true;
+                            for (Item i : buy) {
+                                if (material.equals(i.getMaterial()) && b == i.getB()) put = false;
+                            }
+                            if (put)
+                                buy.add(new Item(material, b, amount, price, category, bulk));
                         }
-                        if (put)
-                            buy.add(new Item(material, b, amount, type, price));
                     } else {
                         boolean put = true;
                         for (Item i : sell) {
-                            if (material.equals(i.getMaterial())) put = false;
+                            if (material.equals(i.getMaterial()) && b == i.getB()) put = false;
                         }
                         if (put)
-                            sell.add(new Item(material, b, amount, type, price));
+                            sell.add(new Item(material, b, amount, price));
                     }
                 }
             }
@@ -110,7 +124,7 @@ public class ItemManager {
                 String input = "" + item.getMaterial().getId();
                 if (item.getB() != 0)
                     input += ":" + item.getB();
-                input += " " + item.getAmount() + " " + item.getType() + " " + item.getPrice();
+                input += " " + item.getAmount() + " " + item.getType() + " " + item.getPrice() + " " + item.getCategory().name() + " " + item.isBulk();
 
                 beingStored.add(input);
             }
@@ -191,16 +205,59 @@ public class ItemManager {
         return null;
     }
 
-
-    public SCCore getInstance() {
-        return this.instance;
+    public List<Item> getCategorialItems(ItemCategory category) {
+        List<Item> categorialItems = new ArrayList<>();
+        for (Item item : buy) {
+            if (item.getCategory().equals(category))
+                categorialItems.add(item);
+        }
+        return categorialItems;
     }
 
-    public List<Item> getBuy() {
-        return this.buy;
+    public Inventory getMainInvenotory() {
+        Inventory inventory = Bukkit.createInventory(null, 9, "§b§lBuy Shop §6§l(Main Menu)");
+
+        return inventory;
     }
 
-    public List<Item> getSell() {
-        return this.sell;
+    public List<Inventory> getInventories(ItemCategory category) {
+        List<Item> categorialItems = getCategorialItems(category);
+
+        if (categorialItems.size() == 0)
+            return null;
+
+        int invCount = (int) Math.round((categorialItems.size() / 45) + .5);
+
+        List<Inventory> inventories = new ArrayList<>();
+
+        for (int count = 0; count <= invCount; count++) {
+            inventories.add(Bukkit.createInventory(null, 54, "§b§lBuy Shop §f§bl- §6§l" + category.name() + " (" + (count + 1) + "/" + invCount + ")"));
+
+            for (int x = 0; x < invCount; x++) {
+                for (int y = 0; x < 45; x++) {
+                    if (categorialItems.get(y) != null) {
+                        inventories.get(x).setItem(y, categorialItems.get(0).getItemStack());
+                        categorialItems.remove(0);
+                    }
+                }
+
+                if (x != (invCount - 1)) {
+                    ItemStack forward = new ItemStack(Material.ARROW, 1);
+                    ItemMeta fMeta = forward.getItemMeta();
+                    fMeta.setDisplayName("Next Page (" + (x + 2) + "/" + invCount + ")");
+                    forward.setItemMeta(fMeta);
+                    inventories.get(x).setItem(50, forward);
+                }
+                if (x != 0) {
+                    ItemStack back = new ItemStack(Material.ARROW, 1);
+                    ItemMeta bMeta = back.getItemMeta();
+                    bMeta.setDisplayName("Previous Page (" + (x) + "/" + invCount + ")");
+                    back.setItemMeta(bMeta);
+                    inventories.get(x).setItem(48, back);
+                }
+            }
+        }
+
+        return inventories;
     }
 }

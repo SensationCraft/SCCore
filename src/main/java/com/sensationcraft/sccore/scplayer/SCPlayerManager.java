@@ -1,10 +1,5 @@
 package com.sensationcraft.sccore.scplayer;
 
-import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MPlayerColl;
-import com.massivecraft.massivecore.ps.PS;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.helprequests.HelpRequestManager;
 import com.sensationcraft.sccore.lockpicks.LockpickRunnable;
@@ -19,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -85,37 +79,38 @@ public class SCPlayerManager implements Listener {
 		this.removeSCPlayer(player.getUniqueId());
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerDamageByPlayer(final EntityDamageByEntityEvent e) {
-		if (e.getEntity() instanceof Player == false || e.getDamager() instanceof Player == false) return;
+	/*
+		@EventHandler(priority = EventPriority.HIGHEST)
+        public void onPlayerDamageByPlayer(final EntityDamageByEntityEvent e) {
+            if (e.getEntity() instanceof Player == false || e.getDamager() instanceof Player == false) return;
 
-		Player player = (Player) e.getEntity();
-		Player target = (Player) e.getDamager();
-		SCPlayer scp = this.getSCPlayer(player.getUniqueId());
-		SCPlayer sct = this.getSCPlayer(target.getUniqueId());
-		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(target.getLocation().getChunk()));
+            Player player = (Player) e.getEntity();
+            Player target = (Player) e.getDamager();
+            SCPlayer scp = this.getSCPlayer(player.getUniqueId());
+            SCPlayer sct = this.getSCPlayer(target.getUniqueId());
+            Faction faction = BoardColl.get().getFactionAt(PS.valueOf(target.getLocation().getChunk()));
 
 
-		if (faction.getName().equalsIgnoreCase("Safezone")) {
-			return;
-		}
+            if (faction.getName().equalsIgnoreCase("Safezone")) {
+                return;
+            }
 
-		final Faction pFaction = MPlayerColl.get().get(player).getFaction();
-		final Faction tFaction = MPlayerColl.get().get(target).getFaction();
+            final Faction pFaction = MPlayerColl.get().get(player).getFaction();
+            final Faction tFaction = MPlayerColl.get().get(target).getFaction();
 
-		if (pFaction.getRelationTo(tFaction) == Rel.MEMBER && !pFaction.isNone()) {
-			return;
-		}
+            if (pFaction.getRelationTo(tFaction) == Rel.MEMBER && !pFaction.isNone()) {
+                return;
+            }
 
-		if (pFaction.getRelationTo(tFaction) == Rel.ALLY) {
-			return;
-		}
+            if (pFaction.getRelationTo(tFaction) == Rel.ALLY) {
+                return;
+            }
 
-		scp.combatTag();
-		sct.combatTag();
+            scp.combatTag();
+            sct.combatTag();
 
-	}
-
+        }
+    */
 	public SCPlayer getSCPlayer(UUID uuid) {
 		if (this.scPlayers.containsKey(uuid))
 			return this.scPlayers.get(uuid);

@@ -12,6 +12,5 @@ public enum ItemCategory {
     END,
     WOOD,
     GLASS,
-    STONE,
-    NONE
+    STONE
 }

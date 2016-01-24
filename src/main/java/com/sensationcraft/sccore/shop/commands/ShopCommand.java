@@ -2,6 +2,7 @@ package com.sensationcraft.sccore.shop.commands;
 
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.shop.Item;
+import com.sensationcraft.sccore.shop.ItemCategory;
 import com.sensationcraft.sccore.shop.ItemManager;
 import com.sensationcraft.sccore.shop.ItemType;
 import org.bukkit.Material;
@@ -38,7 +39,9 @@ public class ShopCommand implements CommandExecutor {
             return false;
         }
 
-        String usage = "§4Usage: §c/shop add <type> <price>\n         /shop remove <type>\n" +
+        String usage = "§4Usage: §c/shop s:add <price>\n" +
+                "         /shop b:add <price> <category> <bulk>\n" +
+                "         /shop remove <type>\n" +
                 "         /shop list <type>";
 
         if (args.length == 0 || args.length < this.getMinArgs(args[0])) {
@@ -46,15 +49,17 @@ public class ShopCommand implements CommandExecutor {
             return false;
         }
 
-        ItemType type = null;
-        try {
-            type = ItemType.valueOf(args[1].toUpperCase());
-        } catch (Exception e) {
-            sender.sendMessage("§cYou have entered a invalid item type (BUY or SELL).");
-            return false;
-        }
 
         if (args[0].equalsIgnoreCase("list")) {
+
+            ItemType type = null;
+            try {
+                type = ItemType.valueOf(args[1].toUpperCase());
+            } catch (Exception e) {
+                sender.sendMessage("§cYou have entered a invalid item type.");
+                return false;
+            }
+
             if (type.equals(ItemType.BUY) && itemManager.getBuy().size() == 0) {
                 sender.sendMessage("§cThere are currently no item's listed under the BUY type.");
                 return false;
@@ -70,7 +75,7 @@ public class ShopCommand implements CommandExecutor {
                     String s = "§f   - §6" + item.getAmount() + "x " + item.getMaterial().name();
                     if (item.getB() != 0)
                         s += " (byte: " + item.getB() + ")";
-                    s += " with a price of $" + item.getPrice();
+                    s += " with a price of $" + item.getPrice() + " (Category: " + item.getCategory().name() + ")";
                     sender.sendMessage(s);
                 }
                 return true;
@@ -100,11 +105,15 @@ public class ShopCommand implements CommandExecutor {
             return false;
         }
 
-        if (args[0].equalsIgnoreCase("add")) {
+        if (args[0].equalsIgnoreCase("s:add") || args[0].equalsIgnoreCase("b:add")) {
+
+            ItemType type = ItemType.BUY;
+            if (args[0].equalsIgnoreCase("s:add"))
+                type = ItemType.SELL;
 
             double price = 0;
             try {
-                price = Double.parseDouble(args[2]);
+                price = Double.parseDouble(args[1]);
             } catch (NumberFormatException e) {
                 sender.sendMessage("§cYou have entered an invalid price.");
                 return false;
@@ -115,15 +124,50 @@ public class ShopCommand implements CommandExecutor {
                 return false;
             }
 
-            boolean task = itemManager.addItem(new Item(stack.getType(), stack.getData().getData(), stack.getAmount(), type, price));
+            ItemCategory category = null;
+            boolean bulk = false;
+            if (type.equals(ItemType.BUY)) {
+                try {
+                    category = ItemCategory.valueOf(args[2].toUpperCase());
+                } catch (Exception e) {
+                    sender.sendMessage("§cYou have entered a invalid category.");
+                    return false;
+                }
+                try {
+                    bulk = Boolean.parseBoolean(args[3]);
+                } catch (Exception e) {
+                    sender.sendMessage("§cYou have entered a invalid boolean value.");
+                    return false;
+                }
+            }
+
+            boolean task;
+            if (type.equals(ItemType.BUY)) {
+                task = itemManager.addItem(new Item(stack.getType(), stack.getData().getData(), stack.getAmount(), price, category, bulk));
+            } else {
+                task = itemManager.addItem(new Item(stack.getType(), stack.getData().getData(), stack.getAmount(), price));
+            }
+
             if (task) {
-                sender.sendMessage("§aYou have added the item " + stack.getAmount() + "x " + stack.getType().name() + " to the " + type.name() + " shop for a price of $" + price + ".");
+                if (type.equals(ItemType.SELL)) {
+                    sender.sendMessage("§aYou have added the item " + stack.getAmount() + "x " + stack.getType().name() + " to the " + type.name() + " shop for a price of $" + price + ".");
+                } else {
+                    sender.sendMessage("§aYou have added the item " + stack.getAmount() + "x " + stack.getType().name() + " to the " + type.name() + " shop for a price of $" + price + " (Category: " + category.name() + ", Bulk: " + bulk + ").");
+                }
                 return true;
             } else {
-                sender.sendMessage("§aThe material you are trying to add to the shop already exists.");
+                sender.sendMessage("§cThe material you are trying to add to the shop already exists.");
                 return false;
             }
         } else if (args[0].equalsIgnoreCase("remove")) {
+
+            ItemType type = null;
+            try {
+                type = ItemType.valueOf(args[1].toUpperCase());
+            } catch (Exception e) {
+                sender.sendMessage("§cYou have entered a invalid item type.");
+                return false;
+            }
 
             Item item = itemManager.removeItem(type, stack.getType(), stack.getData().getData());
 
@@ -141,8 +185,10 @@ public class ShopCommand implements CommandExecutor {
 
     public int getMinArgs(String subcommand) {
         switch (subcommand.toLowerCase()) {
-            case "add":
-                return 3;
+            case "s:add":
+                return 2;
+            case "b:add":
+                return 4;
             case "remove":
                 return 2;
             case "list":
