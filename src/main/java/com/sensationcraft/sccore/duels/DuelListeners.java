@@ -4,7 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -25,7 +28,6 @@ import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 public class DuelListeners implements Listener {
 
 	private final Set<EntityDamageByEntityEvent> interceptedDamage = new HashSet<>();
-	private final Set<PotionSplashEvent> interceptedPotions = new HashSet<>();
 	private SCCore instance;
 	private SCPlayerManager scPlayerManager;
 	private ArenaManager arenaManager;
@@ -88,37 +90,20 @@ public class DuelListeners implements Listener {
 			e.getPlayer().sendMessage("§cYou are not permitted to execute commands while dueling.");
 		}
 	}
-	/*
+
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onPlayerDamageByEntity(final EntityDamageByEntityEvent e)
 	{
-		if (this.isEvent(e.getEntity(), e.getDamager(), false))
-		{
+		if (this.isEvent(e.getEntity(), e.getDamager(), false)) {
 			e.setCancelled(true);
-			return;
-		}
-
-		if (!e.getEntity().getWorld().getName().equalsIgnoreCase("Spawn"))
-			return;
-		if ((e.getEntity() instanceof Player) == false)
-			return;
-		if (!this.instance.getEssentials().getUser((Player) e.getEntity()).isGodModeEnabled())
 			this.interceptedDamage.add(e);
-		e.setCancelled(true);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
 	public void onPlayerDamageByEntityLate(final EntityDamageByEntityEvent e)
 	{
-		if (!this.interceptedDamage.remove(e))
-			return;
-
-		if (this.isEvent(e.getEntity(), e.getDamager(), false))
-		{
-			e.setCancelled(false);
-			return;
-		}
-		if (this.arena.isDuel(e.getEntity(), e.getDamager()))
+		if (this.interceptedDamage.remove(e))
 			e.setCancelled(false);
 	}
 
@@ -131,21 +116,11 @@ public class DuelListeners implements Listener {
 				e.setCancelled(true);
 				return;
 			}
-
-		if (!e.getEntity().getWorld().getName().equalsIgnoreCase("Spawn"))
-			return;
-		if ((e.getEntity().getShooter() instanceof Player) == false)
-			return;
-		if (!this.instance.getEssentials().getUser((Player)e.getEntity().getShooter()).isGodModeEnabled())
-			this.interceptedPotions.add(e);
-		e.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
 	public void onPotionSplashEventLate(final PotionSplashEvent e)
 	{
-		if(!this.interceptedPotions.remove(e))
-			return;
 		final Player shooter = (Player) (e.getPotion()).getShooter();
 		if (this.arena.isDuel(shooter))
 		{
@@ -181,11 +156,11 @@ public class DuelListeners implements Listener {
 
 		boolean b = true;
 		//So damage pots don't affect same team, uncomment when we have teams
-		if (!pot)
-			b = !this.ea.sameTeam((Player) attacker, (Player) defender);
+		//if (!pot)
+		//	b = !this.ea.sameTeam((Player) attacker, (Player) defender);
 
 		return this.arena.isDuel(attacker, defender)
 				&& b;
 	}
-	 */
+
 }

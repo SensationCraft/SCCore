@@ -210,7 +210,7 @@ public class Arena {
 				if(source instanceof Player)
 					player = (Player) source;
 			}
-			if(player != null && arenaPlayers.contains(player))
+			if(player != null && !arenaPlayers.contains(player))
 				return false;
 		}
 		return true;
