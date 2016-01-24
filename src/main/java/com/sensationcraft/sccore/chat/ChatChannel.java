@@ -1,6 +1,7 @@
 package com.sensationcraft.sccore.chat;
 
 import com.google.common.base.Predicate;
+
 import lombok.Getter;
 
 @Getter

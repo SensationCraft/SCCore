@@ -34,7 +34,7 @@ public enum Rank {
 		this.alias = this.name();
 		this.tag = tag;
 		this.lockpickChance = lockpickChance;
-}
+	}
 
 	Rank(int id, String name, String alias, String tag, int lockpickChance) {
 		this.id = id;

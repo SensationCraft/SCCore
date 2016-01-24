@@ -1,18 +1,24 @@
 package com.sensationcraft.sccore.scplayer;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.chat.ChatChannel;
-import com.sensationcraft.sccore.ranks.RankManager;
-import com.sensationcraft.sccore.stats.Stat;
-import com.sensationcraft.sccore.stats.StatsManager;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.chat.ChatChannel;
+import com.sensationcraft.sccore.ranks.RankManager;
+import com.sensationcraft.sccore.stats.Stat;
+import com.sensationcraft.sccore.stats.StatsManager;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by kishanpatel on 12/6/15.

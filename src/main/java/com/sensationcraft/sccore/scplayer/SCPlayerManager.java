@@ -1,5 +1,20 @@
 package com.sensationcraft.sccore.scplayer;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
@@ -13,17 +28,8 @@ import com.sensationcraft.sccore.ranks.Rank;
 import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.stats.StatsManager;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
-import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.*;
+import lombok.Getter;
 
 /**
  * Created by Kishan on 12/2/15.
@@ -140,8 +146,8 @@ public class SCPlayerManager implements Listener {
 		this.rankManager.setSQLRank(uuid, this.rankManager.getRank(uuid));
 		this.permissionsManager.removeAttachment(uuid);
 		this.statsManager.unloadStats(uuid);
-		if(helpRequestManager != null && helpRequestManager.getRequests().containsKey(uuid)) {
-			helpRequestManager.removeRequest(uuid);
+		if(this.helpRequestManager != null && this.helpRequestManager.getRequests().containsKey(uuid)) {
+			this.helpRequestManager.removeRequest(uuid);
 		}
 
 	}

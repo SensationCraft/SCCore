@@ -1,14 +1,14 @@
 package com.sensationcraft.sccore.punishments;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.mysql.MySQL;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
-import com.sensationcraft.sccore.utils.Utils;
-
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.mysql.MySQL;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.utils.Utils;
 
 /**
  * Created by Anml on 1/8/16.
@@ -75,17 +75,17 @@ public class Punishment {
 	public List<String> getHoverText() {
 		String tag = this.punisher != null ? this.scPlayerManager.getSCPlayer(this.punisher).getTag() : "§6Console";
 		List<String> info =  Arrays.asList(
-				"§b" + type.name() + " Information:",
+				"§b" + this.type.name() + " Information:",
 				"   §aCreator: §f" + tag,
-				"   §aCreated: §f" + utils.getTimeStamp(this.created));
+				"   §aCreated: §f" + this.utils.getTimeStamp(this.created));
 
-		if(type.equals(PunishmentType.TEMPBAN) || type.equals(PunishmentType.TEMPMUTE) && !hasExpired())
-		info.add("   §aRemaining: §f" + utils.getDifference(System.currentTimeMillis(), created + expires));
+		if(this.type.equals(PunishmentType.TEMPBAN) || this.type.equals(PunishmentType.TEMPMUTE) && !this.hasExpired())
+			info.add("   §aRemaining: §f" + this.utils.getDifference(System.currentTimeMillis(), this.created + this.expires));
 
 		return info;
 	}
 
-		public boolean hasExpired() {
+	public boolean hasExpired() {
 		return this.expires == 0L || (this.expires != -1L && (this.created + this.expires) <= System.currentTimeMillis());
 	}
 
@@ -104,13 +104,13 @@ public class Punishment {
 		case 4:
 			message = "§7You are temporarily banned from §cSensationCraft§7:\n\n" +
 					"§7Reason: §f" + this.reason + " §8- " + tag + "\n" +
-					"§7Remaining: §f" + utils.getDifference(System.currentTimeMillis(), created + expires) + "\n\n";
+					"§7Remaining: §f" + this.utils.getDifference(System.currentTimeMillis(), this.created + this.expires) + "\n\n";
 			break;
 		case 3:
 			message = "§7You have been muted by " + tag + " §7for: §a" + this.reason + "§7.";
 			break;
 		case 2:
-			message = "§7You have been temporarily muted for §c" + utils.getDifference(System.currentTimeMillis(), created + expires) + " §7by " + tag + " §7for: §a" + this.reason + "§7.";
+			message = "§7You have been temporarily muted for §c" + this.utils.getDifference(System.currentTimeMillis(), this.created + this.expires) + " §7by " + tag + " §7for: §a" + this.reason + "§7.";
 			break;
 		case 1:
 			message = "§7You have been warned by " + tag + " §7with reason: §a" + this.reason + "§7.";
