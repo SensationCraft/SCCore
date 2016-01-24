@@ -1,5 +1,14 @@
 package com.sensationcraft.sccore.chat.commands;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.punishments.Punishment;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
@@ -8,14 +17,6 @@ import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.utils.Utils;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.List;
 
 /**
  * Created by Anml on 12/28/15.
@@ -67,7 +68,7 @@ public class ShoutCommand implements CommandExecutor {
 
 					if (punishment.getType().equals(PunishmentType.TEMPMUTE)) {
 						if (!punishment.hasExpired()) {
-							sender.sendMessage("§cYou are temporarily muted until §3" + utils.getDifference(System.currentTimeMillis(), punishment.getCreated() + punishment.getExpires()) + " §c.");
+							sender.sendMessage("§cYou are temporarily muted until §3" + this.utils.getDifference(System.currentTimeMillis(), punishment.getCreated() + punishment.getExpires()) + " §c.");
 							return false;
 						}
 					}

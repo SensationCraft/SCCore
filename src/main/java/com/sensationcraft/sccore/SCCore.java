@@ -1,5 +1,14 @@
 package com.sensationcraft.sccore;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.ServerListPingEvent;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import com.comphenix.protocol.ProtocolLibrary;
 import com.earth2me.essentials.Essentials;
 import com.sensationcraft.sccore.chat.ChatListener;
 import com.sensationcraft.sccore.chat.commands.ChannelCommand;
@@ -12,10 +21,19 @@ import com.sensationcraft.sccore.duels.commands.SpectateCommand;
 import com.sensationcraft.sccore.helprequests.HelpRequestManager;
 import com.sensationcraft.sccore.helprequests.commands.HelpRequestCommand;
 import com.sensationcraft.sccore.lockpicks.LockpickListeners;
+import com.sensationcraft.sccore.mcmmo.MessageListener;
 import com.sensationcraft.sccore.mysql.MySQL;
 import com.sensationcraft.sccore.punishments.PunishmentListeners;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
-import com.sensationcraft.sccore.punishments.commands.*;
+import com.sensationcraft.sccore.punishments.commands.BanCommand;
+import com.sensationcraft.sccore.punishments.commands.HistoryCommand;
+import com.sensationcraft.sccore.punishments.commands.KickCommand;
+import com.sensationcraft.sccore.punishments.commands.MuteCommand;
+import com.sensationcraft.sccore.punishments.commands.TempbanCommand;
+import com.sensationcraft.sccore.punishments.commands.TempmuteCommand;
+import com.sensationcraft.sccore.punishments.commands.UnbanCommand;
+import com.sensationcraft.sccore.punishments.commands.UnmuteCommand;
+import com.sensationcraft.sccore.punishments.commands.WarnCommand;
 import com.sensationcraft.sccore.ranks.PermissionsManager;
 import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.ranks.commands.PermsCommand;
@@ -27,13 +45,8 @@ import com.sensationcraft.sccore.shop.commands.ShopCommand;
 import com.sensationcraft.sccore.stats.StatListeners;
 import com.sensationcraft.sccore.stats.StatsManager;
 import com.sensationcraft.sccore.utils.Utils;
+
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.server.ServerListPingEvent;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
 
@@ -112,6 +125,8 @@ public class SCCore extends JavaPlugin implements Listener {
 		pm.registerEvents(new PunishmentListeners(this), this);
 		pm.registerEvents(new ChatListener(this), this);
 		pm.registerEvents(new SellCauldron(this), this);
+		
+		ProtocolLibrary.getProtocolManager().addPacketListener(new MessageListener(this));
 	}
 
 	public void registerCommands() {

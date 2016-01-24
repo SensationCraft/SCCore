@@ -2,6 +2,8 @@ package com.sensationcraft.sccore.chat;
 
 import com.google.common.base.Predicate;
 
+import lombok.Getter;
+
 public enum ChatChannel {
 
 	SHOUT('s'),
@@ -13,6 +15,7 @@ public enum ChatChannel {
 
 	public static final Predicate<ChatChannel> NOT_NONE = input -> input != ChatChannel.NONE;
 	public static final Predicate<ChatChannel> NOT_FACTION_NOT_NONE = input -> ChatChannel.NOT_NONE.apply(input) && input != ChatChannel.FACTION && input != ChatChannel.ALLY;
+	@Getter
 	private final char code;
 
 	ChatChannel(char code) {
@@ -39,7 +42,4 @@ public enum ChatChannel {
 		return Character.toString(this.getCode());
 	}
 
-	public char getCode() {
-		return this.code;
-	}
 }
