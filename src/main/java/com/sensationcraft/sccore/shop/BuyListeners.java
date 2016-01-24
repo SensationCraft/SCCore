@@ -40,7 +40,7 @@ public class BuyListeners implements Listener {
         ItemCategory category = null;
         try {
             category = ItemCategory.valueOf(name.toUpperCase());
-        } catch (Exception e) {
+        } catch (Exception ex) {
             player.sendMessage("§cCategory name was not able to be determined. Contact an administrator.");
             return;
         }
