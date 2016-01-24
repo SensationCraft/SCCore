@@ -36,3 +36,10 @@ commands:
     default: false
   helprequest:
   shop:
+    default: false
+  xrayspy:
+    default: false
+  tutremove:
+    default: false
+
+
