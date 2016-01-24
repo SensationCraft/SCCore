@@ -30,6 +30,7 @@ import com.massivecraft.factions.entity.MPlayerColl;
 import com.massivecraft.massivecore.Predictate;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.chat.commands.ShoutCommand;
+import com.sensationcraft.sccore.chat.commands.StaffCommand;
 import com.sensationcraft.sccore.punishments.Punishment;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.punishments.PunishmentType;
@@ -46,7 +47,7 @@ public class ChatListener implements Listener{
 			ChatColor.COLOR_CHAR);
 	private final String from = "&6[%s&6 -> me]&r %s".replace('&',
 			ChatColor.COLOR_CHAR);
-	private final String ss = "&6[SPY] [&b%s -> &c%s] &e%s";
+	private final String ss = "&a[SPY] &6[%s -> %s]&r %s";
 	private final String me = "&5* %s %s".replace('&', ChatColor.COLOR_CHAR);
 	private final String at = "@%s";
 
@@ -342,6 +343,10 @@ public class ChatListener implements Listener{
 			break;
 		case SHOUT:
 			this.shout.onCommand(player, null, "s", event.getMessage().split(" "));
+			break;
+		case STAFF:
+			StaffCommand cmd = new StaffCommand(instance);
+			cmd.onCommand(player, null, "st", event.getMessage().split(" "));
 			break;
 		default:
 			player.sendMessage(ChatColor.DARK_RED + "Oops something went wrong... try relogging.");

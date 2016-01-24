@@ -87,8 +87,6 @@ public class Utils {
 		Date dateStart = new Date(start);
 		Date dateStop = new Date(end);
 
-		SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
-
 		long diff = dateStop.getTime() - dateStart.getTime();
 		long diffSeconds = diff / 1000 % 60;
 		long diffMinutes = diff / (60 * 1000) % 60;
@@ -106,13 +104,13 @@ public class Utils {
 	}
 
 	public String getTimeStamp(long l) {
-		final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
 		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("EST"));
-		return DATE_FORMAT.format(new Date(l) + " EST");
+		return DATE_FORMAT.format(new Date(l)) + " EST";
 	}
 
 	public String getDateStamp(long l) {
-		final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+		final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yy");
 		DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("EST"));
 		return DATE_FORMAT.format(new Date(l));
 	}

@@ -1,17 +1,12 @@
 package com.sensationcraft.sccore.ranks;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+import com.sensationcraft.sccore.SCCore;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
-import com.sensationcraft.sccore.SCCore;
+import java.util.*;
 
 /**
  * Created by Anml on 1/12/16.

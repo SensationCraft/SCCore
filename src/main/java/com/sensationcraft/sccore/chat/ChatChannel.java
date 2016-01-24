@@ -4,24 +4,27 @@ import com.google.common.base.Predicate;
 
 import lombok.Getter;
 
-@Getter
 public enum ChatChannel {
 
 	SHOUT('s'),
+	STAFF('t'),
 	PUBLIC('p'),
 	ALLY('a'),
 	FACTION('f'),
 	NONE('n');
 
+	public static final Predicate<ChatChannel> NOT_NONE = input -> input != ChatChannel.NONE;
+	public static final Predicate<ChatChannel> NOT_FACTION_NOT_NONE = input -> ChatChannel.NOT_NONE.apply(input) && input != ChatChannel.FACTION && input != ChatChannel.ALLY;
+	@Getter
 	private final char code;
+
+	ChatChannel(char code) {
+		this.code = code;
+	}
 
 	public ChatChannel next(){
 		ChatChannel[] values = ChatChannel.values();
 		return values[(this.ordinal()+1) % (values.length)];
-	}
-
-	ChatChannel(char code) {
-		this.code = code;
 	}
 
 	public ChatChannel next(Predicate<ChatChannel> when){
@@ -38,10 +41,5 @@ public enum ChatChannel {
 	public String toString(){
 		return Character.toString(this.getCode());
 	}
-
-	public static final Predicate<ChatChannel> NOT_NONE = input -> input != ChatChannel.NONE;
-
-	public static final Predicate<ChatChannel> NOT_FACTION_NOT_NONE = input -> ChatChannel.NOT_NONE.apply(input) && input != ChatChannel.FACTION && input != ChatChannel.ALLY;
-
 
 }

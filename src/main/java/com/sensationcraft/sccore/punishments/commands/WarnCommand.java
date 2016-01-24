@@ -70,9 +70,10 @@ public class WarnCommand implements CommandExecutor {
 		UUID creator = (sender instanceof Player) ? ((Player) sender).getUniqueId() : null;
 
 		if(creator != null) {
-			if(this.rankManager.getRank(creator).getId() <= this.rankManager.getRank(player.getUniqueId()).getId())
-				sender.sendMessage("§cYou are not permitted to warn a player that possesses the " + this.rankManager.getRank(player.getUniqueId()).getName() + " §crank.");
-			return false;
+			if (rankManager.getRank(creator).getId() <= rankManager.getRank(player.getUniqueId()).getId()) {
+				sender.sendMessage("§cYou are not permitted to warn a player that possesses the " + rankManager.getRank(player.getUniqueId()).getName() + " §crank.");
+				return false;
+			}
 		}
 
 

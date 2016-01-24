@@ -1,12 +1,11 @@
 package com.sensationcraft.sccore.utils.fanciful;
 
+import com.google.gson.stream.JsonWriter;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-
-import com.google.gson.stream.JsonWriter;
 
 /**
  * Represents a JSON string value.

@@ -1,10 +1,7 @@
 package com.sensationcraft.sccore.duels;
 
-import org.bukkit.Location;
-
 import com.sensationcraft.sccore.SCCore;
-
-import lombok.Getter;
+import org.bukkit.Location;
 
 /**
  * Created by Anml on 1/3/16.
@@ -12,7 +9,6 @@ import lombok.Getter;
 public class ArenaManager {
 
 	private SCCore instance;
-	@Getter
 	private Arena arena;
 
 	public ArenaManager(SCCore instance) {
@@ -40,5 +36,9 @@ public class ArenaManager {
 		return location.getBlockX() >= primary.getBlockX() && location.getBlockX() <= secondary.getBlockX()
 				&& location.getBlockY() >= primary.getBlockY() && location.getBlockY() <= secondary.getBlockY()
 				&& location.getBlockZ() >= primary.getBlockZ() && location.getBlockZ() <= secondary.getBlockZ();
+	}
+
+	public Arena getArena() {
+		return this.arena;
 	}
 }

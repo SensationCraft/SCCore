@@ -16,9 +16,9 @@ import com.sensationcraft.sccore.utils.Utils;
 public class Punishment {
 
 	SCCore instance;
+	Utils utils;
 	PunishmentManager punishmentManager;
 	SCPlayerManager scPlayerManager;
-	Utils utils;
 	MySQL mySQL;
 
 	PunishmentType type;
@@ -38,9 +38,9 @@ public class Punishment {
 		this.reason = reason;
 
 		this.instance = SCCore.getInstance();
+		this.utils = this.instance.getUtils();
 		this.punishmentManager = this.instance.getPunishmentManager();
 		this.scPlayerManager = this.instance.getSCPlayerManager();
-		this.utils = this.instance.getUtils();
 		this.mySQL = this.instance.getMySQL();
 	}
 
@@ -77,10 +77,13 @@ public class Punishment {
 		List<String> info =  Arrays.asList(
 				"§b" + this.type.name() + " Information:",
 				"   §aCreator: §f" + tag,
-				"   §aCreated: §f" + this.utils.getTimeStamp(this.created));
+				"   §aCreated: §f" + utils.getTimeStamp(created));
 
-		if(this.type.equals(PunishmentType.TEMPBAN) || this.type.equals(PunishmentType.TEMPMUTE) && !this.hasExpired())
-			info.add("   §aRemaining: §f" + this.utils.getDifference(System.currentTimeMillis(), this.created + this.expires));
+		if ((type.equals(PunishmentType.TEMPBAN) || type.equals(PunishmentType.TEMPMUTE))) {
+			info.add("   §aLength: §f" + utils.getDifference(created, created + expires));
+			if (hasExpired())
+				info.add("   §aRemaining: §f" + utils.getDifference(System.currentTimeMillis(), created + expires));
+		}
 
 		return info;
 	}
