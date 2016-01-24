@@ -11,6 +11,7 @@ import net.ess3.api.MaxMoneyException;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -89,7 +91,7 @@ public class SellCauldron implements Listener {
         for (ItemStack stack : inventory.getContents()) {
             if (stack != null) {
 
-                if (stack.getEnchantments() == null || stack.getEnchantments().keySet().size() == 0) {
+                if (!stack.getItemMeta().hasEnchants()) {
 
                     Material material = stack.getType();
                     byte b = stack.getData().getData();
@@ -114,14 +116,15 @@ public class SellCauldron implements Listener {
 
         for (Item item : result.keySet()) {
             int amount = result.get(item);
-            double charge = (item.getPrice() / item.getAmount() * rankManager.getRank(player.getUniqueId()).getSellBoost()) * amount;
+            DecimalFormat df = new DecimalFormat("#.##");
+            double charge = Double.valueOf(df.format((item.getPrice() / item.getAmount() * rankManager.getRank(player.getUniqueId()).getSellBoost()) * amount));
             try {
                 essentials.getUser(player).giveMoney(BigDecimal.valueOf(charge));
             } catch (MaxMoneyException e) {
                 player.sendMessage("§cYou have reached the maximum balance possible.");
                 return;
             }
-            String msg = "§6[SELL] " + amount + "x " + item.getMaterial().name() + " §6(§4+$" + charge + "§6)";
+            String msg = "§6[SELL] " + amount + "x " + CraftItemStack.asNMSCopy(item.getItemStack()).getName() + " §6(§4+$" + charge + "§6)";
             Rank rank = rankManager.getRank(player.getUniqueId());
             if (!rank.equals(Rank.DEFAULT)) {
                 if (rank.getId() >= Rank.MOD.getId())

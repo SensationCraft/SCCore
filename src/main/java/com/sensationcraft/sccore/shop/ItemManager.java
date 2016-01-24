@@ -1,15 +1,21 @@
 package com.sensationcraft.sccore.shop;
 
+import com.earth2me.essentials.Essentials;
 import com.sensationcraft.sccore.SCCore;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,11 +26,13 @@ import java.util.List;
 public class ItemManager {
 
     private SCCore instance;
+    private Essentials essentials;
     private List<Item> buy;
     private List<Item> sell;
 
     public ItemManager(SCCore instance) {
         this.instance = instance;
+        this.essentials = instance.getEssentials();
         buy = new ArrayList<>();
         sell = new ArrayList<>();
     }
@@ -241,23 +249,51 @@ public class ItemManager {
                     }
                 }
 
+                ItemStack item = new ItemStack(Material.ARROW, 1);
+                ItemMeta meta = item.getItemMeta();
                 if (x != (invCount - 1)) {
-                    ItemStack forward = new ItemStack(Material.ARROW, 1);
-                    ItemMeta fMeta = forward.getItemMeta();
-                    fMeta.setDisplayName("Next Page (" + (x + 2) + "/" + invCount + ")");
-                    forward.setItemMeta(fMeta);
-                    inventories.get(x).setItem(50, forward);
+                    meta.setDisplayName("§bNext Page (" + (x + 2) + "/" + invCount + ")");
+                    item.setItemMeta(meta);
+                    inventories.get(x).setItem(50, item);
                 }
                 if (x != 0) {
-                    ItemStack back = new ItemStack(Material.ARROW, 1);
-                    ItemMeta bMeta = back.getItemMeta();
-                    bMeta.setDisplayName("Previous Page (" + (x) + "/" + invCount + ")");
-                    back.setItemMeta(bMeta);
-                    inventories.get(x).setItem(48, back);
+                    meta.setDisplayName("§bPrevious Page (" + (x) + "/" + invCount + ")");
+                    item.setItemMeta(meta);
+                    inventories.get(x).setItem(48, item);
+                } else {
+                    meta.setDisplayName("§bPrevious Page (Main Menu)");
+                    item.setItemMeta(meta);
+                    inventories.get(x).setItem(48, item);
                 }
             }
         }
 
         return inventories;
+    }
+
+    public ItemStack getBulkItem(Item item, int amount, Player player) {
+        ItemStack stack = new ItemStack(item.getMaterial(), amount, item.getB());
+        ItemMeta meta = stack.getItemMeta();
+        DecimalFormat df = new DecimalFormat("#.##");
+        double cost = Double.valueOf(df.format(item.getPrice() / item.getAmount() * amount));
+        boolean afford = essentials.getUser(player).canAfford(BigDecimal.valueOf(cost));
+        meta.setDisplayName("§6" + CraftItemStack.asNMSCopy(stack).getName());
+        meta.setLore(Arrays.asList("§e--------------------", "§aPrice: §f$" + cost, "§aCan Afford: §f$" + afford, "§e--------------------"));
+        stack.setItemMeta(meta);
+
+        return stack;
+    }
+
+    public Inventory getBulkInventory(Item item, Player player) {
+        Inventory inventory = Bukkit.createInventory(player, 9, "§b§l" + CraftItemStack.asNMSCopy(item.getItemStack()).getName() + "§6§l(Bulk Menu)");
+        inventory.setItem(1, getBulkItem(item, 1, player));
+        inventory.setItem(2, getBulkItem(item, 2, player));
+        inventory.setItem(3, getBulkItem(item, 4, player));
+        inventory.setItem(4, getBulkItem(item, 8, player));
+        inventory.setItem(5, getBulkItem(item, 16, player));
+        inventory.setItem(6, getBulkItem(item, 32, player));
+        inventory.setItem(7, getBulkItem(item, 64, player));
+
+        return inventory;
     }
 }

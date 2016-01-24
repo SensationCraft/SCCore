@@ -1,5 +1,7 @@
 package com.sensationcraft.sccore.shop;
 
+import com.earth2me.essentials.Essentials;
+import com.earth2me.essentials.User;
 import com.sensationcraft.sccore.SCCore;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
@@ -17,14 +19,21 @@ import java.util.List;
 public class BuyListeners implements Listener {
 
     private SCCore instance;
+    private Essentials essentials;
     private ItemManager itemManager;
+
+    public BuyListeners(SCCore instance) {
+        this.instance = instance;
+        this.essentials = instance.getEssentials();
+        this.itemManager = instance.getItemManager();
+    }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
         ItemStack stack = e.getCurrentItem();
 
-        if (!e.getInventory().getName().contains("§b§lBuy Shop §f§l-"))
+        if (!e.getInventory().getName().contains("§b§lBuy Shop §f§bl- "))
             return;
 
         e.setCancelled(true);
@@ -45,12 +54,19 @@ public class BuyListeners implements Listener {
             return;
         }
 
-        if (e.getSlot() <= 44) {
+        if (e.getRawSlot() <= 44) {
             List<Item> items = itemManager.getCategorialItems(category);
 
             for (Item item : items) {
                 if (item.getMaterial().equals(material) && item.getB() == b) {
+                    if (item.isBulk()) {
+                        player.openInventory(itemManager.getBulkInventory(item, player));
+                        return;
+                    } else {
+                        User user = essentials.getUser(player);
 
+                        //CAN AFFORD
+                    }
                 }
             }
         }

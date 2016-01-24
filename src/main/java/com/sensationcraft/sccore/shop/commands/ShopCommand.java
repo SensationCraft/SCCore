@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -72,20 +73,14 @@ public class ShopCommand implements CommandExecutor {
             sender.sendMessage("§aCurrent items listed under " + type.name() + " type:");
             if (type.equals(ItemType.BUY)) {
                 for (Item item : itemManager.getBuy()) {
-                    String s = "§f   - §6" + item.getAmount() + "x " + item.getMaterial().name();
-                    if (item.getB() != 0)
-                        s += " (byte: " + item.getB() + ")";
-                    s += " with a price of $" + item.getPrice() + " (Category: " + item.getCategory().name() + ")";
+                    String s = "§f   - §6" + item.getAmount() + "x " + CraftItemStack.asNMSCopy(item.getItemStack()).getName() + " with a price of $" + item.getPrice() + " (Category: " + item.getCategory().name() + ")";
                     sender.sendMessage(s);
                 }
                 return true;
             }
             if (type.equals(ItemType.SELL)) {
                 for (Item item : itemManager.getSell()) {
-                    String s = "§f   - §6" + item.getAmount() + "x " + item.getMaterial().name();
-                    if (item.getB() != 0)
-                        s += " (byte: " + item.getB() + ")";
-                    s += " with a price of $" + item.getPrice();
+                    String s = "§f   - §6" + item.getAmount() + "x " + CraftItemStack.asNMSCopy(item.getItemStack()).getName() + " with a price of $" + item.getPrice();
                     sender.sendMessage(s);
                 }
                 return true;
@@ -100,7 +95,7 @@ public class ShopCommand implements CommandExecutor {
             return false;
         }
 
-        if (stack.getEnchantments() == null || stack.getEnchantments().size() != 0) {
+        if (stack.getItemMeta().hasEnchants()) {
             sender.sendMessage("§cThe item in your hand currently contains enchantments disallowing you from adding/removing it in shop.");
             return false;
         }
@@ -150,9 +145,9 @@ public class ShopCommand implements CommandExecutor {
 
             if (task) {
                 if (type.equals(ItemType.SELL)) {
-                    sender.sendMessage("§aYou have added the item " + stack.getAmount() + "x " + stack.getType().name() + " to the " + type.name() + " shop for a price of $" + price + ".");
+                    sender.sendMessage("§aYou have added the item " + stack.getAmount() + "x " + CraftItemStack.asNMSCopy(stack).getName() + " to the " + type.name() + " shop for a price of $" + price + ".");
                 } else {
-                    sender.sendMessage("§aYou have added the item " + stack.getAmount() + "x " + stack.getType().name() + " to the " + type.name() + " shop for a price of $" + price + " (Category: " + category.name() + ", Bulk: " + bulk + ").");
+                    sender.sendMessage("§aYou have added the item " + stack.getAmount() + "x " + CraftItemStack.asNMSCopy(stack).getName() + " to the " + type.name() + " shop for a price of $" + price + " (Category: " + category.name() + ", Bulk: " + bulk + ").");
                 }
                 return true;
             } else {
@@ -176,7 +171,7 @@ public class ShopCommand implements CommandExecutor {
                 return false;
             }
 
-            sender.sendMessage("§aYou have removed the item " + item.getAmount() + "x " + item.getType().name() + " which had a price of $" + item.getPrice() + " from the " + type.name() + " shop.");
+            sender.sendMessage("§aYou have removed the item " + item.getAmount() + "x " + CraftItemStack.asNMSCopy(item.getItemStack()).getName() + " which had a price of $" + item.getPrice() + " from the " + type.name() + " shop.");
             return true;
         }
 
