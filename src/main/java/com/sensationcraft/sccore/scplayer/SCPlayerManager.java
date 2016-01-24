@@ -22,6 +22,7 @@ import com.sensationcraft.sccore.ranks.Rank;
 import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.stats.StatsManager;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+
 import lombok.Getter;
 
 /**
@@ -115,7 +116,7 @@ public class SCPlayerManager implements Listener {
             sct.combatTag();
 
         }
-    */
+	 */
 	public SCPlayer getSCPlayer(UUID uuid) {
 		if (this.scPlayers.containsKey(uuid))
 			return this.scPlayers.get(uuid);

@@ -1,7 +1,8 @@
 package com.sensationcraft.sccore.duels;
 
-import com.sensationcraft.sccore.SCCore;
 import org.bukkit.Location;
+
+import com.sensationcraft.sccore.SCCore;
 
 /**
  * Created by Anml on 1/3/16.

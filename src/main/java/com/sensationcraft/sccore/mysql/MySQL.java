@@ -1,9 +1,14 @@
 package com.sensationcraft.sccore.mysql;
 
-import com.sensationcraft.sccore.SCCore;
-import lombok.Cleanup;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import java.sql.*;
+import com.sensationcraft.sccore.SCCore;
+
+import lombok.Cleanup;
 
 /**
  * Created by kishanpatel on 12/6/15.

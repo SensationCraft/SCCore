@@ -1,15 +1,16 @@
 package com.sensationcraft.sccore.stats;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.mysql.MySQL;
-import org.bukkit.Bukkit;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
+
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.mysql.MySQL;
 
 /**
  * Created by Anml on 1/12/16.

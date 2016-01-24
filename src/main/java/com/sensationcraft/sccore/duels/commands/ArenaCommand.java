@@ -1,14 +1,15 @@
 package com.sensationcraft.sccore.duels.commands;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.duels.Arena;
-import com.sensationcraft.sccore.duels.ArenaLocationType;
-import com.sensationcraft.sccore.duels.ArenaManager;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.duels.Arena;
+import com.sensationcraft.sccore.duels.ArenaLocationType;
+import com.sensationcraft.sccore.duels.ArenaManager;
 
 /**
  * Created by Anml on 1/3/16.

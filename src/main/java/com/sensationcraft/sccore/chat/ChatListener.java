@@ -345,7 +345,7 @@ public class ChatListener implements Listener{
 			this.shout.onCommand(player, null, "s", event.getMessage().split(" "));
 			break;
 		case STAFF:
-			StaffCommand cmd = new StaffCommand(instance);
+			StaffCommand cmd = new StaffCommand(this.instance);
 			cmd.onCommand(player, null, "st", event.getMessage().split(" "));
 			break;
 		default:

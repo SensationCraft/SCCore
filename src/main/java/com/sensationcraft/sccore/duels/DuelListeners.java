@@ -1,8 +1,8 @@
 package com.sensationcraft.sccore.duels;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,8 +15,9 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 
 /**
  * Created by Anml on 1/3/16.
@@ -71,7 +72,7 @@ public class DuelListeners implements Listener {
             if (!this.arena.isDuel(e.getEntity(), e.getDamager()))
                 e.setCancelled(true);
         }
-    */
+	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerDeath(final PlayerDeathEvent e) {
 		if (this.arena.getArenaPlayers().contains(e.getEntity())) {
@@ -87,7 +88,7 @@ public class DuelListeners implements Listener {
 			e.getPlayer().sendMessage("§cYou are not permitted to execute commands while dueling.");
 		}
 	}
-/*
+	/*
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
 	public void onPlayerDamageByEntity(final EntityDamageByEntityEvent e)
 	{
@@ -186,5 +187,5 @@ public class DuelListeners implements Listener {
 		return this.arena.isDuel(attacker, defender)
 				&& b;
 	}
-   */
+	 */
 }

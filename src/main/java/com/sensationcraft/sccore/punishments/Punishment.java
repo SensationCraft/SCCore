@@ -77,12 +77,12 @@ public class Punishment {
 		List<String> info =  Arrays.asList(
 				"§b" + this.type.name() + " Information:",
 				"   §aCreator: §f" + tag,
-				"   §aCreated: §f" + utils.getTimeStamp(created));
+				"   §aCreated: §f" + this.utils.getTimeStamp(this.created));
 
-		if ((type.equals(PunishmentType.TEMPBAN) || type.equals(PunishmentType.TEMPMUTE))) {
-			info.add("   §aLength: §f" + utils.getDifference(created, created + expires));
-			if (hasExpired())
-				info.add("   §aRemaining: §f" + utils.getDifference(System.currentTimeMillis(), created + expires));
+		if ((this.type.equals(PunishmentType.TEMPBAN) || this.type.equals(PunishmentType.TEMPMUTE))) {
+			info.add("   §aLength: §f" + this.utils.getDifference(this.created, this.created + this.expires));
+			if (this.hasExpired())
+				info.add("   §aRemaining: §f" + this.utils.getDifference(System.currentTimeMillis(), this.created + this.expires));
 		}
 
 		return info;

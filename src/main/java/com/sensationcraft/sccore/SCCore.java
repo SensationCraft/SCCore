@@ -1,7 +1,8 @@
 package com.sensationcraft.sccore;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
@@ -48,8 +49,6 @@ import com.sensationcraft.sccore.utils.Utils;
 
 import lombok.Getter;
 
-import java.util.UUID;
-
 /**
  * Created by Anml on 12/26/15.
  */
@@ -76,7 +75,7 @@ public class SCCore extends JavaPlugin implements Listener {
 	}
 
 	public SCPlayerManager getSCPlayerManager() {
-		return scPlayerManager;
+		return this.scPlayerManager;
 	}
 
 	@Override
@@ -104,8 +103,8 @@ public class SCCore extends JavaPlugin implements Listener {
 	@Override
 	public void onDisable() {
 
-		for (UUID uuid : scPlayerManager.getScPlayers().keySet()) {
-			scPlayerManager.removeSCPlayer(uuid);
+		for (UUID uuid : this.scPlayerManager.getScPlayers().keySet()) {
+			this.scPlayerManager.removeSCPlayer(uuid);
 		}
 
 		SCCore.instance = null;
@@ -125,7 +124,7 @@ public class SCCore extends JavaPlugin implements Listener {
 		pm.registerEvents(new PunishmentListeners(this), this);
 		pm.registerEvents(new ChatListener(this), this);
 		pm.registerEvents(new SellCauldron(this), this);
-		
+
 		ProtocolLibrary.getProtocolManager().addPacketListener(new MessageListener(this));
 	}
 
@@ -166,7 +165,7 @@ public class SCCore extends JavaPlugin implements Listener {
 
 	@EventHandler
 	public void onServerListPing(ServerListPingEvent event) {
-		String time = (System.currentTimeMillis() <= utils.longLength(utils.getDifference(System.currentTimeMillis(), 1453590000000L))) ? "OPEN NOW" : utils.getDifference(System.currentTimeMillis(), 1453590000000L);
+		String time = (System.currentTimeMillis() <= this.utils.longLength(this.utils.getDifference(System.currentTimeMillis(), 1453590000000L))) ? "OPEN NOW" : this.utils.getDifference(System.currentTimeMillis(), 1453590000000L);
 		event.setMotd("                §c§lSensation§4§lCraft\n      Remaining Time: §6§l" + time);
 	}
 

@@ -1,11 +1,8 @@
 package com.sensationcraft.sccore.duels;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
-import com.sensationcraft.sccore.stats.Stat;
-import com.sensationcraft.sccore.stats.StatsManager;
-import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -18,8 +15,12 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.stats.Stat;
+import com.sensationcraft.sccore.stats.StatsManager;
+import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 
 /**
  * Created by Anml on 12/31/15.
