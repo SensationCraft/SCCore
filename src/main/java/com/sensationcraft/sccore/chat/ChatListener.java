@@ -27,7 +27,7 @@ import com.comphenix.protocol.reflect.StructureModifier;
 import com.earth2me.essentials.User;
 import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.factions.entity.MPlayerColl;
-import com.massivecraft.massivecore.Predictate;
+import com.massivecraft.massivecore.Predicate;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.chat.commands.ShoutCommand;
 import com.sensationcraft.sccore.chat.commands.StaffCommand;
@@ -285,7 +285,7 @@ public class ChatListener implements Listener{
 		switch (user.getChannel())
 		{
 		case FACTION:
-			List<MPlayer> faction = MPlayerColl.get().getAll((Predictate<MPlayer>) type -> type.getFactionId().equals(mPlayer.getFactionId()));
+			List<MPlayer> faction = MPlayerColl.get().getAll((Predicate<MPlayer>) type -> type.getFactionId().equals(mPlayer.getFactionId()));
 			FancyMessage message = new FancyMessage("§2[").then(mPlayer.getFactionName()).then("] §f").then(user.getTag()).tooltip(user.getHoverText())
 					.then(": §7" + event.getMessage(), true);
 			for(MPlayer other:faction)
@@ -295,7 +295,7 @@ public class ChatListener implements Listener{
 				message.send(Bukkit.getPlayer(id));
 			break;
 		case ALLY:
-			List<MPlayer> ally = MPlayerColl.get().getAll((Predictate<MPlayer>) type -> type.getRelationTo(type).isFriend());
+			List<MPlayer> ally = MPlayerColl.get().getAll((Predicate<MPlayer>) type -> type.getRelationTo(type).isFriend());
 			FancyMessage message2 = new FancyMessage("§a[").then(mPlayer.getFactionName()).then("] §f").then(user.getTag()).tooltip(user.getHoverText())
 					.then(": §7" + event.getMessage(), true);
 			for(MPlayer other:ally)
