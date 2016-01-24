@@ -36,6 +36,7 @@ import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.punishments.PunishmentType;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.utils.FactionUtil;
 import com.sensationcraft.sccore.utils.Utils;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 
@@ -286,20 +287,20 @@ public class ChatListener implements Listener{
 		{
 		case FACTION:
 			List<MPlayer> faction = MPlayerColl.get().getAll((Predicate<MPlayer>) type -> type.getFactionId().equals(mPlayer.getFactionId()));
-			FancyMessage message = new FancyMessage("§2[").then(mPlayer.getFactionName()).then("] §f").then(user.getTag()).tooltip(user.getHoverText())
-					.then(": §7" + event.getMessage(), true);
+			FancyMessage message = new FancyMessage("§a"+FactionUtil.getAsteriskPrefix(mPlayer)).then(user.getTag()).tooltip(user.getHoverText())
+					.then(": " + event.getMessage(), true);
 			for(MPlayer other:faction)
-				if(other.getSender() != null && other.getSender() != player)
+				if(other.getSender() != null)
 					message.send(other.getSender());
 			for(UUID id:this.fchatspy)
 				message.send(Bukkit.getPlayer(id));
 			break;
 		case ALLY:
 			List<MPlayer> ally = MPlayerColl.get().getAll((Predicate<MPlayer>) type -> type.getRelationTo(type).isFriend());
-			FancyMessage message2 = new FancyMessage("§a[").then(mPlayer.getFactionName()).then("] §f").then(user.getTag()).tooltip(user.getHoverText())
-					.then(": §7" + event.getMessage(), true);
+			FancyMessage message2 = new FancyMessage("§5[").then(mPlayer.getFactionName()).then("] "+FactionUtil.getAsteriskPrefix(mPlayer)).then(user.getTag()).tooltip(user.getHoverText())
+					.then(": " + event.getMessage(), true);
 			for(MPlayer other:ally)
-				if(other.getSender() != null && other.getSender() != player)
+				if(other.getSender() != null)
 					message2.send(other.getSender());
 			for(UUID id:this.fchatspy)
 				message2.send(Bukkit.getPlayer(id));
