@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,10 +18,12 @@ import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
@@ -103,6 +106,17 @@ public class SCPlayerManager implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerCommandPre(final PlayerCommandPreprocessEvent e) {
+
+		SCPlayer scPlayer = this.getSCPlayer(e.getPlayer().getUniqueId());
+
+		if (scPlayer.isCombatTagged()) {
+			e.setCancelled(true);
+			e.getPlayer().sendMessage("§cYou are not permitted to execute commands while in combat.");
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerQuit(final PlayerQuitEvent e) {
 		Player player = e.getPlayer();
 		SCPlayer scPlayer = this.getSCPlayer(player.getUniqueId());
@@ -166,10 +180,26 @@ public class SCPlayerManager implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerDamageByPlayer(final EntityDamageByEntityEvent e) {
-		if (e.getEntity() instanceof Player == false || e.getDamager() instanceof Player == false) return;
+		Player player = null;
+		if (e.getEntity() instanceof Player)
+			player = (Player) e.getEntity();
+		else if (e.getEntity() instanceof Projectile) {
+			ProjectileSource source = ((Projectile) e.getEntity()).getShooter();
+			if (source instanceof Player)
+				player = (Player) source;
+		}
 
-		Player player = (Player) e.getEntity();
-		Player target = (Player) e.getDamager();
+		Player target = null;
+		if (e.getDamager() instanceof Player)
+			target = (Player) e.getDamager();
+		else if (e.getDamager() instanceof Projectile) {
+			ProjectileSource source = ((Projectile) e.getDamager()).getShooter();
+			if (source instanceof Player)
+				target = (Player) source;
+		}
+
+		if (player == null || target == null) return;
+
 		SCPlayer scp = this.getSCPlayer(player.getUniqueId());
 		SCPlayer sct = this.getSCPlayer(target.getUniqueId());
 		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(target.getLocation().getChunk()));

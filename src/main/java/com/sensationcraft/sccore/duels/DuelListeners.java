@@ -80,16 +80,9 @@ public class DuelListeners implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerCommandPre(final PlayerCommandPreprocessEvent e) {
-
 		if (this.arena.getArenaPlayers().contains(e.getPlayer())) {
 			e.setCancelled(true);
 			e.getPlayer().sendMessage("§cYou are not permitted to execute commands while dueling.");
-		}
-
-		SCPlayer scPlayer = this.scPlayerManager.getSCPlayer(e.getPlayer().getUniqueId());
-		if (scPlayer.isCombatTagged()) {
-			e.setCancelled(true);
-			e.getPlayer().sendMessage("§cYou are not permitted to execute commands while in combat.");
 		}
 	}
 
