@@ -116,13 +116,13 @@ public class SCPlayerManager implements Listener {
 		}
 
 		if (!faction.getName().equalsIgnoreCase("SafeZone")) {
-			if (player.getWalkSpeed() == 2F)
-				player.setWalkSpeed(1F);
+			if (player.getWalkSpeed() == .4F)
+				player.setWalkSpeed(.2F);
 			return;
 		}
 
-		if (player.getWalkSpeed() != 2F)
-			player.setWalkSpeed(2);
+		if (player.getWalkSpeed() != .4F)
+			player.setWalkSpeed(.4F);
 
 	}
 

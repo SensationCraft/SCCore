@@ -648,19 +648,7 @@ ConfigurationSerializable {
 	 * @return This builder instance.
 	 */
 	public FancyMessage then(final String text) {
-		return this.then(text, false);
-	}
-
-	public FancyMessage then(final String text, boolean split) {
-		if (split) {
-			JsonArray array = ((JsonObject) new JsonParser().parse(JSONUtil.toJSON(text.replaceAll("\"", "\\\"")))).get("extra").getAsJsonArray();
-			JsonElement[] parts = new JsonObject[array.size()];
-			for (int i = 0; i < array.size(); i++) {
-				parts[i] = array.get(i);
-			}
-			return this.then(TextualComponent.rawText("")).extra(parts);
-		} else
-			return this.then(TextualComponent.rawText(text));
+		return this.then(TextualComponent.rawText(text));
 	}
 
 	/**

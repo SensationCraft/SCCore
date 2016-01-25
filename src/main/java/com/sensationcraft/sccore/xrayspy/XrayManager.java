@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -66,7 +67,8 @@ public class XrayManager implements Listener {
 			if (material.equals(m)) {
 				String itemName = ProtocolUtil.getItemStackName(new ItemStack(m, 1));
 				if (itemName.equalsIgnoreCase("ERROR")) itemName = "Redstone Ore";
-				FancyMessage message = new FancyMessage("§e[XRAY] ").then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7has mined §b" + itemName + "§7.", true);
+				FancyMessage message = new FancyMessage("[XRAY] ").color(ChatColor.YELLOW).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" has mined ")
+						.color(ChatColor.GRAY).then(itemName).color(ChatColor.AQUA).then(".").color(ChatColor.GRAY);
 				for (UUID uuid : this.xraySpyers) {
 					OfflinePlayer spyer = Bukkit.getOfflinePlayer(uuid);
 

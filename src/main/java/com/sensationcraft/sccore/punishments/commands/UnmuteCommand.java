@@ -3,6 +3,7 @@ package com.sensationcraft.sccore.punishments.commands;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -71,9 +72,11 @@ public class UnmuteCommand implements CommandExecutor {
 
 						if (hover) {
 							SCPlayer senderSCPlayer = this.scPlayerManager.getSCPlayer(((Player) sender).getUniqueId());
-							message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" §7has unmuted ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("§7.", true);
+							message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" has unmuted").color(ChatColor.GRAY)
+									.then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(".").color(ChatColor.GRAY);
 						} else {
-							message = message.then("§6Console §7has unmuted ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("§7.", true);
+							message = message.then("Console").color(ChatColor.GOLD).then(" has unmuted ").color(ChatColor.GRAY).then(scPlayer.getTag())
+									.tooltip(scPlayer.getHoverText()).then(".").color(ChatColor.GRAY);
 						}
 
 						this.scPlayerManager.staff(message);

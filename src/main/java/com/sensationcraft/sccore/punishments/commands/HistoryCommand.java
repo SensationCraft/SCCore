@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -59,7 +60,7 @@ public class HistoryCommand implements CommandExecutor {
 			List<Punishment> punishments = this.punishmentManager.getPunishments(player.getUniqueId());
 
 			if (punishments.size() == 0) {
-				FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §ccurrently has no punishments at this time.", true);
+				FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" currently has no punishments at this time.").color(ChatColor.RED);
 				message.send(sender);
 				return false;
 			}
@@ -90,7 +91,7 @@ public class HistoryCommand implements CommandExecutor {
 					}
 				}
 
-				FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("§a's Punishment Count:", true);
+				FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("'s Punishment Count:").color(ChatColor.GREEN);
 				message.send(sender);
 				sender.sendMessage("§f  - §aBan Count: §6" + ban);
 				sender.sendMessage("§f  - §aTempban Count: §6" + tempban);
@@ -108,7 +109,7 @@ public class HistoryCommand implements CommandExecutor {
 				}
 				Collections.sort(createdTimes, Collections.reverseOrder());
 
-				FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("§a's Punishments:", true);
+				FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("'s Punishments:").color(ChatColor.GREEN);
 				message.send(sender);
 				synchronized (punishments) {
 					for (long l : createdTimes) {
@@ -117,7 +118,7 @@ public class HistoryCommand implements CommandExecutor {
 								String info = "§6[" + this.utils.getDateStamp(punishment.getCreated()) + "] §f" + punishment.getReason() + " §4§l[" + punishment.getType().name() + "]";
 								if (punishment.hasExpired() && !(punishment.getType().equals(PunishmentType.WARNING) || punishment.getType().equals(PunishmentType.KICK)))
 									info += " §8[EXPIRED]";
-								FancyMessage msg = new FancyMessage("§f  - ").then(info).tooltip(punishment.getHoverText()).then("§7", true);
+								FancyMessage msg = new FancyMessage("  - ").color(ChatColor.GRAY).then(info).tooltip(punishment.getHoverText());
 								msg.send(sender);
 							}
 						}
@@ -142,13 +143,13 @@ public class HistoryCommand implements CommandExecutor {
 				}
 
 				if (createdTimes.size() == 0) {
-					FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §ccurrently has no " + type.name().toLowerCase() + "punishments at this time.", true);
+					FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" currently has no " + type.name().toLowerCase() + "punishments at this time.").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
 				Collections.sort(createdTimes, Collections.reverseOrder());
 
-				FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("§a's " + type.name() + " Punishments: ", true);
+				FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("'s " + type.name() + " Punishments: ").color(ChatColor.GREEN);
 				message.send(sender);
 				synchronized (punishments) {
 					for (long l : createdTimes) {
@@ -158,7 +159,7 @@ public class HistoryCommand implements CommandExecutor {
 									String info = "§6[" + this.utils.getDateStamp(punishment.getCreated()) + "] §f" + punishment.getReason() + " §4§l[" + punishment.getType().name() + "]";
 									if (punishment.hasExpired() && !(punishment.getType().equals(PunishmentType.WARNING) || punishment.getType().equals(PunishmentType.KICK)))
 										info += " §8[EXPIRED]";
-									FancyMessage msg = new FancyMessage("§f  - ").then(info).tooltip(punishment.getHoverText()).then("§7", true);
+									FancyMessage msg = new FancyMessage("  - ").color(ChatColor.GRAY).then(info).tooltip(punishment.getHoverText());
 									msg.send(sender);
 								}
 						}

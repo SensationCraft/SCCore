@@ -83,8 +83,8 @@ public class ShoutCommand implements CommandExecutor {
 				scPlayer.shoutCooldown();
 			}
 
-			FancyMessage message = new FancyMessage("§c[S] ").then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()
-					).then("§f: §l" + msg, true);
+			FancyMessage message = new FancyMessage("[S] ").color(ChatColor.RED).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()
+					).then(": ").color(ChatColor.WHITE).then(msg).style(ChatColor.BOLD);
 			//this.instance.getLogger().info(message.toJSONString());
 			this.scPlayerManager.broadcast(message);
 			return true;

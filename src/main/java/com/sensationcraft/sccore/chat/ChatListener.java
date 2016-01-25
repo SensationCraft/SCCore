@@ -260,8 +260,8 @@ public class ChatListener implements Listener {
 		switch (user.getChannel()) {
 		case FACTION:
 			List<MPlayer> faction = MPlayerColl.get().getAll(type -> type.getFactionId().equals(mPlayer.getFactionId()));
-			FancyMessage message = new FancyMessage("§a" + FactionUtil.getAsteriskPrefix(mPlayer)).then("§a"+user.getTag()).tooltip(user.getHoverText())
-					.then("§a: " + event.getMessage(), true);
+			FancyMessage message = new FancyMessage(FactionUtil.getAsteriskPrefix(mPlayer)).color(ChatColor.GREEN).then(user.getTag()).color(ChatColor.GREEN)
+					.tooltip(user.getHoverText()).then(": " + event.getMessage()).color(ChatColor.GREEN);
 			for (MPlayer other : faction)
 				if (other.getSender() != null)
 					message.send(other.getSender());
@@ -270,8 +270,9 @@ public class ChatListener implements Listener {
 			break;
 		case ALLY:
 			List<MPlayer> ally = MPlayerColl.get().getAll(type -> type.getRelationTo(type).isFriend());
-			FancyMessage message2 = new FancyMessage("§5[").then("§5"+mPlayer.getFactionName()).then("§5] " + FactionUtil.getAsteriskPrefix(mPlayer)).then("§5"+user.getTag()).tooltip(user.getHoverText())
-					.then("§5: " + event.getMessage(), true);
+			FancyMessage message2 = new FancyMessage("[").color(ChatColor.DARK_PURPLE).then(mPlayer.getFactionName()).color(ChatColor.DARK_PURPLE)
+					.then("] " + FactionUtil.getAsteriskPrefix(mPlayer)).color(ChatColor.DARK_PURPLE).then(user.getTag()).color(ChatColor.DARK_PURPLE)
+					.tooltip(user.getHoverText()).then(": " + event.getMessage()).color(ChatColor.DARK_PURPLE);
 			for (MPlayer other : ally)
 				if (other.getSender() != null)
 					message2.send(other.getSender());
@@ -305,8 +306,8 @@ public class ChatListener implements Listener {
 
 			if (player.isOp()) event.setMessage(event.getMessage().replace('&', ChatColor.COLOR_CHAR));
 
-			FancyMessage message3 = new FancyMessage(" §7- ").then(user.getTag()).tooltip(user.getHoverText())
-					.then("§8: §7" + event.getMessage(), true);
+			FancyMessage message3 = new FancyMessage(" - ").color(ChatColor.GRAY).then(user.getTag()).tooltip(user.getHoverText())
+					.then(": ").color(ChatColor.DARK_GRAY).then(event.getMessage()).color(ChatColor.GRAY);
 
 			for (final Player other : event.getRecipients()) {
 				if (other.getWorld() != player.getWorld())

@@ -3,6 +3,7 @@ package com.sensationcraft.sccore.duels.commands;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -84,34 +85,32 @@ public class DuelCommand implements CommandExecutor {
 				}
 
 				if (scTarget.getDuelRequests().containsKey(player)) {
-					FancyMessage message = new FancyMessage("§cYou have already sent a duel request to ").then
-							(scTarget.getTag()).tooltip(scTarget.getHoverText()).then("§c.", true);
+					FancyMessage message = new FancyMessage("You have already sent a duel request to ").color(ChatColor.RED).then
+							(scTarget.getTag()).tooltip(scTarget.getHoverText()).then(".").color(ChatColor.RED);
 					message.send(player);
 					return false;
 				}
 
 				scTarget.addDuelRequest(player.getUniqueId());
 
-				FancyMessage message = new FancyMessage("§aYou have sent a duel request to ").then(scTarget.getTag()
-						).tooltip(scTarget.getHoverText()).then("§a which will expire in 5 minutes.", true);
+				FancyMessage message = new FancyMessage("You have sent a duel request to ").color(ChatColor.GREEN).then(scTarget.getTag()
+						).tooltip(scTarget.getHoverText()).then(" which will expire in 5 minutes.").color(ChatColor.GREEN);
 				message.send(sender);
 
-				message = new FancyMessage("§aYou have received a duel request from ").then(scPlayer.getTag())
-						.tooltip(scPlayer.getHoverText()).then("§a. You have 5 minutes to respond to this request " +
-								"before it is cancelled.", true);
+				message = new FancyMessage("You have received a duel request from ").color(ChatColor.GREEN).then(scPlayer.getTag())
+						.tooltip(scPlayer.getHoverText()).then(". You have 5 minutes to respond to this request before it is cancelled.").color(ChatColor.GREEN);
 				message.send(target);
 				return true;
 			} else if (args[0].equalsIgnoreCase("accept")) {
 				if (!scPlayer.getDuelRequests().containsKey(target.getUniqueId())) {
-					FancyMessage message = new FancyMessage("§cYou have not received a duel request from ").then
-							(scTarget.getTag()).tooltip(scTarget.getHoverText()).then("§c.", true);
+					FancyMessage message = new FancyMessage("You have not received a duel request from ").color(ChatColor.RED).then
+							(scTarget.getTag()).tooltip(scTarget.getHoverText()).then(".").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
 
 				if (this.arena.isRunning()) {
-					sender.sendMessage("§cYou are not permitted to accept a duel request while another duel is taking" +
-							" place.");
+					sender.sendMessage("§cYou are not permitted to accept a duel request while another duel is taking place.");
 					return false;
 				}
 
@@ -121,8 +120,8 @@ public class DuelCommand implements CommandExecutor {
 				}
 
 				if (scTarget.isCombatTagged()) {
-					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText()).then
-							(" §cis currently in combat which prohibits you from dueling each other.", true);
+					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText())
+							.then(" is currently in combat which prohibits you from dueling each other.").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
@@ -135,27 +134,27 @@ public class DuelCommand implements CommandExecutor {
 					return false;
 				}
 				if (tFaction.getFlag(MFlag.ID_PEACEFUL)) {
-					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText()).then
-							(" §cis in a peaceful faction prohibiting you from dueling each other.", true);
+					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText())
+							.then(" is in a peaceful faction prohibiting you from dueling each other.").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
 				if (pFaction.getRelationTo(tFaction) == Rel.MEMBER && !pFaction.isNone()) {
-					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText()).then
-							(" §cis a member of your faction.", true);
+					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText())
+							.then(" is a member of your faction.").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
 				if (pFaction.getRelationTo(tFaction) == Rel.ALLY) {
-					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText()).then
-							(" §cis s a member of an allied faction.", true);
+					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText())
+							.then(" is s a member of an allied faction.").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
 
 				if (this.instance.getEssentials().getUser(target).isGodModeEnabled()) {
-					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText()).then
-							(" §chas god-mode enabled which prohibits you from dueling each other.", true);
+					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText())
+							.then(" has god-mode enabled which prohibits you from dueling each other.").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
@@ -166,8 +165,8 @@ public class DuelCommand implements CommandExecutor {
 				}
 
 				if (target.getGameMode().equals(GameMode.CREATIVE)) {
-					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText()).then
-							(" §cis currently in creative which prohibits you from dueling each other.", true);
+					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText())
+							.then(" is currently in creative which prohibits you from dueling each other.").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
@@ -181,35 +180,35 @@ public class DuelCommand implements CommandExecutor {
 				this.arena.startMatch(player, target);
 
 				FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" " +
-						"§ahas accepted your duel request.");
+						"has accepted your duel request.").color(ChatColor.GREEN);
 				message.send(target);
 
-				message = new FancyMessage("§aYou have accepted ").then(scTarget.getTag()).tooltip(scTarget
-						.getHoverText()).then("§a's duel request.");
+				message = new FancyMessage("You have accepted ").color(ChatColor.GREEN).then(scTarget.getTag()).tooltip(scTarget
+						.getHoverText()).then("'s duel request.").color(ChatColor.GREEN);
 				message.send(sender);
 				return true;
 			} else if (args[0].equalsIgnoreCase("deny")) {
 				if (!scPlayer.getDuelRequests().containsKey(target.getUniqueId())) {
-					FancyMessage message = new FancyMessage("§cYou have not received a duel request from ").then
-							(scTarget.getTag()).tooltip(scTarget.getHoverText()).then("§c.", true);
+					FancyMessage message = new FancyMessage("You have not received a duel request from ").color(ChatColor.RED)
+							.then(scTarget.getTag()).tooltip(scTarget.getHoverText()).then(".").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
 
 				scPlayer.removeDuelRequest(target.getUniqueId());
 
-				FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" " +
-						"§chas declined your duel request.", true);
+				FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText())
+						.then(" has declined your duel request.").color(ChatColor.RED);
 				message.send(target);
 
-				message = new FancyMessage("§cYou have declined ").then(scTarget.getTag()).tooltip(scTarget
-						.getHoverText()).then("§c's duel request.", true);
+				message = new FancyMessage("§cYou have declined ").then(scTarget.getTag()).tooltip(scTarget.getHoverText())
+						.then("§c's duel request.").color(ChatColor.RED);
 				message.send(sender);
 				return true;
 			} else {
 				if (!scTarget.getDuelRequests().containsKey(player.getUniqueId())) {
-					FancyMessage message = new FancyMessage("§cYou have not sent a duel request to ").then
-							(scTarget.getTag()).tooltip(scTarget.getHoverText()).then("§c.", true);
+					FancyMessage message = new FancyMessage("You have not sent a duel request to ").color(ChatColor.RED).then(scTarget.getTag())
+							.tooltip(scTarget.getHoverText()).then(".").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
@@ -217,11 +216,11 @@ public class DuelCommand implements CommandExecutor {
 				scTarget.removeDuelRequest(player.getUniqueId());
 
 				FancyMessage message = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" " +
-						"§ahas cancelled his duel request.");
+						"has cancelled his duel request.").color(ChatColor.GREEN);
 				message.send(target);
 
-				message = new FancyMessage("§cYou have cancelled your duel request to ").then(scTarget.getTag()).tooltip
-						(scTarget.getHoverText()).then("§c.", true);
+				message = new FancyMessage("§cYou have cancelled your duel request to ").then(scTarget.getTag())
+						.tooltip(scTarget.getHoverText()).then(".").color(ChatColor.RED);
 				message.send(sender);
 				return true;
 			}
@@ -230,7 +229,7 @@ public class DuelCommand implements CommandExecutor {
 				sender.sendMessage("§aDuel Requests:");
 				for (UUID p : scPlayer.getDuelRequests().keySet()) {
 					SCPlayer scP = this.scPlayerManager.getSCPlayer(p);
-					FancyMessage message = new FancyMessage("§f   - ").then(scP.getTag()).tooltip(scP.getHoverText());
+					FancyMessage message = new FancyMessage("   - ").color(ChatColor.WHITE).then(scP.getTag()).tooltip(scP.getHoverText());
 					message.send(sender);
 				}
 			} else {

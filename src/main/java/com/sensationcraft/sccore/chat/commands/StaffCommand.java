@@ -1,5 +1,6 @@
 package com.sensationcraft.sccore.chat.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -51,13 +52,14 @@ public class StaffCommand implements CommandExecutor {
 		}
 
 		boolean hover = sender instanceof Player ? true : false;
-		FancyMessage message = new FancyMessage("§9[STAFF] ");
+		FancyMessage message = new FancyMessage("[STAFF] ").color(ChatColor.BLUE);
 
 		if (hover) {
 			SCPlayer senderSCPlayer = this.scPlayerManager.getSCPlayer(((Player) sender).getUniqueId());
-			message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then("§f: §e§l" + sb, true);
+			message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(": ").color(ChatColor.WHITE)
+					.then(sb.toString()).color(ChatColor.YELLOW).style(ChatColor.BOLD);
 		} else {
-			message = message.then("§6Console").then("§f: §e§l" + sb, true);
+			message = message.then("Console").color(ChatColor.GOLD).then(": ").color(ChatColor.WHITE).then(sb.toString()).color(ChatColor.YELLOW).style(ChatColor.BOLD);
 		}
 
 		this.scPlayerManager.staff(message);

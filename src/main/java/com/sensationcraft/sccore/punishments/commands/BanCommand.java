@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -100,9 +101,12 @@ public class BanCommand implements CommandExecutor {
 
 		if (hover) {
 			SCPlayer senderSCPlayer = this.scPlayerManager.getSCPlayer(((Player) sender).getUniqueId());
-			message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" §7has banned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7with reason: §a" + reason + "§7.", true);
+			message = message.then(senderSCPlayer.getTag()).tooltip(senderSCPlayer.getHoverText()).then(" has banned ").color(ChatColor.GRAY)
+					.then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" with reason: ").color(ChatColor.GRAY).then(reason)
+					.color(ChatColor.GREEN).then(".").color(ChatColor.GRAY);
 		} else {
-			message = message.then("§6Console §7has banned ", true).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §7with reason: §a" + reason + "§7.", true);
+			message = message.then("Console").color(ChatColor.GOLD).then(" has banned ").color(ChatColor.GRAY).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText())
+					.then(" with reason: ").color(ChatColor.GRAY).then(reason).color(ChatColor.GREEN).then(".").color(ChatColor.GRAY);
 		}
 
 		this.scPlayerManager.staff(message);

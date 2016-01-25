@@ -1,6 +1,7 @@
 package com.sensationcraft.sccore.helprequests.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -72,7 +73,7 @@ public class HelpRequestCommand implements CommandExecutor {
 				HelpRequest request = this.helpRequestManager.getRequest(target.getUniqueId());
 				FancyMessage message;
 				if (request == null) {
-					message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText()).then(" §chas not sent a helprequest.", true);
+					message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText()).then(" has not sent a helprequest.").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
@@ -80,16 +81,16 @@ public class HelpRequestCommand implements CommandExecutor {
 				message = new FancyMessage("§9[STAFF] ").then(scPlayer.getTag()).tooltip(scPlayer.getHoverText());
 				FancyMessage toTarget = new FancyMessage(scPlayer.getTag()).tooltip(scPlayer.getHoverText());
 				if (args[0].equalsIgnoreCase("accept")) {
-					message = message.then(" §7has accepted ", true);
-					toTarget = toTarget.then(" §ahas accepted ", true);
+					message = message.then(" has accepted ").color(ChatColor.GRAY);
+					toTarget = toTarget.then(" has accepted ").color(ChatColor.GREEN);
 
 				} else {
-					message = message.then(" §7has denied ", true);
-					toTarget = toTarget.then(" §chas denied ", true);
+					message = message.then(" has denied ").color(ChatColor.GRAY);
+					toTarget = toTarget.then(" has denied ").color(ChatColor.RED);
 				}
 
-				message.then(scTarget.getTag()).tooltip(scTarget.getHoverText()).then("§7's helprequest.", true);
-				toTarget.then("your helprequest.", true);
+				message.then(scTarget.getTag()).tooltip(scTarget.getHoverText()).then("'s helprequest.").color(ChatColor.GRAY);
+				toTarget.then("your helprequest.").color(ChatColor.GRAY);
 				this.scPlayerManager.staff(message);
 				toTarget.send(target);
 				this.helpRequestManager.removeRequest(target.getUniqueId());
@@ -107,7 +108,8 @@ public class HelpRequestCommand implements CommandExecutor {
 					Player target = Bukkit.getPlayer(helpRequest.getCreator());
 					SCPlayer scTarget = this.scPlayerManager.getSCPlayer(target.getUniqueId());
 
-					FancyMessage message = new FancyMessage("  §f§l* ").then(scTarget.getTag()).tooltip(scTarget.getHoverText()).then("§b: " + helpRequest.getMessage(), true);
+					FancyMessage message = new FancyMessage("  * ").color(ChatColor.WHITE).style(ChatColor.BOLD).then(scTarget.getTag())
+							.tooltip(scTarget.getHoverText()).then(": " + helpRequest.getMessage()).color(ChatColor.AQUA);
 					message.send(sender);
 				}
 				return true;
@@ -131,7 +133,8 @@ public class HelpRequestCommand implements CommandExecutor {
 		this.helpRequestManager.addRequest(new HelpRequest(player.getUniqueId(), sb.toString()));
 		sender.sendMessage("§aYour help request has been sent to the staff team. Please wait for a response.");
 
-		FancyMessage message = new FancyMessage("§9[STAFF] §7A helprequest has been receieved from ").then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then("§7.", true);
+		FancyMessage message = new FancyMessage("[STAFF] ").color(ChatColor.BLUE).then("A helprequest has been receieved from ").color(ChatColor.GRAY)
+				.then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(".").color(ChatColor.GRAY);
 		this.scPlayerManager.staff(message);
 		return true;
 	}
