@@ -260,7 +260,7 @@ public class ChatListener implements Listener {
 		switch (user.getChannel()) {
 		case FACTION:
 			List<MPlayer> faction = MPlayerColl.get().getAll(type -> type.getFactionId().equals(mPlayer.getFactionId()));
-			FancyMessage message = new FancyMessage(FactionUtil.getAsteriskPrefix(mPlayer)).color(ChatColor.GREEN).then(user.getTag()).color(ChatColor.GREEN)
+			FancyMessage message = new FancyMessage(FactionUtil.getAsteriskPrefix(mPlayer)).color(ChatColor.GREEN).then(ChatColor.stripColor(user.getTag())).color(ChatColor.GREEN)
 					.tooltip(user.getHoverText()).then(": " + event.getMessage()).color(ChatColor.GREEN);
 			for (MPlayer other : faction)
 				if (other.getSender() != null)
@@ -271,7 +271,7 @@ public class ChatListener implements Listener {
 		case ALLY:
 			List<MPlayer> ally = MPlayerColl.get().getAll(type -> type.getRelationTo(type).isFriend());
 			FancyMessage message2 = new FancyMessage("[").color(ChatColor.DARK_PURPLE).then(mPlayer.getFactionName()).color(ChatColor.DARK_PURPLE)
-					.then("] " + FactionUtil.getAsteriskPrefix(mPlayer)).color(ChatColor.DARK_PURPLE).then(user.getTag()).color(ChatColor.DARK_PURPLE)
+					.then("] " + FactionUtil.getAsteriskPrefix(mPlayer)).color(ChatColor.DARK_PURPLE).then(ChatColor.stripColor(user.getTag())).color(ChatColor.DARK_PURPLE)
 					.tooltip(user.getHoverText()).then(": " + event.getMessage()).color(ChatColor.DARK_PURPLE);
 			for (MPlayer other : ally)
 				if (other.getSender() != null)
