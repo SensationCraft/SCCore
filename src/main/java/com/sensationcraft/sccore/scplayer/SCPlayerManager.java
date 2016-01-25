@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +20,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
@@ -87,6 +89,17 @@ public class SCPlayerManager implements Listener {
 			this.staff(new FancyMessage("§9[STAFF] ").then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" §econnected."));
 
 		e.setJoinMessage(null);
+	}
+
+	@EventHandler
+	public void onPlayerTeleport(PlayerTeleportEvent e){
+		Player player = e.getPlayer();
+		SCPlayer scPlayer = this.getSCPlayer(player.getUniqueId());
+
+		if(scPlayer.isCombatTagged()){
+			e.setCancelled(true);
+			player.sendMessage(ChatColor.RED+"You can't teleport while in combat!");
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
