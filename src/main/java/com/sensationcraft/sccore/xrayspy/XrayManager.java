@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.google.common.collect.Lists;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.ranks.Rank;
 import com.sensationcraft.sccore.ranks.RankManager;
@@ -31,6 +32,9 @@ import lombok.Getter;
 @Getter
 public class XrayManager implements Listener {
 
+	private static final List<Material> materials = Lists.newArrayList(Material.EMERALD_ORE, Material.DIAMOND_ORE, Material.GOLD_ORE,
+			Material.IRON_ORE, Material.REDSTONE_ORE, Material.GLOWING_REDSTONE_ORE, Material.LAPIS_ORE);
+
 	private SCCore instance;
 	private SCPlayerManager scPlayerManager;
 	private RankManager rankManager;
@@ -44,38 +48,26 @@ public class XrayManager implements Listener {
 
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent e) {
-
+		Material material = e.getBlock().getType();
+		if(!XrayManager.materials.contains(material))
+			return;
 		Player player = e.getPlayer();
 		SCPlayer scPlayer = this.scPlayerManager.getSCPlayer(player.getUniqueId());
-		Material material = e.getBlock().getType();
 
 		Rank rank = this.rankManager.getRank(player.getUniqueId());
 		if (rank.getId() >= Rank.MOD.getId()) {
 			return;
 		}
 
-		List<Material> materials = new ArrayList<>();
-		materials.add(Material.EMERALD_ORE);
-		materials.add(Material.DIAMOND_ORE);
-		materials.add(Material.GOLD_ORE);
-		materials.add(Material.IRON_ORE);
-		materials.add(Material.REDSTONE_ORE);
-		materials.add(Material.GLOWING_REDSTONE_ORE);
-		materials.add(Material.LAPIS_ORE);
+		String itemName = ProtocolUtil.getItemStackName(new ItemStack(material, 1));
+		if (itemName.equalsIgnoreCase("ERROR")) itemName = "Redstone Ore";
+		FancyMessage message = new FancyMessage("[XRAY] ").color(ChatColor.YELLOW).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" has mined ")
+				.color(ChatColor.GRAY).then(itemName).color(ChatColor.AQUA).then(".").color(ChatColor.GRAY);
+		for (UUID uuid : this.xraySpyers) {
+			OfflinePlayer spyer = Bukkit.getOfflinePlayer(uuid);
 
-		for (Material m : materials) {
-			if (material.equals(m)) {
-				String itemName = ProtocolUtil.getItemStackName(new ItemStack(m, 1));
-				if (itemName.equalsIgnoreCase("ERROR")) itemName = "Redstone Ore";
-				FancyMessage message = new FancyMessage("[XRAY] ").color(ChatColor.YELLOW).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" has mined ")
-						.color(ChatColor.GRAY).then(itemName).color(ChatColor.AQUA).then(".").color(ChatColor.GRAY);
-				for (UUID uuid : this.xraySpyers) {
-					OfflinePlayer spyer = Bukkit.getOfflinePlayer(uuid);
-
-					if (spyer != null && spyer.isOnline()) {
-						message.send(spyer.getPlayer());
-					}
-				}
+			if (spyer != null && spyer.isOnline()) {
+				message.send(spyer.getPlayer());
 			}
 		}
 

@@ -51,7 +51,7 @@ public class MessageListener extends PacketAdapter {
 	public void onPacketSending(final PacketEvent event) {
 		StackTraceElement stacktrace = Reflection.findCallingClass("sendMessage", MinecraftReflection.getCraftPlayerClass().getName());
 		if (stacktrace != null && stacktrace.getClassName().startsWith(MessageListener.MCMMO_PACKAGE)) {
-			this.plugin.getLogger().info(String.valueOf(stacktrace));
+			//this.plugin.getLogger().info(String.valueOf(stacktrace));
 			if (MessageListener.MCMMO_CLASSES.contains(stacktrace.getClassName())) {
 				WrappedChatComponent comp = event.getPacket().getChatComponents().read(0);
 				JsonObject obj = this.parser.parse(comp.getJson()).getAsJsonObject();
