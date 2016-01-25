@@ -21,6 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.earth2me.essentials.Essentials;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.ps.PS;
@@ -59,7 +60,7 @@ public class SellCauldron implements Listener {
 		Location to = e.getTo();
 
 		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(to.getChunk()));
-		if (!faction.getName().equalsIgnoreCase("SafeZone")) {
+		if (!faction.getId().equals(Factions.ID_SAFEZONE)) {
 			return;
 		}
 

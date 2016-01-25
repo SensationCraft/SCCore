@@ -205,7 +205,7 @@ public class SCPlayerManager implements Listener {
 		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(target.getLocation().getChunk()));
 
 
-		if (faction.getName().equalsIgnoreCase("Safezone") && !(this.arenaManager.getArena().getArenaPlayers().contains(player) || this.arenaManager.getArena().getArenaPlayers().contains(target))) {
+		if (faction.getId().equals(Factions.ID_SAFEZONE) && !(this.arenaManager.getArena().getArenaPlayers().contains(player) || this.arenaManager.getArena().getArenaPlayers().contains(target))) {
 			return;
 		}
 
