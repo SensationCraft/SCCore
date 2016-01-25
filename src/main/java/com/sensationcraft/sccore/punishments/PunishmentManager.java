@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.mysql.MySQL;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 
 /**
  * Created by Anml on 1/7/16.
@@ -24,13 +23,11 @@ public class PunishmentManager {
 
 	private SCCore instance;
 	private MySQL mySQL;
-	private SCPlayerManager scPlayerManager;
 	private Map<UUID, List<Punishment>> cachedPunishments;
 
 	public PunishmentManager(SCCore instance) {
 		this.instance = instance;
 		this.mySQL = instance.getMySQL();
-		this.scPlayerManager = instance.getSCPlayerManager();
 		this.cachedPunishments = new ConcurrentHashMap<UUID, List<Punishment>>();
 	}
 

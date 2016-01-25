@@ -154,6 +154,7 @@ public class SCCore extends JavaPlugin implements Listener {
 	}
 
 	public void registerManagers() {
+		//THESE ARE ORDER SENSETIVE, DON'T CHANGE THEM WILLY-NILLY!
 		this.mySQL = new MySQL(this);
 		this.utils = new Utils();
 		this.rankManager = new RankManager(this);
@@ -163,8 +164,8 @@ public class SCCore extends JavaPlugin implements Listener {
 		this.punishmentManager = new PunishmentManager(this);
 		this.arenaManager = new ArenaManager(this);
 		this.itemManager = new ItemManager(this);
-		this.xrayManager = new XrayManager(this);
 		this.scPlayerManager = new SCPlayerManager(this);
+		this.xrayManager = new XrayManager(this);
 	}
 
 	@EventHandler
