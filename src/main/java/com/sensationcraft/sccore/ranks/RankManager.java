@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
-
 import com.google.common.collect.Maps;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.mysql.MySQL;
@@ -59,10 +57,7 @@ public class RankManager {
 			return;
 		}
 
-		if (Bukkit.getPlayer(uuid) != null) {
-			this.players.put(uuid, rank);
-			return;
-		}
+		this.players.put(uuid, rank);
 
 		this.setSQLRank(uuid, rank);
 	}

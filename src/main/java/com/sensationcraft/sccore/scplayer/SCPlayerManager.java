@@ -79,6 +79,8 @@ public class SCPlayerManager implements Listener {
 
 		Player player = e.getPlayer();
 
+		this.permissionsManager.setAttachment(player);
+
 		SCPlayer scPlayer = this.getSCPlayer(player.getUniqueId());
 
 		if (this.rankManager.getRank(player.getUniqueId()).getId() >= Rank.MOD.getId())
@@ -193,7 +195,6 @@ public class SCPlayerManager implements Listener {
 
 		this.scPlayers.put(uuid, new SCPlayer(this.instance, uuid));
 		this.rankManager.setRank(uuid, this.rankManager.getRank(uuid));
-		this.permissionsManager.setAttachment(Bukkit.getPlayer(uuid));
 		this.statsManager.loadStats(uuid);
 
 	}
