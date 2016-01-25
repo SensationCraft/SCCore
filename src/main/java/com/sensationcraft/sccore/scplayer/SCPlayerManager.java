@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.BoardColl;
 import com.massivecraft.factions.entity.Faction;
@@ -115,7 +116,7 @@ public class SCPlayerManager implements Listener {
 				return;
 		}
 
-		if (!faction.getName().equalsIgnoreCase("SafeZone")) {
+		if (!faction.getId().equals(Factions.ID_SAFEZONE)) {
 			if (player.getWalkSpeed() == .4F)
 				player.setWalkSpeed(.2F);
 			return;
