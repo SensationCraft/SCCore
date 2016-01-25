@@ -12,7 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -109,7 +111,7 @@ public class SCPlayerManager implements Listener {
 		Player player = e.getPlayer();
 		Location from = e.getFrom();
 
-		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(from.getChunk()));
+		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(from));
 
 		if (this.arenaManager != null) {
 			if (this.arenaManager.getArena().isRunning() && this.arenaManager.getArena().getArenaPlayers().contains(player))
@@ -125,6 +127,26 @@ public class SCPlayerManager implements Listener {
 		if (player.getWalkSpeed() != .4F)
 			player.setWalkSpeed(.4F);
 
+	}
+
+	@EventHandler
+	public void onPlayerFire(final EntityCombustEvent e){
+		if(e.getEntity() instanceof Player == false)
+			return;
+		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(e.getEntity().getLocation()));
+		if(faction != null && faction.getId().equals(Factions.ID_SAFEZONE) && !this.arenaManager.getArena().isDuel(e.getEntity()))
+			e.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onPlayerDamage(EntityDamageEvent e){
+		if(e.getEntity() instanceof Player == false)
+			return;
+		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(e.getEntity().getLocation()));
+		if(faction != null && faction.getId().equals(Factions.ID_SAFEZONE) && !this.arenaManager.getArena().isDuel(e.getEntity())){
+			e.setCancelled(true);
+			e.getEntity().setFireTicks(0);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
