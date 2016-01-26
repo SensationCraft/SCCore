@@ -15,14 +15,16 @@
     </wildcardResourcePatterns>
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true">
-        <processorPath useClasspath="true">
+        <processorPath useClasspath="false">
           <entry name="$PROJECT_DIR$" />
         </processorPath>
       </profile>
       <profile default="false" name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources" />
         <sourceTestOutputDir name="target/generated-test-sources" />
-        <processorPath useClasspath="true" />
+        <processorPath useClasspath="false">
+          <entry name="$PROJECT_DIR$" />
+        </processorPath>
         <module name="sccore" />
       </profile>
     </annotationProcessing>
