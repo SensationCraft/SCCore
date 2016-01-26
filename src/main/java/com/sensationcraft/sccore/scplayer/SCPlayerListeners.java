@@ -191,6 +191,11 @@ public class SCPlayerListeners implements Listener {
             return;
         }
 
+        Faction standingOn = BoardColl.get().getFactionAt(PS.valueOf(target.getLocation()));
+
+        if (pFaction.getRelationTo(tFaction) == Rel.NEUTRAL && tFaction.equals(standingOn))
+            return;
+
         User pUser = essentials.getUser(player);
         User tUser = essentials.getUser(target);
 

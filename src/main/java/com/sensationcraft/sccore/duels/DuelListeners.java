@@ -146,9 +146,7 @@ public class DuelListeners implements Listener {
             } else
                 return false;
 
-        boolean b = true;
-        return this.arena.isDuel(attacker, defender)
-                && b;
+        return this.arena.isDuel(attacker, defender);
     }
 
 }
