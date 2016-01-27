@@ -1,25 +1,5 @@
 package com.sensationcraft.sccore.shop;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
 import com.earth2me.essentials.Essentials;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.BoardColl;
@@ -29,8 +9,19 @@ import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.ranks.Rank;
 import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.utils.ProtocolUtil;
-
 import net.ess3.api.MaxMoneyException;
+import org.bukkit.*;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.*;
 
 /**
  * Created by Anml on 1/21/16.
@@ -109,7 +100,7 @@ public class SellCauldron implements Listener {
 			return false;
 		}
 
-		return !(!location.getBlock().getType().equals(Material.CAULDRON) || location.getY() != 54.31250);
+		return !(!location.getBlock().getType().equals(Material.CAULDRON) || location.getY() != 53.31250);
 
 	}
 
@@ -148,6 +139,9 @@ public class SellCauldron implements Listener {
 		Location crit = player.getLocation();
 		crit.setY(player.getLocation().getY() + 1);
 		crit.getWorld().playEffect(crit, Effect.MAGIC_CRIT, 80, 7);
+		crit.getWorld().playEffect(crit, Effect.MAGIC_CRIT, 80, 7);
+		crit.getWorld().playEffect(crit, Effect.MAGIC_CRIT, 80, 7);
+
 
 		for (Item item : result.keySet()) {
 			int amount = result.get(item);
@@ -168,6 +162,10 @@ public class SellCauldron implements Listener {
 			}
 			player.sendMessage(msg);
 		}
+
+		player.playSound(player.getLocation(), Sound.BAT_TAKEOFF, 1F, 1F);
+		player.playSound(player.getLocation(), Sound.BAT_TAKEOFF, 1F, 1F);
+		player.playSound(player.getLocation(), Sound.BAT_TAKEOFF, 1F, 1F);
 
 
 	}

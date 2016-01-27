@@ -1,17 +1,17 @@
 package com.sensationcraft.sccore.lockpicks;
 
-import java.util.UUID;
-
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import java.util.UUID;
 
 /**
  * Created by Anml on 12/31/15.
@@ -40,8 +40,14 @@ public class LockpickRunnable extends BukkitRunnable {
 			if (this.scPlayer.lockpickAttempt()) {
 				this.block.breakNaturally();
 				player.sendMessage("§aThe luck was in your favor, resulting in a successful lockpick.");
+				player.playSound(player.getLocation(), Sound.BURP, 1F, 1F);
+				player.playSound(player.getLocation(), Sound.BURP, 1F, 1F);
+				player.playSound(player.getLocation(), Sound.BURP, 1F, 1F);
 			} else
 				player.sendMessage("§cThe luck was not in your favor, resulting in an unsuccessful lockpick.");
+			player.playSound(player.getLocation(), Sound.ITEM_BREAK, 1F, 1F);
+			player.playSound(player.getLocation(), Sound.ITEM_BREAK, 1F, 1F);
+			player.playSound(player.getLocation(), Sound.ITEM_BREAK, 1F, 1F);
 			final LockpickRunnable task = this.scPlayerManager.getLockpicking().remove(player.getUniqueId());
 			if (task != null) {
 				task.cancel();

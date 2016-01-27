@@ -1,24 +1,5 @@
 package com.sensationcraft.sccore.chat;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChatTabCompleteEvent;
-
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
@@ -38,6 +19,17 @@ import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.utils.FactionUtil;
 import com.sensationcraft.sccore.utils.Utils;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatTabCompleteEvent;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatListener implements Listener {
 
@@ -306,7 +298,7 @@ public class ChatListener implements Listener {
 
 			if (player.isOp()) event.setMessage(event.getMessage().replace('&', ChatColor.COLOR_CHAR));
 
-			FancyMessage message3 = new FancyMessage("   ").color(ChatColor.GRAY).then(user.getTag()).tooltip(user.getHoverText())
+			FancyMessage message3 = new FancyMessage("").color(ChatColor.GRAY).then(user.getTag()).tooltip(user.getHoverText())
 					.then(": ").color(ChatColor.DARK_GRAY).then(event.getMessage()).color(ChatColor.GRAY);
 
 			for (final Player other : event.getRecipients()) {

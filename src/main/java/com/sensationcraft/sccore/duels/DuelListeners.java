@@ -1,12 +1,12 @@
 package com.sensationcraft.sccore.duels;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -14,15 +14,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
-import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Anml on 1/3/16.
@@ -54,6 +51,8 @@ public class DuelListeners implements Listener {
 		}
 
 		if (this.arenaManager.insideBorders(e.getFrom()) && this.arena.getArenaPlayers().contains(e.getPlayer())) {
+			if (arena.canTeleport())
+				return;
 			e.getPlayer().sendMessage("§cYou are not permitted to teleport  out of the duel arena.");
 			e.setCancelled(true);
 		}
@@ -106,36 +105,37 @@ public class DuelListeners implements Listener {
 			e.setCancelled(false);
 	}
 
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-	public void onPotionSplashEvent(final PotionSplashEvent e) {
-		for (final LivingEntity le : e.getAffectedEntities())
-			if (this.isEvent(le, e.getEntity(), true)) {
-				e.setCancelled(true);
-				return;
-			}
-	}
+	/*
+	   @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+       public void onPotionSplashEvent(final PotionSplashEvent e) {
+           for (final LivingEntity le : e.getAffectedEntities())
+               if (this.isEvent(le, e.getEntity(), true)) {
+                   e.setCancelled(true);
+                   return;
+               }
+       }
 
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
-	public void onPotionSplashEventLate(final PotionSplashEvent e) {
-		final Player shooter = (Player) (e.getPotion()).getShooter();
-		if (this.arena.isDuel(shooter)) {
-			for (final LivingEntity affected : e.getAffectedEntities())
-				if (affected instanceof Player)
-					if (!this.isEvent(affected, shooter, true))
-						e.setIntensity(affected, 0.0D);
-			if (!e.getAffectedEntities().isEmpty())
-				e.setCancelled(false);
-			return;
-		}
+       @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+       public void onPotionSplashEventLate(final PotionSplashEvent e) {
+           final Player shooter = (Player) (e.getPotion()).getShooter();
+           if (this.arena.isDuel(shooter)) {
+               for (final LivingEntity affected : e.getAffectedEntities())
+                   if (affected instanceof Player)
+                       if (!this.isEvent(affected, shooter, true))
+                           e.setIntensity(affected, 0.0D);
+               if (!e.getAffectedEntities().isEmpty())
+                   e.setCancelled(false);
+               return;
+           }
 
-		for (final LivingEntity affected : e.getAffectedEntities())
-			if (affected instanceof Player)
-				if (!this.arena.isDuel(affected, shooter))
-					e.setIntensity(affected, 0.0D);
-		if (!e.getAffectedEntities().isEmpty())
-			e.setCancelled(false);
-	}
-
+           for (final LivingEntity affected : e.getAffectedEntities())
+               if (affected instanceof Player)
+                   if (!this.arena.isDuel(affected, shooter))
+                       e.setIntensity(affected, 0.0D);
+           if (!e.getAffectedEntities().isEmpty())
+               e.setCancelled(false);
+       }
+   */
 	private boolean isEvent(final Entity defender, Entity attacker, final boolean pot) {
 		if ((defender instanceof Player) == false)
 			return false;

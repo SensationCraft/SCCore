@@ -1,7 +1,14 @@
 package com.sensationcraft.sccore.lockpicks;
 
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.massivecore.ps.PS;
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Entity;
@@ -14,13 +21,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
-
-import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.massivecore.ps.PS;
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 
 /**
  * Created by Anml on 12/30/15.
@@ -56,6 +56,9 @@ public class LockpickListeners implements Listener {
 			if (task != null) {
 				task.cancel();
 				player.sendMessage("§cYour attempt at lockpicking was cancelled due to movement.");
+				player.playSound(player.getLocation(), Sound.BAT_DEATH, 1F, 1F);
+				player.playSound(player.getLocation(), Sound.BAT_DEATH, 1F, 1F);
+				player.playSound(player.getLocation(), Sound.BAT_DEATH, 1F, 1F);
 			}
 		}
 	}

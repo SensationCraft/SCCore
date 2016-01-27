@@ -1,17 +1,12 @@
 package com.sensationcraft.sccore;
 
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.comphenix.protocol.ProtocolLibrary;
 import com.earth2me.essentials.Essentials;
 import com.sensationcraft.sccore.chat.ChatListener;
 import com.sensationcraft.sccore.chat.commands.ChannelCommand;
 import com.sensationcraft.sccore.chat.commands.StaffCommand;
+import com.sensationcraft.sccore.crates.CratesListener;
+import com.sensationcraft.sccore.crates.GiveKeyShardCommand;
 import com.sensationcraft.sccore.duels.ArenaManager;
 import com.sensationcraft.sccore.duels.DuelListeners;
 import com.sensationcraft.sccore.duels.commands.ArenaCommand;
@@ -24,15 +19,7 @@ import com.sensationcraft.sccore.mcmmo.MessageListener;
 import com.sensationcraft.sccore.mysql.MySQL;
 import com.sensationcraft.sccore.punishments.PunishmentListeners;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
-import com.sensationcraft.sccore.punishments.commands.BanCommand;
-import com.sensationcraft.sccore.punishments.commands.HistoryCommand;
-import com.sensationcraft.sccore.punishments.commands.KickCommand;
-import com.sensationcraft.sccore.punishments.commands.MuteCommand;
-import com.sensationcraft.sccore.punishments.commands.TempbanCommand;
-import com.sensationcraft.sccore.punishments.commands.TempmuteCommand;
-import com.sensationcraft.sccore.punishments.commands.UnbanCommand;
-import com.sensationcraft.sccore.punishments.commands.UnmuteCommand;
-import com.sensationcraft.sccore.punishments.commands.WarnCommand;
+import com.sensationcraft.sccore.punishments.commands.*;
 import com.sensationcraft.sccore.ranks.PermissionsManager;
 import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.ranks.commands.PermsCommand;
@@ -46,8 +33,13 @@ import com.sensationcraft.sccore.stats.StatListeners;
 import com.sensationcraft.sccore.stats.StatsManager;
 import com.sensationcraft.sccore.utils.Utils;
 import com.sensationcraft.sccore.xrayspy.XrayManager;
-
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.UUID;
 
 /**
  * Created by Anml on 12/26/15.
@@ -123,6 +115,7 @@ public class SCCore extends JavaPlugin implements Listener {
 		pm.registerEvents(new PunishmentListeners(this), this);
 		pm.registerEvents(new ChatListener(this), this);
 		pm.registerEvents(new SellCauldron(this), this);
+		pm.registerEvents(new CratesListener(), this);
 		//pm.registerEvents(this.xrayManager, this);
 
 		ProtocolLibrary.getProtocolManager().addPacketListener(new MessageListener(this));
@@ -147,7 +140,7 @@ public class SCCore extends JavaPlugin implements Listener {
 		this.getCommand("warn").setExecutor(new WarnCommand(this));
 		this.getCommand("history").setExecutor(new HistoryCommand(this));
 		this.getCommand("helprequest").setExecutor(new HelpRequestCommand(this));
-		//this.getCommand("xrayspy").setExecutor(new XraySpyCommand(this));
+		this.getCommand("givekeyshard").setExecutor(new GiveKeyShardCommand());
 	}
 
 	public void registerManagers() {
@@ -159,9 +152,9 @@ public class SCCore extends JavaPlugin implements Listener {
 		this.statsManager = new StatsManager(this);
 		this.helpRequestManager = new HelpRequestManager(this);
 		this.punishmentManager = new PunishmentManager(this);
-		this.arenaManager = new ArenaManager(this);
 		this.itemManager = new ItemManager(this);
 		this.scPlayerManager = new SCPlayerManager(this);
+		this.arenaManager = new ArenaManager(this);
 		//this.xrayManager = new XrayManager(this);
 	}
 }

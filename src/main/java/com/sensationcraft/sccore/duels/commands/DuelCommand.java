@@ -1,15 +1,5 @@
 package com.sensationcraft.sccore.duels.commands;
 
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.massivecraft.factions.Rel;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MFlag;
@@ -19,6 +9,15 @@ import com.sensationcraft.sccore.duels.Arena;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 /**
  * Created by Anml on 1/3/16.
@@ -84,7 +83,7 @@ public class DuelCommand implements CommandExecutor {
 					return false;
 				}
 
-				if (scTarget.getDuelRequests().containsKey(player)) {
+				if (scTarget.getDuelRequests().containsKey(player.getUniqueId())) {
 					FancyMessage message = new FancyMessage("You have already sent a duel request to ").color(ChatColor.RED).then
 							(scTarget.getTag()).tooltip(scTarget.getHoverText()).then(".").color(ChatColor.RED);
 					message.send(player);
