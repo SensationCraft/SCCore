@@ -114,7 +114,7 @@ public class SCCore extends JavaPlugin implements Listener {
         pm.registerEvents(new PunishmentListeners(this), this);
         pm.registerEvents(new ChatListener(this), this);
         pm.registerEvents(new SellCauldron(this), this);
-        pm.registerEvents(this.xrayManager, this);
+        //pm.registerEvents(this.xrayManager, this);
 
         ProtocolLibrary.getProtocolManager().addPacketListener(new MessageListener(this));
     }
@@ -138,7 +138,7 @@ public class SCCore extends JavaPlugin implements Listener {
         this.getCommand("warn").setExecutor(new WarnCommand(this));
         this.getCommand("history").setExecutor(new HistoryCommand(this));
         this.getCommand("helprequest").setExecutor(new HelpRequestCommand(this));
-        this.getCommand("xrayspy").setExecutor(new XraySpyCommand(this));
+        //this.getCommand("xrayspy").setExecutor(new XraySpyCommand(this));
     }
 
     public void registerManagers() {
@@ -153,6 +153,6 @@ public class SCCore extends JavaPlugin implements Listener {
         this.arenaManager = new ArenaManager(this);
         this.itemManager = new ItemManager(this);
         this.scPlayerManager = new SCPlayerManager(this);
-        this.xrayManager = new XrayManager(this);
+        //this.xrayManager = new XrayManager(this);
     }
 }

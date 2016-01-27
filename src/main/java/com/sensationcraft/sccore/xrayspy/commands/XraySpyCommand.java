@@ -34,12 +34,12 @@ public class XraySpyCommand implements CommandExecutor {
             return false;
         }
 
-        if (this.xrayManager.getXraySpyers().contains(player.getUniqueId())) {
-            this.xrayManager.getXraySpyers().remove(player.getUniqueId());
+        if (this.xrayManager.getXraySpyers().contains(player)) {
+            this.xrayManager.getXraySpyers().remove(player);
             sender.sendMessage("§cYou have disabled xray spy.");
             return false;
         } else {
-            this.xrayManager.getXraySpyers().add(player.getUniqueId());
+            this.xrayManager.getXraySpyers().add(player);
             sender.sendMessage("§aYou have enabled xray spy.");
             return true;
         }

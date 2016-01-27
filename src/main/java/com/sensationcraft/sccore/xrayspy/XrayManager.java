@@ -1,6 +1,7 @@
 package com.sensationcraft.sccore.xrayspy;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.MapMaker;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.ranks.Rank;
 import com.sensationcraft.sccore.ranks.RankManager;
@@ -20,8 +21,11 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.WeakHashMap;
 
 /**
  * Created by Anml on 1/24/16.
@@ -36,7 +40,7 @@ public class XrayManager implements Listener {
     private SCCore instance;
     private SCPlayerManager scPlayerManager;
     private RankManager rankManager;
-    private List<UUID> xraySpyers = new ArrayList<>();
+    private Set<Player> xraySpyers = Collections.newSetFromMap(new WeakHashMap<>());
 
     public XrayManager(SCCore instance) {
         this.instance = instance;
@@ -44,7 +48,7 @@ public class XrayManager implements Listener {
         this.rankManager = instance.getRankManager();
     }
 
-    @EventHandler
+    //@EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         Material material = e.getBlock().getType();
         if (!XrayManager.materials.contains(material))
@@ -58,16 +62,12 @@ public class XrayManager implements Listener {
             return;
         }
 
-        String itemName = ProtocolUtil.getItemStackName(new ItemStack(material, 1));
-        if (itemName.equalsIgnoreCase("ERROR")) itemName = "Redstone Ore";
+        /*String itemName = ProtocolUtil.getItemStackName(new ItemStack(material, 1));
+        if (itemName.equalsIgnoreCase("ERROR")) itemName = "Redstone Ore";*/
         FancyMessage message = new FancyMessage("[XRAY] ").color(ChatColor.YELLOW).then(scPlayer.getTag()).tooltip(scPlayer.getHoverText()).then(" has mined ")
-                .color(ChatColor.GRAY).then(itemName).color(ChatColor.AQUA).then(".").color(ChatColor.GRAY);
-        for (UUID uuid : this.xraySpyers) {
-            OfflinePlayer spyer = Bukkit.getOfflinePlayer(uuid);
-
-            if (spyer != null && spyer.isOnline()) {
-                message.send(spyer.getPlayer());
-            }
+                .color(ChatColor.GRAY).then(material.name()).color(ChatColor.AQUA).then(".").color(ChatColor.GRAY);
+        for (Player p:this.xraySpyers) {
+        	message.send(p);
         }
 
 
