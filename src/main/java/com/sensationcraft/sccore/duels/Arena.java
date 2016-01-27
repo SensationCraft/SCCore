@@ -1,11 +1,8 @@
 package com.sensationcraft.sccore.duels;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
-import com.sensationcraft.sccore.stats.Stat;
-import com.sensationcraft.sccore.stats.StatsManager;
-import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -18,8 +15,12 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.stats.Stat;
+import com.sensationcraft.sccore.stats.StatsManager;
+import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 
 /**
  * Created by Anml on 12/31/15.
@@ -125,7 +126,7 @@ public class Arena {
 		FancyMessage message = new FancyMessage(primary.getTag()).tooltip(primary.getHoverText()).then(" §6and ")
 				.then(secondary.getTag()).tooltip(secondary.getHoverText()).then(" §6are now dueling! '/spectate' to " +
 						"spectate the battle!");
-		scPlayerManager.broadcast(message);
+		this.scPlayerManager.broadcast(message);
 
 		this.task = new BukkitRunnable() {
 			@Override
@@ -180,8 +181,8 @@ public class Arena {
 
 		FancyMessage message = new FancyMessage("§6The duel between ").then(primary.getTag()).tooltip(primary
 				.getHoverText()).then(" and ").then(secondary.getTag()).tooltip(secondary.getHoverText()).then(
-				"§6ended in a draw!");
-		scPlayerManager.broadcast(message);
+						"§6ended in a draw!");
+		this.scPlayerManager.broadcast(message);
 		this.primaryPlayer.teleport(this.primaryPlayerLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);
 		this.secondaryPlayer.teleport(this.secondaryPlayerLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);
 

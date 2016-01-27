@@ -1,12 +1,7 @@
 package com.sensationcraft.sccore.punishments.commands;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.punishments.Punishment;
-import com.sensationcraft.sccore.punishments.PunishmentManager;
-import com.sensationcraft.sccore.punishments.PunishmentType;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
-import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -15,7 +10,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.punishments.Punishment;
+import com.sensationcraft.sccore.punishments.PunishmentManager;
+import com.sensationcraft.sccore.punishments.PunishmentType;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 
 /**
  * Created by Anml on 1/7/16.

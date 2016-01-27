@@ -37,7 +37,3 @@ commands:
   helprequest:
   shop:
     default: false
-  xrayspy:
-    default: false
-
-
