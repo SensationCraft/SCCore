@@ -1,8 +1,11 @@
 package com.sensationcraft.sccore.duels;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.stats.Stat;
+import com.sensationcraft.sccore.stats.StatsManager;
+import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -15,12 +18,8 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
-import com.sensationcraft.sccore.stats.Stat;
-import com.sensationcraft.sccore.stats.StatsManager;
-import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Anml on 12/31/15.
@@ -33,7 +32,8 @@ public class Arena {
 	private StatsManager statsManager;
 	private Player primaryPlayer, secondaryPlayer;
 	private Location primaryPlayerLocation, secondaryPlayerLocation;
-	private boolean running;
+	private boolean running = false;
+	private boolean canTeleport = false;
 	private BukkitTask task;
 
 
@@ -42,7 +42,6 @@ public class Arena {
 		this.config = instance.getConfig();
 		this.scPlayerManager = instance.getSCPlayerManager();
 		this.statsManager = instance.getStatsManager();
-		this.running = false;
 	}
 
 	public Location getLocation(ArenaLocationType type) {
@@ -163,8 +162,8 @@ public class Arena {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				canTeleport = true;
 				winner.teleport(location);
-
 				Arena.this.reset();
 			}
 		}.runTaskLater(this.instance, 200L);
@@ -180,9 +179,10 @@ public class Arena {
 		SCPlayer secondary = this.scPlayerManager.getSCPlayer(this.secondaryPlayer.getUniqueId());
 
 		FancyMessage message = new FancyMessage("§6The duel between ").then(primary.getTag()).tooltip(primary
-				.getHoverText()).then(" and ").then(secondary.getTag()).tooltip(secondary.getHoverText()).then(
-						"§6ended in a draw!");
+				.getHoverText()).then(" and ").then(secondary.getTag()).tooltip(secondary.getHoverText()).then(" §6ended in a draw!");
 		this.scPlayerManager.broadcast(message);
+
+		canTeleport = true;
 		this.primaryPlayer.teleport(this.primaryPlayerLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);
 		this.secondaryPlayer.teleport(this.secondaryPlayerLocation, PlayerTeleportEvent.TeleportCause.PLUGIN);
 
@@ -223,6 +223,11 @@ public class Arena {
 		this.secondaryPlayerLocation = null;
 
 		this.running = false;
+		this.canTeleport = false;
+	}
+
+	public boolean canTeleport() {
+		return canTeleport;
 	}
 
 
