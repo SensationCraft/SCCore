@@ -298,7 +298,7 @@ public class ChatListener implements Listener {
 
                 if (player.isOp()) event.setMessage(event.getMessage().replace('&', ChatColor.COLOR_CHAR));
 
-                FancyMessage message3 = new FancyMessage("   ").color(ChatColor.GRAY).then(user.getTag()).tooltip(user.getHoverText())
+                FancyMessage message3 = new FancyMessage("").color(ChatColor.GRAY).then(user.getTag()).tooltip(user.getHoverText())
                         .then(": ").color(ChatColor.DARK_GRAY).then(event.getMessage()).color(ChatColor.GRAY);
 
                 for (final Player other : event.getRecipients()) {

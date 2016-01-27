@@ -10,10 +10,7 @@ import com.sensationcraft.sccore.ranks.Rank;
 import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.utils.ProtocolUtil;
 import net.ess3.api.MaxMoneyException;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -136,12 +133,20 @@ public class SellCauldron implements Listener {
 
         if (result.isEmpty()) {
             player.sendMessage("§cNo items in your inventory are able to be sold.");
+            player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1F, 1F);
+            player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1F, 1F);
+            player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1F, 1F);
             return;
         }
 
         Location crit = player.getLocation();
         crit.setY(player.getLocation().getY() + 1);
         crit.getWorld().playEffect(crit, Effect.MAGIC_CRIT, 80, 7);
+        crit.getWorld().playEffect(crit, Effect.MAGIC_CRIT, 80, 7);
+        crit.getWorld().playEffect(crit, Effect.MAGIC_CRIT, 80, 7);
+        player.playSound(player.getLocation(), Sound.BAT_TAKEOFF, 1F, 1F);
+        player.playSound(player.getLocation(), Sound.BAT_TAKEOFF, 1F, 1F);
+        player.playSound(player.getLocation(), Sound.BAT_TAKEOFF, 1F, 1F);
 
         for (Item item : result.keySet()) {
             int amount = result.get(item);
@@ -162,7 +167,5 @@ public class SellCauldron implements Listener {
             }
             player.sendMessage(msg);
         }
-
-
     }
 }

@@ -146,7 +146,7 @@ public class Arena {
 		SCPlayer scWinner = this.scPlayerManager.getSCPlayer(winner.getUniqueId());
 
 		this.statsManager.setIntegerStat(winner.getUniqueId(), Stat.WINS, this.statsManager.getIntegerStat(winner.getUniqueId(), Stat.WINS) + 1);
-		this.statsManager.setIntegerStat(loser.getUniqueId(), Stat.KILLS, this.statsManager.getIntegerStat(loser.getUniqueId(), Stat.LOSSES) + 1);
+		this.statsManager.setIntegerStat(loser.getUniqueId(), Stat.LOSSES, this.statsManager.getIntegerStat(loser.getUniqueId(), Stat.LOSSES) + 1);
 
 		FancyMessage message = new FancyMessage(scWinner.getTag()).tooltip(scWinner.getHoverText()).then(" §6has " +
 				"beaten ").then(scLoser.getTag()).tooltip(scLoser.getHoverText()).then(" §6in the duel arena!");

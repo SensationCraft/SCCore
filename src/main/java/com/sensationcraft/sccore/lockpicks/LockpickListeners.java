@@ -8,6 +8,7 @@ import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Entity;
@@ -43,6 +44,9 @@ public class LockpickListeners implements Listener {
             if (task != null) {
                 task.cancel();
                 player.sendMessage("§cYour attempt at lockpicking was cancelled due to damage.");
+                player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1F, 1F);
+                player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1F, 1F);
+                player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1F, 1F);
             }
         }
     }
@@ -55,6 +59,9 @@ public class LockpickListeners implements Listener {
             if (task != null) {
                 task.cancel();
                 player.sendMessage("§cYour attempt at lockpicking was cancelled due to movement.");
+                player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1F, 1F);
+                player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1F, 1F);
+                player.playSound(player.getLocation(), Sound.NOTE_BASS_DRUM, 1F, 1F);
             }
         }
     }
@@ -102,7 +109,7 @@ public class LockpickListeners implements Listener {
 
         player.getInventory().setItemInHand(itemStack);
 
-        player.sendMessage("§aCommencing start of lockpicking the target block - ");
+        player.sendMessage("§aCommencing start of lockpicking the target block!");
 
         LockpickRunnable runnable = new LockpickRunnable(this.instance, block, player.getUniqueId(), 1);
         this.scPlayerManager.getLockpicking().put(player.getUniqueId(), runnable);

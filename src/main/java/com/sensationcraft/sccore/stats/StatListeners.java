@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -32,7 +31,7 @@ public class StatListeners implements Listener {
     }
 
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler
     public void onPlayerDeath(final PlayerDeathEvent e) {
 
         e.setDeathMessage(null);
@@ -63,7 +62,9 @@ public class StatListeners implements Listener {
         message.send(playerKilled);
         message = new FancyMessage("§aYou have killed ").then(killed.getTag()).tooltip(killed.getHoverText()).then("§a.");
         message.send(playerKiller);
+
         playerKilled.playSound(playerKilled.getLocation(), Sound.NOTE_PLING, 1F, 1F);
-        playerKiller.playSound(playerKiller.getLocation(), Sound.NOTE_PLING, 1F, 1F);
+        playerKilled.playSound(playerKilled.getLocation(), Sound.NOTE_PLING, 1F, 1F);
+        playerKilled.playSound(playerKilled.getLocation(), Sound.NOTE_PLING, 1F, 1F);
     }
 }

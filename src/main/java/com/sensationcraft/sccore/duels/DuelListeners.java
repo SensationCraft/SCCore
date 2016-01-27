@@ -64,7 +64,7 @@ public class DuelListeners implements Listener {
         if (this.arena.isRunning() && this.arena.getArenaPlayers().contains(e.getPlayer())) {
             SCPlayer p = scPlayerManager.getSCPlayer(e.getPlayer().getUniqueId());
             e.getPlayer().setHealth(0);
-            scPlayerManager.broadcast(new FancyMessage(p.getTag()).tooltip(p.getHoverText()).color(ChatColor.DARK_PURPLE).then(" §d5has logged while in the duel arena!"));
+            scPlayerManager.broadcast(new FancyMessage(p.getTag()).tooltip(p.getHoverText()).color(ChatColor.DARK_PURPLE).then(" §5has logged while in the duel arena!"));
             this.arena.forceEnd();
         }
 
