@@ -79,9 +79,8 @@ public class SCPlayerListeners implements Listener {
 		}
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerCommandPre(final PlayerCommandPreprocessEvent e) {
-
 		SCPlayer scPlayer = this.scPlayerManager.getSCPlayer(e.getPlayer().getUniqueId());
 		if (scPlayer.isCombatTagged()) {
 			e.setCancelled(true);
@@ -115,8 +114,9 @@ public class SCPlayerListeners implements Listener {
 
 		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(from));
 
-		if (this.arenaManager.getArena().isRunning() && this.arenaManager.getArena().getArenaPlayers().contains(player) && (player.getWalkSpeed() != .2F)) {
-			player.setWalkSpeed(.2F);
+		if (this.arenaManager.getArena().isRunning() && this.arenaManager.getArena().getArenaPlayers().contains(player)) {
+			if (player.getWalkSpeed() != .2F)
+				player.setWalkSpeed(.2F);
 			return;
 		}
 
@@ -124,6 +124,7 @@ public class SCPlayerListeners implements Listener {
 			if (player.getWalkSpeed() == .4F) {
 				player.setWalkSpeed(.2F);
 			}
+			return;
 		}
 
 		if (player.getWalkSpeed() != .4F) {
