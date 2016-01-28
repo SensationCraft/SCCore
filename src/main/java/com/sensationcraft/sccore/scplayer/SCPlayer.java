@@ -70,9 +70,9 @@ public class SCPlayer {
 		return this.rankManager.getRank(this.uuid).getTag().replace("%s", Bukkit.getOfflinePlayer(this.uuid).getName());
 	}
 
-	public List<String> getHoverText() {
+	public String[] getHoverText() {
 
-		return Arrays.asList(
+		return new String[] {
 				"§bStats:",
 				"   §aKills: §f" + this.statsManager.getIntegerStat(this.uuid, Stat.KILLS),
 				"   §aDeaths: §f" + this.statsManager.getIntegerStat(this.uuid, Stat.DEATHS),
@@ -83,7 +83,8 @@ public class SCPlayer {
 				"§bDuels:",
 				"   §aWins: §f" + this.statsManager.getIntegerStat(this.uuid, Stat.WINS),
 				"   §aLosses: §f" + this.statsManager.getIntegerStat(this.uuid, Stat.LOSSES),
-				"   §aW/L: §f" + this.statsManager.getWL(this.uuid));
+				"   §aW/L: §f" + this.statsManager.getWL(this.uuid)
+			};
 	}
 
 
