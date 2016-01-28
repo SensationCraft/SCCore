@@ -115,17 +115,20 @@ public class SCPlayerListeners implements Listener {
 
 		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(from));
 
-		if (this.arenaManager.getArena().isRunning() && this.arenaManager.getArena().getArenaPlayers().contains(player))
-			return;
-
-		if (!faction.getId().equals(Factions.ID_SAFEZONE)) {
-			if (player.getWalkSpeed() == .4F)
-				player.setWalkSpeed(.2F);
+		if (this.arenaManager.getArena().isRunning() && this.arenaManager.getArena().getArenaPlayers().contains(player) && (player.getWalkSpeed() != .2F)) {
+			player.setWalkSpeed(.2F);
 			return;
 		}
 
-		if (player.getWalkSpeed() != .4F)
+		if (!faction.getId().equals(Factions.ID_SAFEZONE)) {
+			if (player.getWalkSpeed() == .4F) {
+				player.setWalkSpeed(.2F);
+			}
+		}
+
+		if (player.getWalkSpeed() != .4F) {
 			player.setWalkSpeed(.4F);
+		}
 
 	}
 

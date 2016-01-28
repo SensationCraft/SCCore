@@ -179,7 +179,7 @@ public class Arena {
 		SCPlayer secondary = this.scPlayerManager.getSCPlayer(this.secondaryPlayer.getUniqueId());
 
 		FancyMessage message = new FancyMessage("§6The duel between ").then(primary.getTag()).tooltip(primary
-				.getHoverText()).then(" and ").then(secondary.getTag()).tooltip(secondary.getHoverText()).then(" §6ended in a draw!");
+				.getHoverText()).then("§6 and ").then(secondary.getTag()).tooltip(secondary.getHoverText()).then(" §6ended in a draw!");
 		this.scPlayerManager.broadcast(message);
 
 		canTeleport = true;
