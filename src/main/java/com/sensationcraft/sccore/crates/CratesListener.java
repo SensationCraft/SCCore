@@ -47,7 +47,7 @@ public class CratesListener implements Listener {
         if (!item.getItemMeta().getLore().containsAll(lore))
             return;
 
-        player.getInventory().remove(player.getInventory().getHeldItemSlot());
+        player.getInventory().clear(player.getInventory().getHeldItemSlot());
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "crate givekey " + player.getName() + " RouletteKey 1");
 
         Location heart = player.getLocation();
