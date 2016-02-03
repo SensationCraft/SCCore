@@ -1,16 +1,15 @@
 package com.sensationcraft.sccore.chat.commands;
 
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.help.TutorialManager;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.punishments.PunishmentManager;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
-import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 
 /**
  * Created by Anml on 1/7/16.
@@ -19,12 +18,12 @@ public class StaffCommand implements CommandExecutor {
 
 	private SCCore instance;
 	private SCPlayerManager scPlayerManager;
-	private PunishmentManager punishmentManager;
+	private TutorialManager tutorialManager;
 
 	public StaffCommand(SCCore instance) {
 		this.instance = instance;
 		this.scPlayerManager = instance.getSCPlayerManager();
-		this.punishmentManager = instance.getPunishmentManager();
+		this.tutorialManager = instance.getTutorialManager();
 	}
 
 	@Override
@@ -32,6 +31,11 @@ public class StaffCommand implements CommandExecutor {
 
 		if (!sender.hasPermission("sccore.staff")) {
 			sender.sendMessage("§cYou do not have permission to execute this command.");
+			return false;
+		}
+
+		if (sender instanceof Player && tutorialManager.getTutorialedPlayers().containsKey(((Player) sender).getUniqueId())) {
+			sender.sendMessage("§cYou are not permitted to talk in staff chat while in tutorial mode");
 			return false;
 		}
 

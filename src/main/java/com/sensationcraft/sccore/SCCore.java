@@ -4,6 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.earth2me.essentials.Essentials;
 import com.sensationcraft.sccore.chat.ChatListener;
 import com.sensationcraft.sccore.chat.commands.ChannelCommand;
+import com.sensationcraft.sccore.chat.commands.ShoutCommand;
 import com.sensationcraft.sccore.chat.commands.StaffCommand;
 import com.sensationcraft.sccore.crates.CratesListener;
 import com.sensationcraft.sccore.crates.GiveKeyShardCommand;
@@ -12,6 +13,9 @@ import com.sensationcraft.sccore.duels.DuelListeners;
 import com.sensationcraft.sccore.duels.commands.ArenaCommand;
 import com.sensationcraft.sccore.duels.commands.DuelCommand;
 import com.sensationcraft.sccore.duels.commands.SpectateCommand;
+import com.sensationcraft.sccore.help.TutorialManager;
+import com.sensationcraft.sccore.help.commands.HelpCommand;
+import com.sensationcraft.sccore.help.commands.TutorialCommand;
 import com.sensationcraft.sccore.helprequests.HelpRequestManager;
 import com.sensationcraft.sccore.helprequests.commands.HelpRequestCommand;
 import com.sensationcraft.sccore.lockpicks.LockpickListeners;
@@ -32,7 +36,6 @@ import com.sensationcraft.sccore.shop.commands.ShopCommand;
 import com.sensationcraft.sccore.stats.StatListeners;
 import com.sensationcraft.sccore.stats.StatsManager;
 import com.sensationcraft.sccore.utils.Utils;
-import com.sensationcraft.sccore.xrayspy.XrayManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -57,8 +60,9 @@ public class SCCore extends JavaPlugin implements Listener {
 	private StatsManager statsManager;
 	private PermissionsManager permissionsManager;
 	private PunishmentManager punishmentManager;
-	private XrayManager xrayManager;
+	private TutorialManager tutorialManager;
 	private HelpRequestManager helpRequestManager;
+	private ShoutCommand shoutCommand;
 	private Utils utils;
 	private MySQL mySQL;
 
@@ -87,7 +91,6 @@ public class SCCore extends JavaPlugin implements Listener {
 		this.registerCommands();
 
 		this.scPlayerManager.loadSCPlayers();
-		this.itemManager.load();
 
 		this.getLogger().info("[SCCore] Plugin has been enabled.");
 	}
@@ -107,6 +110,7 @@ public class SCCore extends JavaPlugin implements Listener {
 
 	public void registerEvents() {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
+		shoutCommand = new ShoutCommand(this);
 
 		pm.registerEvents(new SCPlayerListeners(this), this);
 		pm.registerEvents(new LockpickListeners(this), this);
@@ -116,7 +120,7 @@ public class SCCore extends JavaPlugin implements Listener {
 		pm.registerEvents(new ChatListener(this), this);
 		pm.registerEvents(new SellCauldron(this), this);
 		pm.registerEvents(new CratesListener(), this);
-		//pm.registerEvents(this.xrayManager, this);
+		pm.registerEvents(tutorialManager, this);
 
 		ProtocolLibrary.getProtocolManager().addPacketListener(new MessageListener(this));
 	}
@@ -141,6 +145,8 @@ public class SCCore extends JavaPlugin implements Listener {
 		this.getCommand("history").setExecutor(new HistoryCommand(this));
 		this.getCommand("helprequest").setExecutor(new HelpRequestCommand(this));
 		this.getCommand("givekeyshard").setExecutor(new GiveKeyShardCommand());
+		this.getCommand("help").setExecutor(new HelpCommand(this));
+		this.getCommand("tutorial").setExecutor(new TutorialCommand(this));
 	}
 
 	public void registerManagers() {
@@ -153,8 +159,8 @@ public class SCCore extends JavaPlugin implements Listener {
 		this.helpRequestManager = new HelpRequestManager(this);
 		this.punishmentManager = new PunishmentManager(this);
 		this.itemManager = new ItemManager(this);
+		this.tutorialManager = new TutorialManager(this);
 		this.scPlayerManager = new SCPlayerManager(this);
 		this.arenaManager = new ArenaManager(this);
-		//this.xrayManager = new XrayManager(this);
 	}
 }

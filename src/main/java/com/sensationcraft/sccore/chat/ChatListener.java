@@ -11,6 +11,7 @@ import com.massivecraft.factions.entity.MPlayerColl;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.chat.commands.ShoutCommand;
 import com.sensationcraft.sccore.chat.commands.StaffCommand;
+import com.sensationcraft.sccore.help.TutorialManager;
 import com.sensationcraft.sccore.punishments.Punishment;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.punishments.PunishmentType;
@@ -51,6 +52,7 @@ public class ChatListener implements Listener {
 	private PacketAdapter commandFilter;
 	private Set<UUID> fchatspy = Collections.synchronizedSet(new HashSet<>());
 	private Set<UUID> lchatspy = Collections.synchronizedSet(new HashSet<>());
+	private TutorialManager tutorialManager;
 
 	{
 		this.cmds.put("m", "@");
@@ -75,7 +77,8 @@ public class ChatListener implements Listener {
 	}
 
 	public ChatListener(SCCore instance) {
-		this.shout = new ShoutCommand(instance);
+		this.shout = instance.getShoutCommand();
+		this.tutorialManager = instance.getTutorialManager();
 		this.instance = instance;
 		this.playerManager = this.instance.getSCPlayerManager();
 		this.punishmentManager = instance.getPunishmentManager();
@@ -124,6 +127,13 @@ public class ChatListener implements Listener {
 		String message = event.getMessage();
 		Player player = event.getPlayer();
 		User euser = this.instance.getEssentials().getUser(player);
+
+		if (tutorialManager.getTutorialedPlayers().containsKey(player.getUniqueId())) {
+			player.sendMessage("§cYou are not permitted to chat while in tutorial mode.");
+			event.setCancelled(true);
+			return;
+		}
+
 		if (message.startsWith("@")) {
 			event.setCancelled(true);
 			if (message.startsWith("@fchatspy") && player.hasPermission("sccore.factionsspy")) {
@@ -225,7 +235,7 @@ public class ChatListener implements Listener {
 					if ((spy == player) || (spy == other))
 						continue;
 					espy = this.instance.getEssentials().getUser(spy);
-					if (espy != null && espy.isSocialSpyEnabled())
+					if (espy != null && espy.isSocialSpyEnabled() && !tutorialManager.getTutorialedPlayers().containsKey(spy.getUniqueId()))
 						spy.sendMessage(mes);
 				}
 			}
@@ -238,8 +248,10 @@ public class ChatListener implements Listener {
 			}*/
 			message = String.format(this.me, player.getDisplayName(), message.substring(1));
 			this.instance.getLogger().info(String.format("emote: %s", ChatColor.stripColor(message)));
-			for (Player other : event.getRecipients())
-				other.sendMessage(message);
+			for (Player other : event.getRecipients()) {
+				if (!tutorialManager.getTutorialedPlayers().containsKey(other.getUniqueId()))
+					other.sendMessage(message);
+			}
 		}
 	}
 
@@ -248,6 +260,13 @@ public class ChatListener implements Listener {
 		Player player = event.getPlayer();
 		SCPlayer user = this.playerManager.getSCPlayer(player.getUniqueId());
 		MPlayer mPlayer = MPlayerColl.get().get(player);
+
+		if (tutorialManager.getTutorialedPlayers().containsKey(player.getUniqueId())) {
+			player.sendMessage("§cYou are not permitted to chat while in tutorial mode.");
+			event.setCancelled(true);
+			return;
+		}
+
 		event.setCancelled(true);
 		switch (user.getChannel()) {
 		case FACTION:
@@ -258,6 +277,7 @@ public class ChatListener implements Listener {
 				if (other.getSender() != null)
 					message.send(other.getSender());
 			for (UUID id : this.fchatspy)
+				if (!tutorialManager.getTutorialedPlayers().containsKey(id))
 				message.send(Bukkit.getPlayer(id));
 			break;
 		case ALLY:
@@ -267,8 +287,10 @@ public class ChatListener implements Listener {
 					.tooltip(user.getHoverText()).then(": " + event.getMessage()).color(ChatColor.DARK_PURPLE);
 			for (MPlayer other : ally)
 				if (other.getSender() != null)
+					if (!tutorialManager.getTutorialedPlayers().containsKey(other.getPlayer().getUniqueId()))
 					message2.send(other.getSender());
 			for (UUID id : this.fchatspy)
+				if (!tutorialManager.getTutorialedPlayers().containsKey(id))
 				message2.send(Bukkit.getPlayer(id));
 			break;
 		case PUBLIC:
@@ -304,8 +326,10 @@ public class ChatListener implements Listener {
 			for (final Player other : event.getRecipients()) {
 				if (other.getWorld() != player.getWorld())
 					continue;
-				if (other.getLocation().distanceSquared(player.getLocation()) <= 900 || this.lchatspy.contains(other.getUniqueId()))
+				if (other.getLocation().distanceSquared(player.getLocation()) <= 900 || this.lchatspy.contains(other.getUniqueId())) {
+					if (!tutorialManager.getTutorialedPlayers().containsKey(other.getUniqueId()))
 					message3.send(other);
+				}
 			}
 			break;
 		case SHOUT:

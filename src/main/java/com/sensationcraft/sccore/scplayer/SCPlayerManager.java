@@ -1,23 +1,18 @@
 package com.sensationcraft.sccore.scplayer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.help.TutorialManager;
 import com.sensationcraft.sccore.helprequests.HelpRequestManager;
 import com.sensationcraft.sccore.lockpicks.LockpickRunnable;
 import com.sensationcraft.sccore.ranks.PermissionsManager;
 import com.sensationcraft.sccore.ranks.RankManager;
 import com.sensationcraft.sccore.stats.StatsManager;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
-
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import java.util.*;
 
 /**
  * Created by Kishan on 12/2/15.
@@ -31,6 +26,7 @@ public class SCPlayerManager {
 	private PermissionsManager permissionsManager;
 	private HelpRequestManager helpRequestManager;
 	private StatsManager statsManager;
+	private TutorialManager tutorialManager;
 	private List<UUID> shoutCooldowns;
 	private Map<UUID, LockpickRunnable> lockpicking;
 	private Map<UUID, SCPlayer> scPlayers;
@@ -41,6 +37,7 @@ public class SCPlayerManager {
 		this.permissionsManager = instance.getPermissionsManager();
 		this.helpRequestManager = instance.getHelpRequestManager();
 		this.statsManager = instance.getStatsManager();
+		this.tutorialManager = instance.getTutorialManager();
 		this.shoutCooldowns = new ArrayList<>();
 		this.scPlayers = new HashMap<>();
 		this.lockpicking = new HashMap<>();
@@ -90,6 +87,7 @@ public class SCPlayerManager {
 	public void staff(String message) {
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			if (p.hasPermission("sccore.staff")) {
+				if (!tutorialManager.getTutorialedPlayers().containsKey(p.getUniqueId()))
 				p.sendMessage(message);
 			}
 		}
@@ -98,6 +96,7 @@ public class SCPlayerManager {
 	public void staff(FancyMessage message) {
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			if (p.hasPermission("sccore.staff")) {
+				if (!tutorialManager.getTutorialedPlayers().containsKey(p.getUniqueId()))
 				message.send(p);
 			}
 		}
@@ -105,12 +104,14 @@ public class SCPlayerManager {
 
 	public void broadcast(FancyMessage message) {
 		for (Player p : Bukkit.getOnlinePlayers()) {
+			if (!tutorialManager.getTutorialedPlayers().containsKey(p.getUniqueId()))
 			message.send(p);
 		}
 	}
 
 	public void broadcast(String message) {
 		for (Player p : Bukkit.getOnlinePlayers()) {
+			if (!tutorialManager.getTutorialedPlayers().containsKey(p.getUniqueId()))
 			p.sendMessage(message);
 		}
 	}

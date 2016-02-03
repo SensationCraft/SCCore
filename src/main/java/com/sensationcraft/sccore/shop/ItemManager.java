@@ -1,11 +1,9 @@
 package com.sensationcraft.sccore.shop;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import com.earth2me.essentials.Essentials;
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.utils.ProtocolUtil;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,11 +12,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.earth2me.essentials.Essentials;
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.utils.ProtocolUtil;
-
-import lombok.Getter;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.*;
 
 /**
  * Created by Anml on 1/20/16.
@@ -31,12 +27,15 @@ public class ItemManager {
 	private Essentials essentials;
 	private List<Item> buy;
 	private List<Item> sell;
+	private Map<ItemCategory, List<Inventory>> inventories = new HashMap<>();
 
 	public ItemManager(SCCore instance) {
 		this.instance = instance;
 		this.essentials = instance.getEssentials();
-		this.buy = new ArrayList<>();
-		this.sell = new ArrayList<>();
+
+		load();
+		for (ItemCategory c : ItemCategory.values())
+			loadInventory(c);
 	}
 
 	public void load() {
@@ -90,7 +89,7 @@ public class ItemManager {
 					price = Double.parseDouble(parts[3]);
 					if (parts.length >= 6) {
 						category = ItemCategory.valueOf(parts[4].toUpperCase());
-						bulk = Boolean.parseBoolean(parts[6]);
+						bulk = Boolean.parseBoolean(parts[5]);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -230,47 +229,51 @@ public class ItemManager {
 		return inventory;
 	}
 
-	public List<Inventory> getInventories(ItemCategory category) {
-		List<Item> categorialItems = this.getCategorialItems(category);
+	public void loadInventory(ItemCategory category) {
 
-		if (categorialItems.size() == 0)
-			return null;
+		List<Item> categorialItems = this.getCategorialItems(category);
 
 		int invCount = (int) Math.round((categorialItems.size() / 45) + .5);
 
 		List<Inventory> inventories = new ArrayList<>();
 
 		for (int count = 0; count <= invCount; count++) {
-			inventories.add(Bukkit.createInventory(null, 54, "§b§lBuy Shop §f§bl- §6§l" + category.name() + " (" + (count + 1) + "/" + invCount + ")"));
+			inventories.add(Bukkit.createInventory(null, 54, "§b§lBuy Shop §6[" + category.name() + "] §a(" + (count + 1) + "/" + invCount + ")"));
 
-			for (int x = 0; x < invCount; x++) {
-				for (int y = 0; x < 45; x++) {
-					if (categorialItems.get(y) != null) {
-						inventories.get(x).setItem(y, categorialItems.get(0).getItemStack());
-						categorialItems.remove(0);
+			if (categorialItems.size() != 0) {
+				for (int x = 0; x < invCount; x++) {
+					for (int y = 0; x < 45; x++) {
+						if (categorialItems.get(0) != null) {
+							inventories.get(x).setItem(y, categorialItems.get(0).getItemStack());
+							categorialItems.remove(0);
+						}
 					}
-				}
 
-				ItemStack item = new ItemStack(Material.ARROW, 1);
-				ItemMeta meta = item.getItemMeta();
-				if (x != (invCount - 1)) {
-					meta.setDisplayName("§bNext Page (" + (x + 2) + "/" + invCount + ")");
-					item.setItemMeta(meta);
-					inventories.get(x).setItem(50, item);
-				}
-				if (x != 0) {
-					meta.setDisplayName("§bPrevious Page (" + (x) + "/" + invCount + ")");
-					item.setItemMeta(meta);
-					inventories.get(x).setItem(48, item);
-				} else {
-					meta.setDisplayName("§bPrevious Page (Main Menu)");
-					item.setItemMeta(meta);
-					inventories.get(x).setItem(48, item);
+					ItemStack item = new ItemStack(Material.ARROW, 1);
+					ItemMeta meta = item.getItemMeta();
+					if (x + 1 != (invCount - 1)) {
+						meta.setDisplayName("§bNext Page (" + (x + 1) + "/" + invCount + ")");
+						item.setItemMeta(meta);
+						inventories.get(x).setItem(50, item);
+					}
+					if (x != 0) {
+						meta.setDisplayName("§bPrevious Page (" + x + "/" + invCount + ")");
+						item.setItemMeta(meta);
+						inventories.get(x).setItem(48, item);
+					} else {
+						meta.setDisplayName("§bPrevious Page (Main Menu)");
+						item.setItemMeta(meta);
+						inventories.get(x).setItem(48, item);
+					}
 				}
 			}
 		}
 
-		return inventories;
+		if (this.inventories.containsKey(category)) {
+			this.inventories.replace(category, inventories);
+		} else {
+			this.inventories.put(category, inventories);
+		}
 	}
 
 	public ItemStack getBulkItem(Item item, int amount, Player player) {

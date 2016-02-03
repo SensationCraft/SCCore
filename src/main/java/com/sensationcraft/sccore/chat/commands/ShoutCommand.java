@@ -1,15 +1,7 @@
 package com.sensationcraft.sccore.chat.commands;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.help.TutorialManager;
 import com.sensationcraft.sccore.punishments.Punishment;
 import com.sensationcraft.sccore.punishments.PunishmentManager;
 import com.sensationcraft.sccore.punishments.PunishmentType;
@@ -17,6 +9,14 @@ import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
 import com.sensationcraft.sccore.utils.Utils;
 import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.List;
 
 /**
  * Created by Anml on 12/28/15.
@@ -26,17 +26,25 @@ public class ShoutCommand implements CommandExecutor {
 	SCCore instance;
 	SCPlayerManager scPlayerManager;
 	PunishmentManager punishmentManager;
+	TutorialManager tutorialManager;
 	Utils utils;
 
 	public ShoutCommand(SCCore instance) {
 		this.instance = instance;
 		this.punishmentManager = instance.getPunishmentManager();
 		this.scPlayerManager = instance.getSCPlayerManager();
+		this.tutorialManager = instance.getTutorialManager();
 		this.utils = instance.getUtils();
 	}
 
 	@Override
 	public boolean onCommand(final CommandSender sender, final Command cmd, final String command, final String[] args) {
+
+
+		if (sender instanceof Player && tutorialManager.getTutorialedPlayers().containsKey(((Player) sender).getUniqueId())) {
+			sender.sendMessage("§cYou are not permitted to shout while in tutorial mode");
+			return false;
+		}
 
 		if (!sender.hasPermission("sccore.shout")) {
 			sender.sendMessage("§cYou do not have permission to execute this command.");

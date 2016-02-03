@@ -35,6 +35,11 @@ commands:
   history:
     default: false
   helprequest:
+      aliases: [hr]
   shop:
     default: false
   givekeyshard:
+  tutorial:
+      aliases: [tut]
+  help:
+      aliases: [?]
