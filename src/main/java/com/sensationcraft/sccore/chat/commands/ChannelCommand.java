@@ -6,8 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.factions.entity.MPlayerColl;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.chat.ChatChannel;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
@@ -52,7 +52,7 @@ public class ChannelCommand implements CommandExecutor {
 				channel = ChatChannel.PUBLIC;
 				break;
 			case 'a':
-				MPlayer mPlayer = MPlayerColl.get().get(sender);
+				FPlayer mPlayer = FPlayers.getInstance().getByPlayer((Player) sender);
 				if (!mPlayer.hasFaction()) {
 					sender.sendMessage(ChatColor.RED + "You don't have a faction!");
 					return true;
@@ -60,7 +60,7 @@ public class ChannelCommand implements CommandExecutor {
 				channel = ChatChannel.ALLY;
 				break;
 			case 'f':
-				MPlayer mPlayer2 = MPlayerColl.get().get(sender);
+				FPlayer mPlayer2 = FPlayers.getInstance().getByPlayer((Player) sender);
 				if (!mPlayer2.hasFaction()) {
 					sender.sendMessage(ChatColor.RED + "You don't have a faction!");
 					return true;

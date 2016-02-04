@@ -2,12 +2,12 @@ package com.sensationcraft.sccore.scplayer;
 
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.User;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MPlayerColl;
-import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.factions.struct.Relation;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.duels.ArenaManager;
 import com.sensationcraft.sccore.ranks.PermissionsManager;
@@ -112,7 +112,7 @@ public class SCPlayerListeners implements Listener {
 		Player player = e.getPlayer();
 		Location from = e.getFrom();
 
-		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(from));
+		Faction faction = Board.getInstance().getFactionAt(new FLocation(from));
 
 		if (this.arenaManager.getArena().isRunning() && this.arenaManager.getArena().getArenaPlayers().contains(player)) {
 			if (player.getWalkSpeed() != .2F)
@@ -120,7 +120,7 @@ public class SCPlayerListeners implements Listener {
 			return;
 		}
 
-		if (!faction.getId().equals(Factions.ID_SAFEZONE)) {
+		if (!faction.isSafeZone()) {
 			if (player.getWalkSpeed() == .4F) {
 				player.setWalkSpeed(.2F);
 			}
@@ -137,8 +137,8 @@ public class SCPlayerListeners implements Listener {
 	public void onPlayerFire(final EntityCombustEvent e) {
 		if (e.getEntity() instanceof Player == false)
 			return;
-		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(e.getEntity().getLocation()));
-		if (faction != null && faction.getId().equals(Factions.ID_SAFEZONE) && !this.arenaManager.getArena().isDuel(e.getEntity()))
+		Faction faction = Board.getInstance().getFactionAt(new FLocation(e.getEntity().getLocation()));
+		if (faction != null && faction.isSafeZone() && !this.arenaManager.getArena().isDuel(e.getEntity()))
 			e.setCancelled(true);
 	}
 
@@ -146,8 +146,8 @@ public class SCPlayerListeners implements Listener {
 	public void onPlayerDamage(EntityDamageEvent e) {
 		if (e.getEntity() instanceof Player == false)
 			return;
-		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(e.getEntity().getLocation()));
-		if (faction != null && faction.getId().equals(Factions.ID_SAFEZONE) && !this.arenaManager.getArena().isDuel(e.getEntity())) {
+		Faction faction = Board.getInstance().getFactionAt(new FLocation(e.getEntity().getLocation()));
+		if (faction != null && faction.isSafeZone() && !this.arenaManager.getArena().isDuel(e.getEntity())) {
 			e.setCancelled(true);
 			e.getEntity().setFireTicks(0);
 		}
@@ -177,27 +177,27 @@ public class SCPlayerListeners implements Listener {
 
 		SCPlayer scp = this.scPlayerManager.getSCPlayer(player.getUniqueId());
 		SCPlayer sct = this.scPlayerManager.getSCPlayer(target.getUniqueId());
-		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(target.getLocation().getChunk()));
+		Faction faction = Board.getInstance().getFactionAt(new FLocation(target.getLocation()));
 
 
-		if (faction.getId().equals(Factions.ID_SAFEZONE) && !(this.arenaManager.getArena().getArenaPlayers().contains(player) || this.arenaManager.getArena().getArenaPlayers().contains(target))) {
+		if (faction.isSafeZone() && !(this.arenaManager.getArena().getArenaPlayers().contains(player) || this.arenaManager.getArena().getArenaPlayers().contains(target))) {
 			return;
 		}
 
-		final Faction pFaction = MPlayerColl.get().get(player).getFaction();
-		final Faction tFaction = MPlayerColl.get().get(target).getFaction();
+		final Faction pFaction = FPlayers.getInstance().getByPlayer(player).getFaction();
+		final Faction tFaction = FPlayers.getInstance().getByPlayer(target).getFaction();
 
-		if (pFaction.getRelationTo(tFaction) == Rel.MEMBER && !pFaction.isNone()) {
+		if (pFaction.getRelationTo(tFaction) == Relation.MEMBER && !pFaction.isNone()) {
 			return;
 		}
 
-		if (pFaction.getRelationTo(tFaction) == Rel.ALLY || pFaction.getRelationTo(tFaction) == Rel.TRUCE) {
+		if (pFaction.getRelationTo(tFaction) == Relation.ALLY || pFaction.getRelationTo(tFaction) == Relation.TRUCE) {
 			return;
 		}
 
-		Faction standingOn = BoardColl.get().getFactionAt(PS.valueOf(target.getLocation()));
+		Faction standingOn = Board.getInstance().getFactionAt(new FLocation(target.getLocation()));
 
-		if (pFaction.getRelationTo(tFaction) == Rel.NEUTRAL && tFaction.equals(standingOn))
+		if (pFaction.getRelationTo(tFaction) == Relation.NEUTRAL && tFaction.equals(standingOn))
 			return;
 
 		User pUser = this.essentials.getUser(player);

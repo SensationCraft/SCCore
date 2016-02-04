@@ -1,9 +1,9 @@
 package com.sensationcraft.sccore.duels.commands;
 
-import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MFlag;
-import com.massivecraft.factions.entity.MPlayerColl;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.struct.Relation;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.duels.Arena;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
@@ -125,33 +125,33 @@ public class DuelCommand implements CommandExecutor {
 					return false;
 				}
 
-				final Faction pFaction = MPlayerColl.get().get(player).getFaction();
-				final Faction tFaction = MPlayerColl.get().get(target).getFaction();
+				final Faction pFaction = FPlayers.getInstance().getByPlayer(player).getFaction();
+				final Faction tFaction = FPlayers.getInstance().getByPlayer(target).getFaction();
 
-				if (pFaction.getFlag(MFlag.ID_PEACEFUL)) {
+				if (pFaction.isPeaceful()) {
 					sender.sendMessage("§cYou are in a peaceful faction which prohibits you from dueling.");
 					return false;
 				}
-				if (tFaction.getFlag(MFlag.ID_PEACEFUL)) {
+				if (tFaction.isPeaceful()) {
 					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText())
 							.then(" is in a peaceful faction prohibiting you from dueling each other.").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
-				if (pFaction.getRelationTo(tFaction) == Rel.MEMBER && !pFaction.isNone()) {
+				if (pFaction.getRelationTo(tFaction) == Relation.MEMBER && !pFaction.isNone()) {
 					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText())
 							.then(" is a member of your faction.").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
-				if (pFaction.getRelationTo(tFaction) == Rel.ALLY) {
+				if (pFaction.getRelationTo(tFaction) == Relation.ALLY) {
 					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText())
 							.then(" is s a member of an allied faction.").color(ChatColor.RED);
 					message.send(sender);
 					return false;
 				}
 
-				if (pFaction.getRelationTo(tFaction) == Rel.TRUCE) {
+				if (pFaction.getRelationTo(tFaction) == Relation.TRUCE) {
 					FancyMessage message = new FancyMessage(scTarget.getTag()).tooltip(scTarget.getHoverText())
 							.then(" is s a member of an truced faction.").color(ChatColor.RED);
 					message.send(sender);

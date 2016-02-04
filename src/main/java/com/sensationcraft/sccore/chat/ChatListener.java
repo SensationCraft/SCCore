@@ -1,25 +1,15 @@
 package com.sensationcraft.sccore.chat;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.reflect.StructureModifier;
-import com.earth2me.essentials.User;
-import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.factions.entity.MPlayerColl;
-import com.sensationcraft.sccore.SCCore;
-import com.sensationcraft.sccore.chat.commands.ShoutCommand;
-import com.sensationcraft.sccore.chat.commands.StaffCommand;
-import com.sensationcraft.sccore.help.TutorialManager;
-import com.sensationcraft.sccore.punishments.Punishment;
-import com.sensationcraft.sccore.punishments.PunishmentManager;
-import com.sensationcraft.sccore.punishments.PunishmentType;
-import com.sensationcraft.sccore.scplayer.SCPlayer;
-import com.sensationcraft.sccore.scplayer.SCPlayerManager;
-import com.sensationcraft.sccore.utils.FactionUtil;
-import com.sensationcraft.sccore.utils.Utils;
-import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -29,8 +19,27 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.reflect.StructureModifier;
+import com.earth2me.essentials.User;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.sensationcraft.sccore.SCCore;
+import com.sensationcraft.sccore.chat.commands.ShoutCommand;
+import com.sensationcraft.sccore.chat.commands.StaffCommand;
+import com.sensationcraft.sccore.chat.factions.ConcurrentFPlayer;
+import com.sensationcraft.sccore.chat.factions.FactionsListener;
+import com.sensationcraft.sccore.help.TutorialManager;
+import com.sensationcraft.sccore.punishments.Punishment;
+import com.sensationcraft.sccore.punishments.PunishmentManager;
+import com.sensationcraft.sccore.punishments.PunishmentType;
+import com.sensationcraft.sccore.scplayer.SCPlayer;
+import com.sensationcraft.sccore.scplayer.SCPlayerManager;
+import com.sensationcraft.sccore.utils.Utils;
+import com.sensationcraft.sccore.utils.fanciful.FancyMessage;
 
 public class ChatListener implements Listener {
 
@@ -50,7 +59,6 @@ public class ChatListener implements Listener {
 	private final SCPlayerManager playerManager;
 	private PunishmentManager punishmentManager;
 	private PacketAdapter commandFilter;
-	private Set<UUID> fchatspy = Collections.synchronizedSet(new HashSet<>());
 	private Set<UUID> lchatspy = Collections.synchronizedSet(new HashSet<>());
 	private TutorialManager tutorialManager;
 
@@ -100,7 +108,7 @@ public class ChatListener implements Listener {
 									c = 'p';
 								strings.write(0, "/c " + c);
 							} else {
-								MPlayer mPlayer = MPlayerColl.get().get(event.getPlayer());
+								FPlayer mPlayer = FPlayers.getInstance().getByPlayer(event.getPlayer());
 								strings.write(0, "/c " + ChatListener.this.playerManager.getSCPlayer(event.getPlayer().getUniqueId())
 								.getChannel().next((mPlayer != null && mPlayer.hasFaction()) ? ChatChannel.NOT_NONE : ChatChannel.NOT_FACTION_NOT_NONE).getCode());
 							}
@@ -128,7 +136,7 @@ public class ChatListener implements Listener {
 		Player player = event.getPlayer();
 		User euser = this.instance.getEssentials().getUser(player);
 
-		if (tutorialManager.getTutorialedPlayers().containsKey(player.getUniqueId())) {
+		if (this.tutorialManager.getTutorialedPlayers().containsKey(player.getUniqueId())) {
 			player.sendMessage("§cYou are not permitted to chat while in tutorial mode.");
 			event.setCancelled(true);
 			return;
@@ -137,13 +145,7 @@ public class ChatListener implements Listener {
 		if (message.startsWith("@")) {
 			event.setCancelled(true);
 			if (message.startsWith("@fchatspy") && player.hasPermission("sccore.factionsspy")) {
-				if (this.fchatspy.contains(player.getUniqueId())) {
-					this.fchatspy.remove(player.getUniqueId());
-					player.sendMessage(ChatColor.RED + "Factions Chatspy disabled!");
-				} else {
-					this.fchatspy.add(player.getUniqueId());
-					player.sendMessage(ChatColor.GREEN + "Factions Chatspy enabled!");
-				}
+				ConcurrentFPlayer.toggleSpy(player);
 				return;
 			}
 			if (message.startsWith("@lchatspy") && player.hasPermission("sccore.localspy")) {
@@ -235,7 +237,7 @@ public class ChatListener implements Listener {
 					if ((spy == player) || (spy == other))
 						continue;
 					espy = this.instance.getEssentials().getUser(spy);
-					if (espy != null && espy.isSocialSpyEnabled() && !tutorialManager.getTutorialedPlayers().containsKey(spy.getUniqueId()))
+					if (espy != null && espy.isSocialSpyEnabled() && !this.tutorialManager.getTutorialedPlayers().containsKey(spy.getUniqueId()))
 						spy.sendMessage(mes);
 				}
 			}
@@ -249,7 +251,7 @@ public class ChatListener implements Listener {
 			message = String.format(this.me, player.getDisplayName(), message.substring(1));
 			this.instance.getLogger().info(String.format("emote: %s", ChatColor.stripColor(message)));
 			for (Player other : event.getRecipients()) {
-				if (!tutorialManager.getTutorialedPlayers().containsKey(other.getUniqueId()))
+				if (!this.tutorialManager.getTutorialedPlayers().containsKey(other.getUniqueId()))
 					other.sendMessage(message);
 			}
 		}
@@ -259,39 +261,22 @@ public class ChatListener implements Listener {
 	public void onLateChat(final AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
 		SCPlayer user = this.playerManager.getSCPlayer(player.getUniqueId());
-		MPlayer mPlayer = MPlayerColl.get().get(player);
-
-		if (tutorialManager.getTutorialedPlayers().containsKey(player.getUniqueId())) {
+		if (this.tutorialManager.getTutorialedPlayers().containsKey(player.getUniqueId())) {
 			player.sendMessage("§cYou are not permitted to chat while in tutorial mode.");
 			event.setCancelled(true);
 			return;
 		}
-
 		event.setCancelled(true);
 		switch (user.getChannel()) {
 		case FACTION:
-			List<MPlayer> faction = MPlayerColl.get().getAll(type -> type.getFactionId().equals(mPlayer.getFactionId()));
-			FancyMessage message = new FancyMessage(FactionUtil.getAsteriskPrefix(mPlayer)).color(ChatColor.GREEN).then(ChatColor.stripColor(user.getTag())).color(ChatColor.GREEN)
-					.tooltip(user.getHoverText()).then(": " + event.getMessage()).color(ChatColor.GREEN);
-			for (MPlayer other : faction)
-				if (other.getSender() != null)
-					message.send(other.getSender());
-			for (UUID id : this.fchatspy)
-				if (!tutorialManager.getTutorialedPlayers().containsKey(id))
-				message.send(Bukkit.getPlayer(id));
+			ConcurrentFPlayer cfplayer = FactionsListener.getPlayer(player);
+			if(cfplayer != null)
+				cfplayer.messageFaction(event.getMessage());
 			break;
 		case ALLY:
-			List<MPlayer> ally = MPlayerColl.get().getAll(type -> type.getRelationTo(type).isFriend());
-			FancyMessage message2 = new FancyMessage("[").color(ChatColor.DARK_PURPLE).then(mPlayer.getFactionName()).color(ChatColor.DARK_PURPLE)
-					.then("] " + FactionUtil.getAsteriskPrefix(mPlayer)).color(ChatColor.DARK_PURPLE).then(ChatColor.stripColor(user.getTag())).color(ChatColor.DARK_PURPLE)
-					.tooltip(user.getHoverText()).then(": " + event.getMessage()).color(ChatColor.DARK_PURPLE);
-			for (MPlayer other : ally)
-				if (other.getSender() != null)
-					if (!tutorialManager.getTutorialedPlayers().containsKey(other.getPlayer().getUniqueId()))
-					message2.send(other.getSender());
-			for (UUID id : this.fchatspy)
-				if (!tutorialManager.getTutorialedPlayers().containsKey(id))
-				message2.send(Bukkit.getPlayer(id));
+			cfplayer = FactionsListener.getPlayer(player);
+			if(cfplayer != null)
+				cfplayer.messageAlliance(event.getMessage());
 			break;
 		case PUBLIC:
 			List<Punishment> punishments = this.punishmentManager.getPunishments(player.getUniqueId());
@@ -327,8 +312,8 @@ public class ChatListener implements Listener {
 				if (other.getWorld() != player.getWorld())
 					continue;
 				if (other.getLocation().distanceSquared(player.getLocation()) <= 900 || this.lchatspy.contains(other.getUniqueId())) {
-					if (!tutorialManager.getTutorialedPlayers().containsKey(other.getUniqueId()))
-					message3.send(other);
+					if (!this.tutorialManager.getTutorialedPlayers().containsKey(other.getUniqueId()))
+						message3.send(other);
 				}
 			}
 			break;

@@ -1,14 +1,14 @@
 package com.sensationcraft.sccore.utils;
 
-import com.massivecraft.factions.Rel;
-import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.factions.FPlayer;
 
 public class FactionUtil {
 
-	public static String getAsteriskPrefix(MPlayer player) {
+	public static String getAsteriskPrefix(FPlayer player) {
 		if (!player.hasFaction())
 			return "";
-		return player.getRole() == Rel.LEADER ? "**" : player.getRole() == Rel.OFFICER ? "*" : "";
+		player.getChatTag();
+		return player.getRole().getPrefix();
 	}
 
 }

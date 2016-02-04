@@ -1,10 +1,10 @@
 package com.sensationcraft.sccore.shop;
 
 import com.earth2me.essentials.Essentials;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.massivecore.ps.PS;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.ranks.Rank;
 import com.sensationcraft.sccore.ranks.RankManager;
@@ -95,8 +95,8 @@ public class SellCauldron implements Listener {
 		if (location == null)
 			return false;
 
-		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(location.getChunk()));
-		if (!faction.getId().equals(Factions.ID_SAFEZONE)) {
+		Faction faction = Board.getInstance().getFactionAt(new FLocation(location));
+		if (!faction.isSafeZone()) {
 			return false;
 		}
 

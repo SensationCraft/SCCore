@@ -2,10 +2,12 @@ package com.sensationcraft.sccore;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.earth2me.essentials.Essentials;
+import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.sensationcraft.sccore.chat.ChatListener;
 import com.sensationcraft.sccore.chat.commands.ChannelCommand;
 import com.sensationcraft.sccore.chat.commands.ShoutCommand;
 import com.sensationcraft.sccore.chat.commands.StaffCommand;
+import com.sensationcraft.sccore.chat.factions.FactionsListener;
 import com.sensationcraft.sccore.crates.CratesListener;
 import com.sensationcraft.sccore.crates.GiveKeyShardCommand;
 import com.sensationcraft.sccore.duels.ArenaManager;
@@ -121,6 +123,7 @@ public class SCCore extends JavaPlugin implements Listener {
 		pm.registerEvents(new SellCauldron(this), this);
 		pm.registerEvents(new CratesListener(), this);
 		pm.registerEvents(tutorialManager, this);
+		pm.registerEvents(new FactionsListener(), this);
 
 		ProtocolLibrary.getProtocolManager().addPacketListener(new MessageListener(this));
 	}

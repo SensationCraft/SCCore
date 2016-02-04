@@ -1,8 +1,8 @@
 package com.sensationcraft.sccore.lockpicks;
 
-import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.Faction;
 import com.sensationcraft.sccore.SCCore;
 import com.sensationcraft.sccore.scplayer.SCPlayer;
 import com.sensationcraft.sccore.scplayer.SCPlayerManager;
@@ -71,7 +71,7 @@ public class LockpickListeners implements Listener {
 		ItemStack itemStack = player.getItemInHand();
 		Block block = e.getClickedBlock();
 		final Location location = block.getLocation();
-		Faction faction = BoardColl.get().getFactionAt(PS.valueOf(location.getChunk()));
+		Faction faction = Board.getInstance().getFactionAt(new FLocation(location));
 
 		if (!action.equals(Action.RIGHT_CLICK_BLOCK))
 			return;
